@@ -1,0 +1,59 @@
+.delivery-boy{
+    width: 100%;
+    padding: 60px 0;
+}
+
+.delivery-boy-image{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.delivery-boy-image img{
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.delivery-boy-name{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.delivery-boy-name h3{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: 16px;
+    text-align: center;
+}
+
+.delivery-boy-details{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.delivery-boy-details-content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.delivery-boy-details-content-1{
+    width: calc(100% / 2);
+}
+
+.delivery-boy-details-content-2{
+    width: calc(100% / 2);
+    display: flex;
+    justify-content: right;
+}
+
+.delivery-boy-details-content p{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: var(--small-font-size);
+}

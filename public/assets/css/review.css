@@ -1,0 +1,163 @@
+.review-content{
+    width: 100%;
+}
+
+.review-header{
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+}
+
+.review-header h1{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: 25px;
+}
+
+.review-header h1 span{
+    font-size: 16px;
+}
+
+.stars.large{
+    margin-top: 10px !important;
+}
+
+.stars.large i{
+    font-size: 30px !important;
+}
+
+.reivew-header-content-1-rating{
+    margin-top: 10px;
+}
+
+.reivew-header-content-1-rating p{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: var(--medium-font-size);
+}
+
+
+.review-header-content-2{
+    margin-left: 40px;
+    /* background-color: red; */
+}
+
+.review-header-review-line-content{
+    display: flex;
+    align-items: center;
+}
+
+.stars.small{
+    margin-top: 5px !important;
+}
+
+.stars.small i{
+    font-size: 16px !important;
+}
+
+.review-line-background{
+    width: 200px;
+    height: 12px;
+    margin-top: 4px;
+    margin-left: 10px;
+    background-color: gray;
+}
+
+.review-line{
+    width: 80%;
+    height: 100%;
+    background-color:rgb(255, 187, 0);
+}
+
+.review-count p{
+    font-family: var(--main-font-family);
+    font-size: var(--medium-font-size);
+    color: var(--text-color);
+    margin-top: 4px;
+    margin-left: 10px;
+}
+
+@media(max-width:992px){
+    .review-header{
+        display: block;
+    }
+
+    .review-header-content-2{
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
+
+@media(max-width:576px){
+    .review-header-content-2{
+        width: 100%;
+    }
+
+    .stars.small{
+        /* background-color: green; */
+        width: 100px;
+    }
+
+    .review-line-background{
+        width: calc(100% - 160px);
+    }
+
+    .review-count{
+        width: 40px;
+    }
+}
+
+
+.review-feedback{
+    width: 100%;
+    margin-top: 30px;
+}
+
+.feedback-content{
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+}
+
+.feedback-content-1{
+    width: calc(100% - 100px);
+}
+
+.feedback-name{
+    font-family: var(--main-font-family);
+    font-size: var(--small-font-size);
+    color: var(--text-color);
+    margin-top: 5px;
+}
+
+.feedback-images{
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+}
+
+.feedback-images img{
+    width: 40px;
+    height: 40px;
+    margin: 0 2px;
+}
+
+.feedback-images img:first-child{
+    margin-left: 0;
+}
+
+.feedback-images img:last-child{
+    margin-right: 0;
+}
+
+.feedback-content-2{
+    width: 100px;
+    display: flex;
+    justify-content: right;
+}
+
+.feedback-content-2 p{
+    font-family: var(--main-font-family);
+    font-size: var(--medium-font-size);
+    color: var(--text-color);
+}

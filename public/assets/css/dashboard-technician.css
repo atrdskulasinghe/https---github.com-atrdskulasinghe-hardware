@@ -1,0 +1,59 @@
+.technician{
+    width: 100%;
+    padding: 60px 0;
+}
+
+.technician-image{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.technician-image img{
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.technician-name{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.technician-name h3{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: 16px;
+    text-align: center;
+}
+
+.technician-details{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.technician-details-content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.technician-details-content-1{
+    width: calc(100% / 2);
+}
+
+.technician-details-content-2{
+    width: calc(100% / 2);
+    display: flex;
+    justify-content: right;
+}
+
+.technician-details-content p{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: var(--small-font-size);
+}

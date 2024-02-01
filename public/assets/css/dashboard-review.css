@@ -1,0 +1,10 @@
+.review{
+    width: 100%;
+    padding: 40px 0;
+}
+
+.review-content h3{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: var(--large-font-size);
+}

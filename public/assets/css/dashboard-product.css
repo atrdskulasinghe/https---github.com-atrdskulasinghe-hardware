@@ -1,0 +1,46 @@
+.product{
+    width: 100%;
+    padding: 60px 0;
+}
+
+.product-image{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.product-image img{
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.product-name{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.product-name h3{
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    font-size: var(--small-font-size);
+}
+
+.product-price{
+    width: 100%;
+    margin-top: 10px;
+}
+
+.product-price h4{
+    font-family: var(--main-font-family);
+    font-size: var(--small-font-size);
+    color: blue;
+}
+
+.product-stars{
+    width: 100%;
+    margin-top: 10px;
+}

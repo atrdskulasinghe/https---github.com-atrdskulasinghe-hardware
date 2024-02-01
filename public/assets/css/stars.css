@@ -1,0 +1,25 @@
+.stars{
+    /* width: 100%; */
+    display: flex;
+    align-items: center;
+}
+
+.stars ul li{
+    display: inline-block;
+}
+
+.stars i{
+    color: gray;
+    font-size: var(--medium-font-size);
+}
+
+.stars i.active{
+    color: rgb(255, 187, 0);
+}
+
+.stars p{
+    margin-left: 5px;
+    font-family: var(--main-font-family);
+    font-size: var(--medium-font-size);
+    color: var(--text-color);
+}
