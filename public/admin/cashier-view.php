@@ -103,7 +103,8 @@ if (isset($_POST['save_change'])) {
     WHERE `user_id` = $user_id";
 
     $updateCashierQuery = "UPDATE `cashier` SET 
-    `nic_image_url` = '$nicUrl' 
+    `nic_image_url` = '$nicUrl',
+    `nic_number` = '$nicNumber' 
     WHERE `user_id` = $user_id";
 
     // image path
@@ -115,7 +116,7 @@ if (isset($_POST['save_change'])) {
         // user save
         if ($conn->query($updateUserQuery) === TRUE) {
             // cashier save
-            if ($conn->query($updateUserQuery) === TRUE) {
+            if ($conn->query($updateCashierQuery) === TRUE) {
                 // profile image save
                 if (!empty($_FILES["profile_image"]["name"]) && $_FILES["profile_image"]["error"] == UPLOAD_ERR_OK) {
                     $newFileName = $lastUserId . "_profile.jpg";

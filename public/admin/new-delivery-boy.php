@@ -188,8 +188,8 @@
         <section class="active section">
             <div class="content">
 
-                <div class="delivery-boy">
-                <form class="search-2" method="GET" action="./delivery-boy-salary-request.php">
+            <div class="delivery-boy">
+                    <form class="search-2" method="GET" action="./delivery-boys.php">
                         <div class="search-content-1">
                             <select name="type" id="">
                                 <option value="user_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_id') echo 'selected'; ?>>By User ID</option>
@@ -244,20 +244,24 @@
                                             $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
     
+                                            $status = "pending";
+    
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
     
                                                     $vehical = $userData1['vehicle_type'];
+    
+                                                    $status = $userData1['status'];
                                                 }
                                             }
-                                            echo '
-                                    
     
-                                        
     
-                                        <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
+                                            if ($status == "pending") {
+                                                echo '
+    
+                                        <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
+                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
                                     </div>
                                     <div class="delivery-boy-name">
                                         <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -291,9 +295,10 @@
                                 </a>
                                         
                                         ';
+                                            } 
                                         }
                                     } else {
-                                        echo "No cashier users found.";
+                                        echo "No delivery Boys found.";
                                     }
                                 } else if ($searchType == "delivery_boy_id") {
 
@@ -331,20 +336,24 @@
                                             $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
     
+                                            $status = "pending";
+    
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
     
                                                     $vehical = $userData1['vehicle_type'];
+    
+                                                    $status = $userData1['status'];
                                                 }
                                             }
-                                            echo '
-                                    
     
-                                        
     
-                                        <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
+                                            if ($status == "pending") {
+                                                echo '
+    
+                                        <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
+                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
                                     </div>
                                     <div class="delivery-boy-name">
                                         <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -378,9 +387,10 @@
                                 </a>
                                         
                                         ';
+                                            } 
                                         }
                                     } else {
-                                        echo "No cashier users found.";
+                                        echo "No delivery Boys found.";
                                     }
                                 } else if ($searchType == "user_name") {
 
@@ -406,20 +416,24 @@
                                             $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
     
+                                            $status = "pending";
+    
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
     
                                                     $vehical = $userData1['vehicle_type'];
+    
+                                                    $status = $userData1['status'];
                                                 }
                                             }
-                                            echo '
-                                    
     
-                                        
     
-                                        <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
+                                            if ($status == "pending") {
+                                                echo '
+    
+                                        <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
+                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
                                     </div>
                                     <div class="delivery-boy-name">
                                         <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -453,9 +467,10 @@
                                 </a>
                                         
                                         ';
+                                            } 
                                         }
                                     } else {
-                                        echo "No cashier users found.";
+                                        echo "No delivery Boys found.";
                                     }
                                 }
                             } else {
@@ -483,20 +498,24 @@
                                         $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                         $result1 = $conn->query($selectDBQuery);
 
+                                        $status = "pending";
+
                                         if ($result1 && $result1->num_rows > 0) {
                                             while ($userData1 = $result1->fetch_assoc()) {
 
                                                 $vehical = $userData1['vehicle_type'];
+
+                                                $status = $userData1['status'];
                                             }
                                         }
-                                        echo '
-                                
 
-                                    
 
-                                    <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
+                                        if ($status == "pending") {
+                                            echo '
+
+                                    <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                 <div class="delivery-boy-image">
-                                    <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
+                                    <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
                                 </div>
                                 <div class="delivery-boy-name">
                                     <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -530,9 +549,10 @@
                             </a>
                                     
                                     ';
+                                        } 
                                     }
                                 } else {
-                                    echo "No cashier users found.";
+                                    echo "No delivery Boys found.";
                                 }
                             }
 

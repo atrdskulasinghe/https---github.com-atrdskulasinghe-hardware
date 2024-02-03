@@ -45,7 +45,7 @@ if (isset($_POST['save'])) {
                 $newFileName = $lastProductId . "_category_image.jpg";
                 $targetFile = $targetDirectory . $newFileName;
                 if (move_uploaded_file($_FILES["category_image"]["tmp_name"], $targetFile)) {
-                    header('location: item-category.php');
+                    header('location: technician-category.php');
                 }
             }
         }
@@ -246,32 +246,7 @@ if (isset($_POST['save'])) {
                 </div>
         </aside>
         <section class="active section" style="padding-bottom: 60px">
-            <div class="content">
 
-
-
-
-
-                <!-- <form class="search-2 margin-top-40" method="GET" action="./technician-category.html">
-                    <div class="search-content-1">
-                        <select name="type" id="">
-                            <option value="emp">By Category No</option>
-                        </select>
-                    </div>
-                    <div class="search-content-2">
-                        <input type="text" name="search">
-                    </div>
-                    <div class="search-content-3">
-                        <input type="submit" class="btn" value="Search">
-                        <button type="submit" class="btn-icon btn">
-                            <i class="ri-search-line"></i>
-                        </button>
-                    </div>
-                </form> -->
-
-
-
-            </div>
             <div class="content margin-top-40">
                 <!-- <h4 style="font-family: var(--main-font-family); color:var(--text-color)">Add New Category</h4> -->
                 <form class="profile-content margin-top-20" method="POST" enctype="multipart/form-data">
@@ -331,7 +306,7 @@ if (isset($_POST['save'])) {
                                 $image_url = $itemData['image_url'];
 
                                 echo '
-                                        <a href="./item-category-view.php?category_id='.$catagory_id.'" class="card">
+                                        <a href="./technician-category-view.php?category_id='.$catagory_id.'" class="card">
                                            <div class="product-image">
                                                <img src="../assets/images/technician_category/' . $image_url . '" alt="">
                                            </div>
