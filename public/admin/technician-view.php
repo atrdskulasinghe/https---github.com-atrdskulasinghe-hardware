@@ -39,13 +39,6 @@ if ($result1->num_rows > 0) {
     $cost_per_hour = $row['cost_per_hour'];
 }
 
-$selectUserQuery = "SELECT * FROM `technician_category` WHERE `technician_category_id` = $category";
-$result = $conn->query($selectUserQuery);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $technicianCategoryName = $row['name'];
-}
 
 
 if (isset($_POST['reject'])) {
@@ -71,57 +64,57 @@ if (isset($_POST['save_change'])) {
     $houseNumber = $_POST["house_number"];
     $state = $_POST["state"];
     $city = $_POST["city"];
-    // $vehicle_type = $_POST['vehicle_type'];
-    // $vehicle_number = $_POST['vehicle_number'];
-    // $vehicle_model = $_POST['vehicle_model'];
+    $category = $_POST['category'];
+    $work_experience = $_POST['work_experience'];
+    $cost_per_day = $_POST['cost_per_day'];
+    $cost_per_hour = $_POST['cost_per_hour'];
 
     if (empty($firstName)) {
-        $firstNameError = "Please enter your first name";
+        $firstNameError = "Please enter first name";
     }
 
     if (empty($lastName)) {
-        $lastNameError = "Please enter your last name";
+        $lastNameError = "Please enter last name";
     }
 
     if (empty($dob)) {
-        $dobError = "Please enter your date of birth";
+        $dobError = "Please enter date of birth";
     }
 
     if (empty($nicNumber)) {
-        $nicNumberError = "Please enter your NIC number";
+        $nicNumberError = "Please enter NIC number";
     }
 
     if (empty($phoneNumber)) {
-        $phoneNumberError = "Please enter your phone number";
+        $phoneNumberError = "Please enter phone number";
     }
 
 
     if (empty($houseNumber)) {
-        $houseNumberError = "Please enter your house number";
+        $houseNumberError = "Please enter house number";
     }
 
     if (empty($state)) {
-        $stateError = "Please enter your state";
+        $stateError = "Please enter state";
     }
 
     if (empty($city)) {
-        $cityError = "Please enter your city";
+        $cityError = "Please enter city";
     }
 
-    // if (empty($vehicle_type)) {
-    //     $vehicleTypeError = "Please enter your first name";
-    // }
+    if (empty($work_experience)) {
+        $vehicleTypeError = "Please enter work experience";
+    }
 
-    // if (empty($vehicle_number)) {
-    //     $vehicleNumberError = "Please enter your first name";
-    // }
+    if (empty($cost_per_day)) {
+        $vehicleNumberError = "Please enter cost per day";
+    }
 
-    // if (empty($vehicle_model)) {
-    //     $vehicleModelError = "Please enter your last name";
-    // }
+    if (empty($cost_per_hour)) {
+        $vehicleModelError = "Please enter cost per hour";
+    }
 
-
-
+   
 
     // last user id
 
@@ -143,8 +136,13 @@ if (isset($_POST['save_change'])) {
     `city` = '$city'
     WHERE `user_id` = $user_id";
 
+
     $updateCashierQuery = "UPDATE `technician` SET 
-    `nic_number` = '$nicNumber'
+    `nic_number` = '$nicNumber',
+    `category` = '$category',
+    `work_experience` = '$work_experience',
+    `cost_per_day` = '$cost_per_day',
+    `cost_per_hour` = '$cost_per_hour'
     WHERE `user_id` = $user_id";
 
     // image path
@@ -491,7 +489,7 @@ if (isset($_POST['save_change'])) {
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>TECHNICIAN CATEGORY</p>
-                                        <select name="item_category" id="">
+                                        <select name="category" id="">
 
                                             <?php
 
@@ -504,8 +502,14 @@ if (isset($_POST['save_change'])) {
                                                     $categoryID = $row['technician_category_id'];
                                                     $categoryName = $row['name'];
 
-                                                    echo '<option value="' . $categoryID . '">' . $categoryName . '</option>';
+                                                    if($categoryID == $category){
+                                                        echo '<option value="' . $categoryID . '" selected>' . $categoryName . '</option>';
+                                                    }else{
+                                                        echo '<option value="' . $categoryID . '">' . $categoryName . '</option>';
+                                                    }
                                                 }
+
+                                                
                                             } else {
                                                 echo '<option value="-1">No categories found</option>';
                                             }
@@ -542,7 +546,6 @@ if (isset($_POST['save_change'])) {
                     </div>
 
                 </form>
-
                 <div class="review">
                     <div class="review-content">
                         <h3>Ratings & Reviews</h3>

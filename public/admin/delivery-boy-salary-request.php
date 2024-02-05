@@ -189,364 +189,82 @@
             <div class="content">
 
                 <div class="delivery-boy">
-
-                    <form class="search-2" method="GET" action="./delivery-boy-salary-request.php">
-                        <div class="search-content-1">
-                            <select name="type" id="">
-                                <option value="user_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_id') echo 'selected'; ?>>By User ID</option>
-                                <option value="delivery_boy_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'delivery_boy_id') echo 'selected'; ?>>By Delivery Boy ID</option>
-                                <option value="user_name" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_name') echo 'selected'; ?>>By User Name</option>
-                            </select>
-
-                        </div>
-                        <div class="search-content-2">
-                            <input type="text" name="search" value="<?php if (isset($_GET['type']) && isset($_GET['search'])) {
-                                                                        echo $_GET['search'];
-                                                                    } ?>">
-                        </div>
-                        <div class="search-content-3">
-                            <input type="submit" class="btn" value="Search">
-                            <button type="submit" class="btn-icon btn">
-                                <i class="ri-search-line"></i>
-                            </button>
-                        </div>
-                    </form>
-                    <div class="card-content  margin-top-40">
+                    <div class="card-content">
                         <div class="card-list">
-
                             <?php
+                            $error = false;
+                            $selectCashierQuery = "SELECT * FROM `payment` WHERE 1";
+                            $result = $conn->query($selectCashierQuery);
 
-                            if (isset($_GET['type']) && isset($_GET['search'])) {
-                                $searchType = $_GET['type'];
-                                $searchValue = $_GET['search'];
+                            if ($result && $result->num_rows > 0) {
+                                while ($userData = $result->fetch_assoc()) {
+                                    $user_id = $userData['user_id'];
+                                    $status = $userData['status'];
 
+                                    if ($status == "pending") {
 
-                                if ($searchType == "user_id") {
+                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = '$user_id'";
+                                        $result = $conn->query($selectUserQuery);
 
-                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy' AND `user_id` = '$searchValue'";
-                                    $result = $conn->query($selectCashierQuery);
+                                        if ($result && $result->num_rows > 0) {
+                                            while ($userData = $result->fetch_assoc()) {
+                                                $user_id = $userData['user_id'];
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
+                                                $password = $userData['password'];
 
-                                    if ($result && $result->num_rows > 0) {
-                                        while ($userData = $result->fetch_assoc()) {
-                                            $user_id = $userData['user_id'];
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
-                                            $password = $userData['password'];
-                                            $vehical = "";
-    
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
-    
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
-    
-                                                    $vehical = $userData1['vehicle_type'];
+                                                if ($account_type == "delivery_boy") {
+                                                    $error = true;
+                                                    echo '
+                                                    <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
+                                                        <div class="delivery-boy-image">
+                                                            <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
+                                                        </div>
+                                                        <div class="delivery-boy-name">
+                                                            <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                                        </div>
+                                                        <div class="delivery-boy-details">
+                                                            <div class="delivery-boy-details-content">
+                                                                <div class="delivery-boy-details-content-1">
+                                                                    <p>City</p>
+                                                                </div>
+                                                                <div class="delivery-boy-details-content-2">
+                                                                    <p>' . $city . '</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="delivery-boy-details-content">
+                                                                <div class="delivery-boy-details-content-1">
+                                                                    <p>Date of Birth</p>
+                                                                </div>
+                                                                <div class="delivery-boy-details-content-2">
+                                                                    <p>' . $dob . '</p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </a>
+                                                    
+                                                    ';
                                                 }
                                             }
-                                            echo '
-                                    
-    
-                                        
-    
-                                        <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
-                                    <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
-                                    </div>
-                                    <div class="delivery-boy-name">
-                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                    </div>
-                                    <div class="delivery-boy-details">
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $city . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Date of Birth</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $dob . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $vehical . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                        
-                                        ';
-                                        }
-                                    } else {
-                                        echo "No cashier users found.";
-                                    }
-                                } else if ($searchType == "delivery_boy_id") {
-
-                                    $user_id = "";
-
-                                    $selectCashierQuery1 = "SELECT * FROM `delivery_boy` WHERE `delivery_boy_id` = '$searchValue'";
-                                    $result1 = $conn->query($selectCashierQuery1);
-
-                                    if ($result1 && $result1->num_rows > 0) {
-                                        while ($userData = $result1->fetch_assoc()) {
-
-                                            $user_id = $userData['user_id'];
                                         }
                                     }
-
-                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy' AND `user_id` = '$user_id'";
-                                    $result = $conn->query($selectCashierQuery);
-
-                                    if ($result && $result->num_rows > 0) {
-                                        while ($userData = $result->fetch_assoc()) {
-                                            $user_id = $userData['user_id'];
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
-                                            $password = $userData['password'];
-                                            $vehical = "";
-    
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
-    
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
-    
-                                                    $vehical = $userData1['vehicle_type'];
-                                                }
-                                            }
-                                            echo '
-                                    
-    
-                                        
-    
-                                        <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
-                                    <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
-                                    </div>
-                                    <div class="delivery-boy-name">
-                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                    </div>
-                                    <div class="delivery-boy-details">
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $city . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Date of Birth</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $dob . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $vehical . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                        
-                                        ';
-                                        }
-                                    } else {
-                                        echo "No cashier users found.";
-                                    }
-                                } else if ($searchType == "user_name") {
-
-                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy' AND (`first_name` LIKE '%$searchValue%' OR `last_name` LIKE '%$searchValue%')";
-                                    $result = $conn->query($selectCashierQuery);
-
-                                    if ($result && $result->num_rows > 0) {
-                                        while ($userData = $result->fetch_assoc()) {
-                                            $user_id = $userData['user_id'];
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
-                                            $password = $userData['password'];
-                                            $vehical = "";
-    
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
-    
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
-    
-                                                    $vehical = $userData1['vehicle_type'];
-                                                }
-                                            }
-                                            echo '
-                                    
-    
-                                        
-    
-                                        <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
-                                    <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
-                                    </div>
-                                    <div class="delivery-boy-name">
-                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                    </div>
-                                    <div class="delivery-boy-details">
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $city . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Date of Birth</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $dob . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $vehical . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                        
-                                        ';
-                                        }
-                                    } else {
-                                        echo "No cashier users found.";
-                                    }
-                                }
-                            } else {
-
-                                $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy'";
-                                $result = $conn->query($selectCashierQuery);
-
-
-                                if ($result && $result->num_rows > 0) {
-                                    while ($userData = $result->fetch_assoc()) {
-                                        $user_id = $userData['user_id'];
-                                        $first_name = $userData['first_name'];
-                                        $last_name = $userData['last_name'];
-                                        $email = $userData['email'];
-                                        $phone_number = $userData['phone_number'];
-                                        $dob = $userData['dob'];
-                                        $house_no = $userData['house_no'];
-                                        $state = $userData['state'];
-                                        $city = $userData['city'];
-                                        $account_type = $userData['account_type'];
-                                        $profile_url = $userData['profile_url'];
-                                        $password = $userData['password'];
-                                        $vehical = "";
-
-                                        $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                        $result1 = $conn->query($selectDBQuery);
-
-                                        if ($result1 && $result1->num_rows > 0) {
-                                            while ($userData1 = $result1->fetch_assoc()) {
-
-                                                $vehical = $userData1['vehicle_type'];
-                                            }
-                                        }
-                                        echo '
-                                
-
-                                    
-
-                                    <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
-                                <div class="delivery-boy-image">
-                                    <img src="../assets/images/deliver-boy-profile/' . $profile_url . '" alt="">
-                                </div>
-                                <div class="delivery-boy-name">
-                                    <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                </div>
-                                <div class="delivery-boy-details">
-                                    <div class="delivery-boy-details-content">
-                                        <div class="delivery-boy-details-content-1">
-                                            <p>City</p>
-                                        </div>
-                                        <div class="delivery-boy-details-content-2">
-                                            <p>' . $city . '</p>
-                                        </div>
-                                    </div>
-                                    <div class="delivery-boy-details-content">
-                                        <div class="delivery-boy-details-content-1">
-                                            <p>Date of Birth</p>
-                                        </div>
-                                        <div class="delivery-boy-details-content-2">
-                                            <p>' . $dob . '</p>
-                                        </div>
-                                    </div>
-                                    <div class="delivery-boy-details-content">
-                                        <div class="delivery-boy-details-content-1">
-                                            <p>Vehicle</p>
-                                        </div>
-                                        <div class="delivery-boy-details-content-2">
-                                            <p>' . $vehical . '</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                                    
-                                    ';
-                                    }
-                                } else {
-                                    echo "No cashier users found.";
                                 }
                             }
-
+                            if ($error == false) {
+                                echo 'No delivery boy requests found';
+                            }
                             ?>
-
-
-
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
         </section>

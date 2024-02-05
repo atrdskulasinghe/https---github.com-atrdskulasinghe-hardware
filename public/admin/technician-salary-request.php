@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/dashboard-menu.css">
     <link rel="stylesheet" href="../assets/css/dashboard-nav.css">
-    <link rel="stylesheet" href="../assets/css/dashboard-technician.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-delivery-boy.css">
     <link rel="stylesheet" href="../assets/css/button.css">
     <link rel="stylesheet" href="../assets/css/card.css">
     <link rel="stylesheet" href="../assets/css/search.css">
@@ -189,236 +189,85 @@
                 <div class="content">
                 
                     <div class="technician">
-                        <form class="search-2" method="GET" action="./technicians.html">
-                            <div class="search-content-1">
-                                <select name="type" id="">
-                                    <option value="emp">By Employee No</option>
-                                </select>
-                            </div>
-                            <div class="search-content-2">
-                                <input type="text" name="search">
-                            </div>
-                            <div class="search-content-3">
-                                <input type="submit" class="btn" value="Search">
-                                <button type="submit" class="btn-icon btn">
-                                    <i class="ri-search-line"></i>
-                                </button>
-                            </div>
-                        </form>
-                        <div class="card-content  margin-top-40">
-                            <div class="card-list">
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                    <div class="card-content">
+                        <div class="card-list">
+                            <?php
+                            $error = false;
+                            $selectCashierQuery = "SELECT * FROM `payment` WHERE 1";
+                            $result = $conn->query($selectCashierQuery);
+
+                            if ($result && $result->num_rows > 0) {
+                                
+                                while ($userData = $result->fetch_assoc()) {
+                                    $user_id = $userData['user_id'];
+                                    $status = $userData['status'];
+
+                                    if ($status == "pending") {
+                                        
+                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = '$user_id'";
+                                        $result = $conn->query($selectUserQuery);
+
+                                        if ($result && $result->num_rows > 0) {
+                                            while ($userData = $result->fetch_assoc()) {
+                                                $user_id = $userData['user_id'];
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
+                                                $password = $userData['password'];
+
+                                                if ($account_type == "technician") {
+                                                    $error = true;
+                                                    echo '
+                                                    <a href="./technician-salary-request-view.php?user=' . $user_id . '" class="card">
+                                                        <div class="delivery-boy-image">
+                                                            <img src="../assets/images/technician/' . $profile_url . '" alt="">
+                                                        </div>
+                                                        <div class="delivery-boy-name">
+                                                            <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                                        </div>
+                                                        <div class="delivery-boy-details">
+                                                            <div class="delivery-boy-details-content">
+                                                                <div class="delivery-boy-details-content-1">
+                                                                    <p>City</p>
+                                                                </div>
+                                                                <div class="delivery-boy-details-content-2">
+                                                                    <p>' . $city . '</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="delivery-boy-details-content">
+                                                                <div class="delivery-boy-details-content-1">
+                                                                    <p>Date of Birth</p>
+                                                                </div>
+                                                                <div class="delivery-boy-details-content-2">
+                                                                    <p>' . $dob . '</p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </a>
+                                                    
+                                                    ';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            if($error == false){
+                                echo 'No technician requests found';
+                            }
+                            
+                            ?>
                         </div>
+                    </div>
                     </div>
                 </div>
             </section>

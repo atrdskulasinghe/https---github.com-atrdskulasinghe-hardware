@@ -1,3 +1,184 @@
+<?php
+include "../../config/database.php";
+
+$user_id = $_GET['user'];
+
+$firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $password = $profileUrl = $nicImageUrl = $vehicle_type = $vehicle_number = $vehicle_model = "";
+
+$selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
+$result = $conn->query($selectUserQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+    $firstName = $row['first_name'];
+    $lastName = $row['last_name'];
+    $dob = $row['dob'];
+    $phoneNumber = $row['phone_number'];
+    $email = $row['email'];
+    $houseNumber = $row['house_no'];
+    $state = $row['state'];
+    $city = $row['city'];
+    $password = $row['password'];
+    $profileUrl = $row['profile_url'];
+} else {
+    header('location: delivery_boys.php');
+}
+
+$selectUserQuery1 = "SELECT * FROM `delivery_boy` WHERE `user_id` = $user_id";
+$result1 = $conn->query($selectUserQuery1);
+
+if ($result1->num_rows > 0) {
+    $row = $result1->fetch_assoc();
+    $nicNumber = $row['nic_number'];
+    $nicImageUrl = $row['nic_image_url'];
+    $vehicle_type = $row['vehicle_type'];
+    $vehicle_number = $row['vehicle_number'];
+    $vehicle_model = $row['vehicle_model'];
+}
+
+$firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError = $vehicleTypeError = $vehicleNumberError = $vehicleModelError = "";
+
+if (isset($_POST['reject'])) {
+    $updateCashierQuery = "UPDATE `delivery_boy` SET 
+    `status` = 'reject'
+    WHERE `user_id` = $user_id";
+
+    if ($conn->query($updateCashierQuery) === TRUE) {
+        header('location: new-delivery-boy.php?user=' . $lastUserId . '');
+    }
+}
+
+if (isset($_POST['approve'])) {
+    $updateCashierQuery = "UPDATE `delivery_boy` SET 
+    `status` = 'approved'
+    WHERE `user_id` = $user_id";
+
+    if ($conn->query($updateCashierQuery) === TRUE) {
+        header('location: new-delivery-boy.php?user=' . $lastUserId . '');
+    }
+}
+
+if (isset($_POST['save_change'])) {
+
+    $firstName = $_POST["first_name"];
+    $lastName = $_POST["last_name"];
+    $dob = $_POST["dob"];
+    $nicNumber = $_POST["nic_number"];
+    $phoneNumber = $_POST["phone_number"];
+    // $email = $_POST["email"];
+    $houseNumber = $_POST["house_number"];
+    $state = $_POST["state"];
+    $city = $_POST["city"];
+    $vehicle_type = $_POST['vehicle_type'];
+    $vehicle_number = $_POST['vehicle_number'];
+    $vehicle_model = $_POST['vehicle_model'];
+
+    if (empty($firstName)) {
+        $firstNameError = "Please enter your first name";
+    }
+
+    if (empty($lastName)) {
+        $lastNameError = "Please enter your last name";
+    }
+
+    if (empty($dob)) {
+        $dobError = "Please enter your date of birth";
+    }
+
+    if (empty($nicNumber)) {
+        $nicNumberError = "Please enter your NIC number";
+    }
+
+    if (empty($phoneNumber)) {
+        $phoneNumberError = "Please enter your phone number";
+    }
+
+
+    if (empty($houseNumber)) {
+        $houseNumberError = "Please enter your house number";
+    }
+
+    if (empty($state)) {
+        $stateError = "Please enter your state";
+    }
+
+    if (empty($city)) {
+        $cityError = "Please enter your city";
+    }
+
+    if (empty($vehicle_type)) {
+        $vehicleTypeError = "Please enter your first name";
+    }
+
+    if (empty($vehicle_number)) {
+        $vehicleNumberError = "Please enter your first name";
+    }
+
+    if (empty($vehicle_model)) {
+        $vehicleModelError = "Please enter your last name";
+    }
+
+
+
+
+    // last user id
+
+    $lastUserId = $user_id;
+
+    // sql code
+
+    $profileUrl = $lastUserId . '_profile.jpg';
+    $nicUrl = $lastUserId . '_nic.jpg';
+
+    $updateUserQuery = "UPDATE `user` SET 
+    `first_name` = '$firstName', 
+    `last_name` = '$lastName', 
+    -- `email` = '$email', 
+    `phone_number` = '$phoneNumber', 
+    `dob` = '$dob', 
+    `house_no` = '$houseNumber', 
+    `state` = '$state', 
+    `city` = '$city'
+    WHERE `user_id` = $user_id";
+
+    $updateCashierQuery = "UPDATE `delivery_boy` SET 
+    `nic_number` = '$nicNumber',
+    `vehicle_type` = '$vehicle_type',
+    `vehicle_number` = '$vehicle_number',
+    `vehicle_model` = '$vehicle_model'
+    WHERE `user_id` = $user_id";
+
+    // image path
+
+    $targetDirectory = "../assets/images/deliver-boy/";
+
+    if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($nicNumberError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError)  && empty($vehicleTypeError) && empty($vehicleNumberError) && empty($vehicleModelError)) {
+        // user save
+        if ($conn->query($updateUserQuery) === TRUE) {
+            // cashier save
+            if ($conn->query($updateCashierQuery) === TRUE) {
+                // profile image save
+                if (!empty($_FILES["profile_image"]["name"]) && $_FILES["profile_image"]["error"] == UPLOAD_ERR_OK) {
+                    $newFileName = $lastUserId . "_profile.jpg";
+                    $targetFile = $targetDirectory . $newFileName;
+                    if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFile)) {
+                        // nic image save
+                        echo "Hello";
+                    }
+                }
+                header('location: new-delivery-boy.php?user=' . $lastUserId . '');
+            }
+        }
+    }
+}
+
+$conn->close();
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,20 +197,23 @@
     <link rel="stylesheet" href="../assets/css/input.css">
     <link rel="stylesheet" href="../assets/css/review.css">
     <link rel="stylesheet" href="../assets/css/stars.css">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+    <?php
+    include "../../config/database.php";
+    ?>
 </head>
 
 <body>
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
-            <!-- menu -->
-            <div class="menu">
+                <!-- menu -->
+                <div class="menu">
                 <div class="menu-header">
                     <h1>Logo</h1>
                     <div class="menu-close">
@@ -148,10 +332,10 @@
                     </div>
                 </div>
             </div>
-        </aside>
+            </aside>
         <section class="active section">
             <div class="content">
-                <form class="profile">
+                <form class="profile" method="POST" enctype="multipart/form-data">
                     <div class="profile-content">
                         <div class="profile-content-1">
                             <h1>Basic Information</h1>
@@ -161,136 +345,149 @@
                             <div class="profile-image">
                                 <div class="profile-image-content-1">
                                     <h2>AVATAR</h2>
-                                    <img src="./images/profile.jpg" alt="" id="preview-image">
-                                    <input type="file" id="file-input" name="">
+                                    <img src="../assets/images/deliver-boy/<?php echo $profileUrl ?>" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/deliver-boy/<?php echo $profileUrl ?>">
                                 </div>
                                 <div class="profile-image-content-2">
-                                    <input type="submit" class="btn" value="Choose Photo" id="file-button" name="">
+                                    <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
                                 </div>
                             </div>
                             <div class="input-content">
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>First Name</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your first name</p>
+                                        <input type="text" name="first_name" value="<?php echo $firstName ?>">
+                                        <p class="input-error"><?php echo $firstNameError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>Last Name</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your first name</p>
+                                        <input type="text" name="last_name" value="<?php echo $lastName ?>">
+                                        <p class="input-error"><?php echo $lastNameError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>DATE OF BIRTH</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your date of birth</p>
+                                        <input type="date" name="dob" value="<?php echo $dob ?>">
+                                        <p class="input-error"><?php echo $dobError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>NIC NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your nic number</p>
+                                        <input type="text" name="nic_number" value="<?php echo $nicNumber ?>">
+                                        <p class="input-error"><?php echo $nicNumberError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>PHONE NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your phone number</p>
+                                        <input type="text" name="phone_number" value="<?php echo $phoneNumber ?>">
+                                        <p class="input-error"><?php echo $phoneNumberError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>EMAIL</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your email</p>
+                                        <input type="text" name="email" style="user-select: none;" value="<?php echo $email ?>" disabled>
+                                        <p class="input-error"><?php echo $emailError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>HOUSE NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your house number</p>
+                                        <input type="text" name="house_number" value="<?php echo $houseNumber ?>">
+                                        <p class="input-error"><?php echo $houseNumberError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>STATE</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your state</p>
+                                        <input type="text" name="state" value="<?php echo $state ?>">
+                                        <p class="input-error"><?php echo $stateError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>CITY</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your city</p>
-                                    </div>
-                                </div>
-
-                                <!-- <div class="input-one-content">
-                                    <p>Last Name</p>
-                                    <input type="text">
-                                    <p class="input-error">Please enter your first name</p>
-                                </div> -->
-
-                                <div class="input-one-content">
-                                    <p>BIO / DESCRIPTION</p>
-                                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                                    <p class="input-error">Please enter your first name</p>
-                                </div>
-                               
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile-content margin-top-20">
-                        <div class="profile-content-1">
-                            <h1>Profile Information</h1>
-                            <p>Edit your account details and settings.</p>
-                        </div>
-                        <div class="profile-content-2">
-                            <div class="input-content">
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>VEHICLE TYPE</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your vehicle type</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile-content margin-top-20">
-                        <div class="profile-content-1">
-                            <h1>Personal Information</h1>
-                            <p>Edit your account details and settings.</p>
-                        </div>
-                        <div class="profile-content-2">
-                            
-                            <div class="input-content">
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>NIC NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your first name</p>
+                                        <input type="text" name="city" value="<?php echo $city ?>">
+                                        <p class="input-error"><?php echo $cityError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
-                                        <p>NIC PHOTO</p>
+                                        <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="" alt="">
+                                            <img src="../assets/images/deliver-boy/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="right-button margin-top-30">
-                                    <input type="submit" value="Save Change" name="">
-                                    <input type="submit" value="Reject" name="">
-                                    <input type="submit" value="Approve" name="">
+
+                                <div class="input-two-content">
+                                    <div class="input-two-content-1">
+                                        <!-- <p>NIC Photo</p> -->
+                                        <!-- <div class="profile-image">
+                                            <div class="profile-image-content-1">
+                                                <img src="../assets/images/deliver-boy/<?php echo $nicImageUrl ?>" alt="" id="preview-image-2">
+                                                <input type="file" id="file-input-2" name="nic_image" value="../assets/images/deliver-boy/<?php echo $nicImageUrl ?>">
+                                                <p class="input-error"><?php echo $nicImageError ?></p>
+                                            </div>
+                                            <div class="profile-image-content-2">
+                                                <input type="button" class="btn" value="Choose Photo" id="file-button-2" name="">
+                                            </div>
+                                        </div> -->
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-content">
+                        <div class="profile-content-1">
+                            <h1>Vehical Information</h1>
+                            <p>Edit your account details and settings.</p>
+                        </div>
+                        <div class="profile-content-2">
+
+                            <div class="input-content">
+
+
+                                <div class="input-two-content">
+                                    <div class="input-two-content-1">
+                                        <p>VEHICAL TYPE</p>
+                                        <select name="vehicle_type" id="">
+                                            <option value="car" <?php if ($vehicle_type == 'car') echo 'selected'; ?>>Car</option>
+                                            <option value="bike" <?php if ($vehicle_type == 'bike') echo 'selected'; ?>>Bike</option>
+                                            <option value="tricycles" <?php if ($vehicle_type == 'tricycles') echo 'selected'; ?>>Tricycles</option>
+                                            <option value="truck" <?php if ($vehicle_type == 'truck') echo 'selected'; ?>>Truck</option>
+                                        </select>
+                                        <p class="input-error"><?php echo $vehicleTypeError ?></p>
+                                    </div>
+                                    <div class="input-two-content-2">
+                                        <p>vehicle_number</p>
+                                        <input type="text" name="vehicle_number" value="<?php echo $vehicle_number ?>">
+                                        <p class="input-error"><?php echo $vehicleNumberError ?></p>
+                                    </div>
+                                </div>
+                                <div class="input-two-content">
+                                    <div class="input-two-content-1">
+                                        <p>VEHICAL MODEL</p>
+                                        <input type="text" name="vehicle_model" value="<?php echo $vehicle_model ?>">
+                                        <p class="input-error"><?php echo $vehicleModelError ?></p>
+                                    </div>
+                                    <!-- <div class="input-two-content-2">
+                                        <p>vehicle_number</p>
+                                        <input type="text" name="vehicle_number" value="<?php echo $vehicle_number ?>">
+                                        <p class="input-error"><?php echo $stateError ?></p>
+                                    </div> -->
+                                </div>
+                                <div class="right-button ">
+                                    <input type="submit" value="Reject" name="reject">
+                                    <input type="submit" value="Approve" name="approve">
+                                    <input type="submit" value="Save Change" name="save_change">
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </form>
 
             </div>

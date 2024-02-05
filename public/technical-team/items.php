@@ -17,20 +17,23 @@
     <link rel="stylesheet" href="../assets/css/input.css">
     <link rel="stylesheet" href="../assets/css/review.css">
     <link rel="stylesheet" href="../assets/css/stars.css">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+    <?php
+    include "../../config/database.php";
+    ?>
 </head>
 
 <body>
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
-            <!-- menu -->
-            <div class="menu">
+                <!-- menu -->
+                <div class="menu">
                 <div class="menu-header">
                     <h1>Logo</h1>
                     <div class="menu-close">
@@ -149,18 +152,21 @@
                     </div>
                 </div>
             </div>
-        </aside>
+            </aside>
         <section class="active section">
             <div class="content">
                 <div class="product">
-                    <form class="search-2" method="GET" action="./items.html">
+                    <form class="search-2" method="GET" action="./items.php">
                         <div class="search-content-1">
                             <select name="type" id="">
-                                <option value="emp">By Product Name</option>
+                                <option value="item_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'item_id') echo 'selected'; ?>>By Item ID</option>
+                                <option value="item_name" <?php if (isset($_GET['type']) && $_GET['type'] == 'item_name') echo 'selected'; ?>>By Item Name</option>
                             </select>
                         </div>
                         <div class="search-content-2">
-                            <input type="text" name="search">
+                            <input type="text" name="search" value="<?php if (isset($_GET['type']) && isset($_GET['search'])) {
+                                                                        echo $_GET['search'];
+                                                                    } ?>">
                         </div>
                         <div class="search-content-3">
                             <input type="submit" class="btn" value="Search">
@@ -171,171 +177,238 @@
                     </form>
                     <div class="card-content  margin-top-40">
                         <div class="card-list">
-                            <a href="" class="card">
-                                <div class="product-image">
-                                    <img src="./images/profile.jpg" alt="">
-                                </div>
-                                <div class="product-name">
-                                    <h3>16 Color Changing B22 RGB LED Magic Light Bulb with Remote</h3>
-                                </div>
-                                <div class="product-price">
-                                    <h4>Rs.1000</h4>
-                                </div>
-                                <div class="product-stars">
-                                    <div class="stars">
-                                        <ul>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill"></i>
-                                            </li>
-                                        </ul>
-                                        <p>(120)</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="" class="card">
-                                <div class="product-image">
-                                    <img src="./images/profile.jpg" alt="">
-                                </div>
-                                <div class="product-name">
-                                    <h3>16 Color Changing B22 RGB LED Magic Light Bulb with Remote</h3>
-                                </div>
-                                <div class="product-price">
-                                    <h4>Rs.1000</h4>
-                                </div>
-                                <div class="product-stars">
-                                    <div class="stars">
-                                        <ul>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill"></i>
-                                            </li>
-                                        </ul>
-                                        <p>(120)</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="" class="card">
-                                <div class="product-image">
-                                    <img src="./images/profile.jpg" alt="">
-                                </div>
-                                <div class="product-name">
-                                    <h3>16 Color Changing B22 RGB LED Magic Light Bulb with Remote</h3>
-                                </div>
-                                <div class="product-price">
-                                    <h4>Rs.1000</h4>
-                                </div>
-                                <div class="product-stars">
-                                    <div class="stars">
-                                        <ul>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill"></i>
-                                            </li>
-                                        </ul>
-                                        <p>(120)</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="" class="card">
-                                <div class="product-image">
-                                    <img src="./images/profile.jpg" alt="">
-                                </div>
-                                <div class="product-name">
-                                    <h3>16 Color Changing B22 RGB LED Magic Light Bulb with Remote</h3>
-                                </div>
-                                <div class="product-price">
-                                    <h4>Rs.1000</h4>
-                                </div>
-                                <div class="product-stars">
-                                    <div class="stars">
-                                        <ul>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill"></i>
-                                            </li>
-                                        </ul>
-                                        <p>(120)</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="" class="card">
-                                <div class="product-image">
-                                    <img src="./images/profile.jpg" alt="">
-                                </div>
-                                <div class="product-name">
-                                    <h3>16 Color Changing B22 RGB LED Magic Light Bulb with Remote</h3>
-                                </div>
-                                <div class="product-price">
-                                    <h4>Rs.1000</h4>
-                                </div>
-                                <div class="product-stars">
-                                    <div class="stars">
-                                        <ul>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill active"></i>
-                                            </li>
-                                            <li>
-                                                <i class="ri-star-fill"></i>
-                                            </li>
-                                        </ul>
-                                        <p>(120)</p>
-                                    </div>
-                                </div>
-                            </a>
+
+                            <?php
+
+                            $error = false;
+
+                            if (isset($_GET['type']) && isset($_GET['search'])) {
+                                $searchType = $_GET['type'];
+                                $searchValue = $_GET['search'];
+
+
+                                if ($searchType == "item_id") {
+
+                                    $selectCashierQuery = "SELECT * FROM `item` WHERE 1 AND `item_id` = '$searchValue'";
+                                    $result = $conn->query($selectCashierQuery);
+
+                                    if ($result && $result->num_rows > 0) {
+                                        while ($itemData = $result->fetch_assoc()) {
+                                            $item_id  = $itemData['item_id'];
+                                            $item_category  = $itemData['item_category'];
+                                            $name = $itemData['name'];
+                                            $price = $itemData['price'];
+                                            $stock_quantity = $itemData['stock_quantity'];
+                                            $creation_date     = $itemData['creation_date'];
+                                            $expiration_date = $itemData['expiration_date'];
+                                            $brand = $itemData['brand'];
+                                            $discount = $itemData['discount'];
+                                            $warranty = $itemData['warranty'];
+                                            $weight = $itemData['weight'];
+                                            $manufacturer = $itemData['manufacturer'];
+                                            $description = $itemData['description'];
+                                            $image1 = "";
+
+                                            $selectCashierQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id' LIMIT 1";
+                                            $result1 = $conn->query($selectCashierQuery1);
+
+                                            if ($result1) {
+                                                if ($result1->num_rows > 0) {
+                                                    $itemData1 = $result1->fetch_assoc();
+                                                    $image1 = $itemData1['image_url'];
+                                                }
+                                            }
+
+                                            $error = true;
+
+                                            echo '
+                                            <a href="./item-view.php?item_id=' . $item_id . '" class="card">
+                                               <div class="product-image">
+                                                   <img src="../assets/images/product/' . $image1 . '" alt="">
+                                               </div>
+                                               <div class="product-name">
+                                                   <h3>' . $name . '</h3>
+                                               </div>
+                                               <div class="product-price">
+                                                   <h4>Rs. ' . $price . '</h4>
+                                               </div>
+                                               <div class="product-stars">
+                                                   <div class="stars">
+                                                       <ul>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill"></i>
+                                                           </li>
+                                                       </ul>
+                                                       <p>(120)</p>
+                                                   </div>
+                                               </div>
+                                           </a>
+                                            ';
+                                        }
+                                    }
+                                } else if ($searchType == "item_name") {
+
+                                    $selectCashierQuery = "SELECT * FROM `item` WHERE 1 AND (`name` LIKE '%$searchValue%')";
+                                    $result = $conn->query($selectCashierQuery);
+
+                                    if ($result && $result->num_rows > 0) {
+                                        while ($itemData = $result->fetch_assoc()) {
+                                            $item_id  = $itemData['item_id'];
+                                            $item_category  = $itemData['item_category'];
+                                            $name = $itemData['name'];
+                                            $price = $itemData['price'];
+                                            $stock_quantity = $itemData['stock_quantity'];
+                                            $creation_date     = $itemData['creation_date'];
+                                            $expiration_date = $itemData['expiration_date'];
+                                            $brand = $itemData['brand'];
+                                            $discount = $itemData['discount'];
+                                            $warranty = $itemData['warranty'];
+                                            $weight = $itemData['weight'];
+                                            $manufacturer = $itemData['manufacturer'];
+                                            $description = $itemData['description'];
+                                            $image1 = "";
+
+                                            $selectCashierQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id' LIMIT 1";
+                                            $result1 = $conn->query($selectCashierQuery1);
+
+                                            if ($result1) {
+                                                if ($result1->num_rows > 0) {
+                                                    $itemData1 = $result1->fetch_assoc();
+                                                    $image1 = $itemData1['image_url'];
+                                                }
+                                            }
+
+                                            $error = true;
+
+                                            echo '
+                                            <a href="./item-view.php?item_id=' . $item_id . '" class="card">
+                                               <div class="product-image">
+                                                   <img src="../assets/images/product/' . $image1 . '" alt="">
+                                               </div>
+                                               <div class="product-name">
+                                                   <h3>' . $name . '</h3>
+                                               </div>
+                                               <div class="product-price">
+                                                   <h4>Rs. ' . $price . '</h4>
+                                               </div>
+                                               <div class="product-stars">
+                                                   <div class="stars">
+                                                       <ul>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill active"></i>
+                                                           </li>
+                                                           <li>
+                                                               <i class="ri-star-fill"></i>
+                                                           </li>
+                                                       </ul>
+                                                       <p>(120)</p>
+                                                   </div>
+                                               </div>
+                                           </a>
+                                            ';
+                                        }
+                                    }
+                                }
+                            } else {
+
+                                $selectCashierQuery = "SELECT * FROM `item` WHERE 1";
+                                $result = $conn->query($selectCashierQuery);
+
+                                if ($result && $result->num_rows > 0) {
+                                    while ($itemData = $result->fetch_assoc()) {
+                                        $item_id  = $itemData['item_id'];
+                                        $item_category  = $itemData['item_category'];
+                                        $name = $itemData['name'];
+                                        $price = $itemData['price'];
+                                        $stock_quantity = $itemData['stock_quantity'];
+                                        $creation_date     = $itemData['creation_date'];
+                                        $expiration_date = $itemData['expiration_date'];
+                                        $brand = $itemData['brand'];
+                                        $discount = $itemData['discount'];
+                                        $warranty = $itemData['warranty'];
+                                        $weight = $itemData['weight'];
+                                        $manufacturer = $itemData['manufacturer'];
+                                        $description = $itemData['description'];
+                                        $image1 = "";
+
+                                        $selectCashierQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id' LIMIT 1";
+                                        $result1 = $conn->query($selectCashierQuery1);
+
+                                        if ($result1) {
+                                            if ($result1->num_rows > 0) {
+                                                $itemData1 = $result1->fetch_assoc();
+                                                $image1 = $itemData1['image_url'];
+                                            }
+                                        }
+
+                                        $error = true;
+
+                                        echo '
+                                        <a href="./item-view.php?item_id=' . $item_id . '" class="card">
+                                           <div class="product-image">
+                                               <img src="../assets/images/product/' . $image1 . '" alt="">
+                                           </div>
+                                           <div class="product-name">
+                                               <h3>' . $name . '</h3>
+                                           </div>
+                                           <div class="product-price">
+                                               <h4>Rs. ' . $price . '</h4>
+                                           </div>
+                                           <div class="product-stars">
+                                               <div class="stars">
+                                                   <ul>
+                                                       <li>
+                                                           <i class="ri-star-fill active"></i>
+                                                       </li>
+                                                       <li>
+                                                           <i class="ri-star-fill active"></i>
+                                                       </li>
+                                                       <li>
+                                                           <i class="ri-star-fill active"></i>
+                                                       </li>
+                                                       <li>
+                                                           <i class="ri-star-fill active"></i>
+                                                       </li>
+                                                       <li>
+                                                           <i class="ri-star-fill"></i>
+                                                       </li>
+                                                   </ul>
+                                                   <p>(120)</p>
+                                               </div>
+                                           </div>
+                                       </a>
+                                        ';
+                                    }
+                                }
+                            }
+
+                            if ($error == false) {
+                                echo "No Items found.";
+                            }
+
+                            ?>
+
                         </div>
                     </div>
                 </div>

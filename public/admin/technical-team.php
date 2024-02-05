@@ -215,6 +215,8 @@
 
                             <?php
 
+                            $error = false;
+
                             if (isset($_GET['type']) && isset($_GET['search'])) {
                                 $searchType = $_GET['type'];
                                 $searchValue = $_GET['search'];
@@ -239,6 +241,8 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+
+                                            $error = true;
 
                                             echo '
                                         <a href="./technical-team-view.php?user=' . $user_id . '" class="card">
@@ -280,8 +284,6 @@
                                         
                                         ';
                                         }
-                                    } else {
-                                        echo "No cashier users found.";
                                     }
                                 } else if ($searchType == "technical_team_id") {
 
@@ -315,6 +317,8 @@
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
 
+                                            $error = true;
+
                                             echo '
                                         <a href="./technical-team-view.php?user=' . $user_id . '" class="card">
                                             <div class="technician-image">
@@ -355,8 +359,6 @@
                                         
                                         ';
                                         }
-                                    } else {
-                                        echo "No cashier users found.";
                                     }
                                 } else if ($searchType == "user_name") {
 
@@ -378,6 +380,8 @@
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
 
+                                            $error = true;
+
                                             echo '
                                         <a href="./technical-team-view.php?user=' . $user_id . '" class="card">
                                             <div class="technician-image">
@@ -418,8 +422,6 @@
                                         
                                         ';
                                         }
-                                    } else {
-                                        echo "No cashier users found.";
                                     }
                                 }
                             } else {
@@ -443,6 +445,7 @@
                                         $profile_url = $userData['profile_url'];
                                         $password = $userData['password'];
 
+                                        $error = true;
                                         echo '
                                     <a href="./technical-team-view.php?user=' . $user_id . '" class="card">
                                         <div class="technician-image">
@@ -483,9 +486,11 @@
                                     
                                     ';
                                     }
-                                } else {
-                                    echo "No cashier users found.";
                                 }
+                            }
+
+                            if ($error == false) {
+                                echo "No techinical team found.";
                             }
 
                             ?>

@@ -1,3 +1,59 @@
+<?php
+include "../../config/database.php";
+
+$imageError = "";
+$nameError = "";
+$descriptionError = "";
+
+if (isset($_POST['save'])) {
+
+    $name = $_POST['name'];
+    $description = $_POST['description'];
+
+    if (empty($name)) {
+        $nameError = "Please enter category name";
+    }
+
+    if (empty($description)) {
+        $descriptionError = "Please enter description";
+    }
+
+    if (empty($_FILES["category_image"]["name"]) && !$_FILES["category_image"]["error"] == UPLOAD_ERR_OK) {
+        $imageError = "Please select category image";
+    }
+
+    $selectLastProductId = "SELECT `item_catagory_id` FROM `item_category` ORDER BY `item_catagory_id` DESC LIMIT 1";
+    $result = $conn->query($selectLastProductId);
+    $lastProductId = "1";
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $lastProductId = $row['item_catagory_id'] + 1;
+    }
+
+    $targetDirectory = "../assets/images/item_category/";
+
+    $imageUrl = $lastProductId . '_category_image.jpg';
+
+    $sql = "INSERT INTO `item_category` (name, description, image_url) VALUES ('$name', '$description', '$imageUrl')";
+
+    if (empty($nameError) && empty($descriptionError) && empty($imageError)) {
+
+        if ($conn->query($sql) === TRUE) {
+            //  image save
+            if (!empty($_FILES["category_image"]["name"]) && $_FILES["category_image"]["error"] == UPLOAD_ERR_OK) {
+                $newFileName = $lastProductId . "_category_image.jpg";
+                $targetFile = $targetDirectory . $newFileName;
+                if (move_uploaded_file($_FILES["category_image"]["tmp_name"], $targetFile)) {
+                    header('location: item-category.php');
+                }
+            }
+        }
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,19 +70,21 @@
     <link rel="stylesheet" href="../assets/css/search.css">
     <link rel="stylesheet" href="../assets/css/input.css">
     <link rel="stylesheet" href="../assets/css/dashboard-profile.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-product.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+
 </head>
 
 <body>
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
-            <!-- menu -->
-            <div class="menu">
+                <!-- menu -->
+                <div class="menu">
                 <div class="menu-header">
                     <h1>Logo</h1>
                     <div class="menu-close">
@@ -145,10 +203,15 @@
                     </div>
                 </div>
             </div>
-        </aside>
+            </aside>
         <section class="active section" style="padding-bottom: 60px">
             <div class="content">
-                <form class="search-2 margin-top-40" method="GET" action="./technician-category.html">
+
+
+
+
+
+                <!-- <form class="search-2 margin-top-40" method="GET" action="./technician-category.html">
                     <div class="search-content-1">
                         <select name="type" id="">
                             <option value="emp">By Category No</option>
@@ -163,53 +226,14 @@
                             <i class="ri-search-line"></i>
                         </button>
                     </div>
-                </form>
+                </form> -->
 
-            </div>
-            <div class="content margin-top-40">
 
-                <form class="profile-content">
-                    <div class="profile-content-1">
-                        <h1>Basic Information</h1>
-                        <p>Edit your account details and settings.</p>
-                    </div>
-                    <div class="profile-content-2">
-                        <div class="input-content">
 
-                            <div class="profile-image">
-                                <div class="profile-image-content-1">
-                                    <h2>CATEGORY IMAGE</h2>
-                                    <img src="./images/profile.jpg" alt="" id="preview-image">
-                                    <input type="file" id="file-input">
-                                </div>
-                                <div class="profile-image-content-2">
-                                    <input type="button" class="btn" value="Choose Photo" id="file-button">
-                                </div>
-                            </div>
-
-                            <div class="input-one-content">
-                                <p>NAME</p>
-                                <input type="text" value="">
-                                <p class="input-error">please enter your first name</p>
-                            </div>
-
-                            <div class="input-one-content margin-top-20">
-                                <p>Description</p>
-                                <textarea name="" id="" cols="30" rows="10"></textarea>
-                                <p class="input-error">please enter your first name</p>
-                            </div>
-                            <div class="right-button">
-                                <!-- <input type="submit"> -->
-                                <input type="submit" value="Delete">
-                                <input type="submit" value="Save Change">
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
             <div class="content margin-top-40">
                 <!-- <h4 style="font-family: var(--main-font-family); color:var(--text-color)">Add New Category</h4> -->
-                <form class="profile-content margin-top-20">
+                <form class="profile-content margin-top-20" method="POST" enctype="multipart/form-data">
 
                     <div class="profile-content-1">
                         <h1>Add New Category</h1>
@@ -219,38 +243,83 @@
 
                         <div class="input-content">
 
-                            <div class="input-one-content">
-                                <p>Category ID</p>
-                                <input type="text" value="">
-                                <p class="input-error">please enter your first name</p>
+                            <div class="profile-image">
+                                <div class="profile-image-content-1">
+                                    <h2>CATEGORY IMAGE</h2>
+                                    <img src="./images/profile.jpg" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="category_image">
+                                    <p class="input-error"><?php echo $imageError ?></p>
+                                </div>
+                                <div class="profile-image-content-2">
+                                    <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
+                                </div>
                             </div>
 
                             <div class="input-one-content">
                                 <p>Name</p>
-                                <input type="text" value="">
-                                <p class="input-error">please enter your first name</p>
+                                <input type="text" value="" name="name">
+                                <p class="input-error"><?php echo $nameError ?></p>
                             </div>
 
                             <div class="input-one-content">
                                 <p>Description</p>
-                                <textarea name="" id="" cols="30" rows="10"></textarea>
-                                <p class="input-error">please enter your first name</p>
+                                <textarea name="description" id="" cols="30" rows="10"></textarea>
+                                <p class="input-error"><?php echo $descriptionError ?></p>
                             </div>
                             <div class="right-button">
-                                <!-- <input type="submit"> -->
-                                <!-- <input type="submit"> -->
-                                <input type="submit" value="Save">
+                                <input type="submit" value="Save" name="save">
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
+
+            <div class="content margin-top-40">
+                <div class="card-content  margin-top-40">
+                    <div class="card-list">
+
+                        <?php
+                        $selectCashierQuery = "SELECT * FROM `item_category` WHERE 1";
+                        $result = $conn->query($selectCashierQuery);
+
+                        if ($result && $result->num_rows > 0) {
+                            while ($itemData = $result->fetch_assoc()) {
+                                $item_catagory_id   = $itemData['item_catagory_id'];
+                                $name  = $itemData['name'];
+                                $description = $itemData['description'];
+                                $image_url = $itemData['image_url'];
+
+                                echo '
+                                        <a href="./item-category-view.php?category_id='.$item_catagory_id.'" class="card">
+                                           <div class="product-image">
+                                               <img src="../assets/images/item_category/' . $image_url . '" alt="">
+                                           </div>
+                                           <div class="product-name">
+                                               <h3>' . $name . '</h3>
+                                           </div>
+                                       </a>
+                                        ';
+                            }
+                        } else {
+                            echo "No Category found.";
+                        }
+
+
+                        ?>
+
+                    </div>
+                </div>
+            </div>
+
+
+
         </section>
         <!-- </div> -->
     </div>
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/profile.js"></script>
 </body>
 
 </html>

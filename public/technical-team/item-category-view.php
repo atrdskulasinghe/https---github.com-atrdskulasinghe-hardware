@@ -1,114 +1,152 @@
 <?php
 include "../../config/database.php";
 
-$user_id = "";
+$categoryId = "";
 
-if(isset($_GET['user'])){
-    $user_id = $_GET['user'];
-} else {
-    header('location: customers.php');
+if (isset($_GET["category_id"])) {
+    $categoryId = $_GET["category_id"];
 }
 
-$firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $password = $profileUrl = $nicImageUrl = "";
+$selectQuery = "SELECT * FROM `item_category` WHERE `item_catagory_id` = '$categoryId'";
+$result = $conn->query($selectQuery);
 
-$selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
-$result = $conn->query($selectUserQuery);
+$item_catagory_id = "";
+$name = "";
+$description = "";
+$image_url = "";
 
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $firstName = $row['first_name'];
-    $lastName = $row['last_name'];
-    $dob = $row['dob'];
-    $phoneNumber = $row['phone_number'];
-    $email = $row['email'];
-    $houseNumber = $row['house_no'];
-    $state = $row['state'];
-    $city = $row['city'];
-    $password = $row['password'];
-    $profileUrl = $row['profile_url'];
+$item_catagory_idError = "";
+$nameError = "";
+$descriptionError = "";
+$image_urlError = "";
+
+if ($result && $result->num_rows > 0) {
+    while ($itemData = $result->fetch_assoc()) {
+        $item_catagory_id = $itemData['item_catagory_id'];
+        $name = $itemData['name'];
+        $description = $itemData['description'];
+        $image_url = $itemData['image_url'];
+    }
 } else {
-    header('location: customers.php');
+    header('location: item-category.php');
 }
 
-$firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError = "";
+// image path
 
-if (isset($_POST['save_change'])) {
+$targetDirectory = "../assets/images/item_category/";
 
-    $firstName = $_POST["first_name"];
-    $lastName = $_POST["last_name"];
-    $dob = $_POST["dob"];
-    $phoneNumber = $_POST["phone_number"];
-    $houseNumber = $_POST["house_number"];
-    $state = $_POST["state"];
-    $city = $_POST["city"];
+if (isset($_POST["save"])) {
 
-    if (empty($firstName)) {
-        $firstNameError = "Please enter your first name";
+    // $item_catagory_id = "";
+    $name = $_POST["category_name"];
+    $description = $_POST["description"];
+
+    // $image_url = $_POST["save"];
+    // if (empty($item_catagory_id)) {
+    //     $item_catagory_idError = "Please enter description";
+    // }
+
+    if (empty($name)) {
+        $nameError = "Please enter description";
     }
 
-    if (empty($lastName)) {
-        $lastNameError = "Please enter your last name";
+    if (empty($description)) {
+        $descriptionError = "Please enter description";
     }
 
-    if (empty($dob)) {
-        $dobError = "Please enter your date of birth";
-    }
+    $updateQuery = "UPDATE `item_category` SET 
+    `name` = '$name', 
+    `description` = '$description'
+    WHERE `item_catagory_id` = $categoryId";
 
-    if (empty($phoneNumber)) {
-        $phoneNumberError = "Please enter your phone number";
-    }
+    if (empty($nameError) && empty($descriptionError)) {
 
-    if (empty($houseNumber)) {
-        $houseNumberError = "Please enter your house number";
-    }
+        if ($conn->query($updateQuery) === TRUE) {
+            //  image save
 
-    if (empty($state)) {
-        $stateError = "Please enter your state";
-    }
+            if (!empty($_FILES["item_category"]["name"]) && $_FILES["item_category"]["error"] == UPLOAD_ERR_OK) {
 
-    if (empty($city)) {
-        $cityError = "Please enter your city";
-    }
-
-    // last user id
-
-    $lastUserId = $user_id;
-
-    // sql code
-
-    $profileUrl = $lastUserId . '_profile.jpg';
-    $nicUrl = $lastUserId . '_nic.jpg';
-
-    $updateUserQuery = "UPDATE `user` SET 
-    `first_name` = '$firstName', 
-    `last_name` = '$lastName', 
-    `phone_number` = '$phoneNumber', 
-    `dob` = '$dob', 
-    `house_no` = '$houseNumber', 
-    `state` = '$state', 
-    `city` = '$city'
-    WHERE `user_id` = $user_id";
-
-    // image path
-
-    $targetDirectory = "../assets/images/customer/";
-
-    if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError)) {
-        // user save
-        if ($conn->query($updateUserQuery) === TRUE) {
-            // cashier save
-            if (!empty($_FILES["profile_image"]["name"]) && $_FILES["profile_image"]["error"] == UPLOAD_ERR_OK) {
-                $newFileName = $lastUserId . "_profile.jpg";
+                $newFileName = $categoryId . "_category_image.jpg";
                 $targetFile = $targetDirectory . $newFileName;
-                if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFile)) {
+                if (move_uploaded_file($_FILES["item_category"]["tmp_name"], $targetFile)) {
+                    header('location: item-category.php');
                 }
+            } else {
+                header('location: item-category.php');
             }
-            header('location: customer-view.php');
         }
     }
 }
 
-$conn->close();
+if (isset($_POST['delete'])) {
+
+    // $targetDirectory;
+
+    $checkRelatedRecordsQuery = "SELECT * FROM `item` WHERE `item_category` = '$categoryId'";
+    $result = $conn->query($checkRelatedRecordsQuery);
+
+    if ($result->num_rows > 0) {
+
+        while ($row = $result->fetch_assoc()) {
+            $itemId = $row['item_id'];
+
+            // delete item Images
+
+            $deleteItemImageQuery = "DELETE FROM `item_image` WHERE `item_id` = '$itemId'";
+            $conn->query($deleteItemImageQuery);
+        }
+
+        // delete all item
+
+        $deleteItemImageQuery = "DELETE FROM `item` WHERE `item_category` = '$categoryId'";
+
+        if ($conn->query($deleteItemImageQuery)) {
+
+            //delete category Image
+
+            $getImageFilePathQuery = "SELECT `image_url` FROM `item_category` WHERE `item_catagory_id` = '$categoryId'";
+            $imageResult = $conn->query($getImageFilePathQuery);
+
+            if ($imageResult && $imageResult->num_rows > 0) {
+                $imageData = $imageResult->fetch_assoc();
+
+                $imageFilePath = $imageData['image_url'];
+
+                $imageLocation = $targetDirectory . $imageFilePath;
+
+                if (file_exists($imageLocation) && unlink($imageLocation)) {
+
+                    // delete category
+
+                    $deleteCategoryQuery = "DELETE FROM `item_category` WHERE `item_catagory_id` = '$categoryId'";
+
+                    if ($conn->query($deleteCategoryQuery)) {
+                        header('location: item-category.php');
+                    }
+                }
+            }
+        }
+    } else {
+
+        $getImageFilePathQuery = "SELECT `image_url` FROM `item_category` WHERE `item_catagory_id` = '$categoryId'";
+        $imageResult = $conn->query($getImageFilePathQuery);
+
+        if ($imageResult && $imageResult->num_rows > 0) {
+            $imageData = $imageResult->fetch_assoc();
+
+            $imageFilePath = $imageData['image_url'];
+
+            $imageLocation = $targetDirectory . $imageFilePath;
+
+            if (file_exists($imageLocation) && unlink($imageLocation)) {
+                $deleteCategoryQuery = "DELETE FROM `item_category` WHERE `item_catagory_id` = '$categoryId'";
+                if ($conn->query($deleteCategoryQuery)) {
+                    header('location: item-category.php');
+                }
+            }
+        }
+    }
+}
 
 ?>
 
@@ -122,18 +160,15 @@ $conn->close();
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/dashboard-menu.css">
     <link rel="stylesheet" href="../assets/css/dashboard-nav.css">
-    <link rel="stylesheet" href="../assets/css/dashboard-profile.css">
-    <link rel="stylesheet" href="../assets/css/dashboard-review.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-technician.css">
     <link rel="stylesheet" href="../assets/css/button.css">
     <link rel="stylesheet" href="../assets/css/card.css">
     <link rel="stylesheet" href="../assets/css/search.css">
     <link rel="stylesheet" href="../assets/css/input.css">
-    <link rel="stylesheet" href="../assets/css/review.css">
-    <link rel="stylesheet" href="../assets/css/stars.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-profile.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-product.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
-    <?php
-    include "../../config/database.php";
-    ?>
+
 </head>
 
 <body>
@@ -218,7 +253,7 @@ $conn->close();
                             </div>
                         </div>
                         <!-- menu link 2 -->
-                        <div class="menu-link-button-2 ">
+                        <div class="menu-link-button-2 active">
                             <div class="menu-link-button">
                                 <p><img src="../assets/images/ui/item.png" alt="">Item</p>
                                 <i class="ri-arrow-down-s-line"></i>
@@ -237,7 +272,7 @@ $conn->close();
                                     </a>
                                 </div>
 
-                                <div class="menu-link-button menu-hidden-button">
+                                <div class="menu-link-button menu-hidden-button active">
                                     <a href="./item-category.php">
                                         <p><img src="../assets/images/ui/category.png" alt="">Item Category</p>
                                     </a>
@@ -245,7 +280,7 @@ $conn->close();
                             </div>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button active">
+                        <div class="menu-link-button">
                             <a href="./customers.php">
                                 <p><img src="../assets/images/ui/customer.png" alt="">Customer</p>
                             </a>
@@ -265,84 +300,58 @@ $conn->close();
                 </div>
             </div>
             </aside>
-        <section class="active section">
+        <section class="active section" style="padding-bottom: 60px">
             <div class="content">
-                <form class="profile" method="POST" enctype="multipart/form-data">
-                    <div class="profile-content">
-                        <div class="profile-content-1">
-                            <h1>Basic Information</h1>
-                            <p>Edit your account details and settings.</p>
-                        </div>
-                        <div class="profile-content-2">
+
+            </div>
+            <div class="content margin-top-40">
+
+                <form class="profile-content" method="POST" enctype="multipart/form-data">
+                    <div class="profile-content-1">
+                        <h1>Basic Information</h1>
+                        <p>Edit your account details and settings.</p>
+                    </div>
+                    <div class="profile-content-2">
+                        <div class="input-content">
+
                             <div class="profile-image">
                                 <div class="profile-image-content-1">
-                                    <h2>AVATAR</h2>
-                                    <img src="../assets/images/customer/<?php echo $profileUrl ?>" alt="" id="preview-image">
-                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/customer/<?php echo $profileUrl ?>">
+                                    <h2>CATEGORY IMAGE</h2>
+                                    <img src="../assets/images/item_category/<?php echo $image_url ?>" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="item_category" value="../assets/images/item_category/<?php echo $image_url ?>">
                                 </div>
                                 <div class="profile-image-content-2">
                                     <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
                                 </div>
                             </div>
-                            <div class="input-content">
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>First Name</p>
-                                        <input type="text" name="first_name" value="<?php echo $firstName ?>">
-                                        <p class="input-error"><?php echo $firstNameError ?></p>
-                                    </div>
-                                    <div class="input-two-content-2">
-                                        <p>Last Name</p>
-                                        <input type="text" name="last_name" value="<?php echo $lastName ?>">
-                                        <p class="input-error"><?php echo $lastNameError ?></p>
-                                    </div>
-                                </div>
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>DATE OF BIRTH</p>
-                                        <input type="date" name="dob" value="<?php echo $dob ?>">
-                                        <p class="input-error"><?php echo $dobError ?></p>
-                                    </div>
-                                    <div class="input-two-content-2">
-                                        <p>PHONE NUMBER</p>
-                                        <input type="text" name="phone_number" value="<?php echo $phoneNumber ?>">
-                                        <p class="input-error"><?php echo $phoneNumberError ?></p>
-                                    </div>
-                                </div>
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>HOUSE NUMBER</p>
-                                        <input type="text" name="house_number" value="<?php echo $houseNumber ?>">
-                                        <p class="input-error"><?php echo $houseNumberError ?></p>
-                                    </div>
-                                    <div class="input-two-content-2">
-                                        <p>EMAIL</p>
-                                        <input type="text" name="email" style="user-select: none;" value="<?php echo $email ?>" disabled>
-                                        <p class="input-error"><?php echo $emailError ?></p>
-                                    </div>
-                                </div>
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>STATE</p>
-                                        <input type="text" name="state" value="<?php echo $state ?>">
-                                        <p class="input-error"><?php echo $stateError ?></p>
-                                    </div>
-                                    <div class="input-two-content-2">
-                                        <p>CITY</p>
-                                        <input type="text" name="city" value="<?php echo $city ?>">
-                                        <p class="input-error"><?php echo $cityError ?></p>
-                                    </div>
-                                </div>
-                                <div class="right-button ">
-                                    <!-- <input type="submit" value="Remove" name="remove"> -->
-                                    <input type="submit" value="Save Change" name="save_change">
-                                    <!-- <input type="submit" value="Save" name="save"> -->
-                                </div>
+
+                            <div class="input-one-content">
+                                <p>Category ID</p>
+                                <input type="text" value="<?php echo $item_catagory_id ?>" name="" disabled>
+                                <p class="input-error"><?php echo $item_catagory_idError ?></p>
+                            </div>
+
+                            <div class="input-one-content">
+                                <p>NAME</p>
+                                <input type="text" value="<?php echo $name ?>" name="category_name">
+                                <p class="input-error"><?php echo $nameError ?></p>
+                            </div>
+
+                            <div class="input-one-content margin-top-20">
+                                <p>Description</p>
+                                <textarea name="description" id="" cols="30" rows="10"><?php echo $description ?></textarea>
+                                <p class="input-error"><?php echo $descriptionError ?></p>
+                            </div>
+                            <div class="right-button">
+                                <!-- <input type="submit"> -->
+                                <input type="submit" value="Delete" name="delete">
+                                <input type="submit" value="Save Change" name="save">
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
+
         </section>
         <!-- </div> -->
     </div>

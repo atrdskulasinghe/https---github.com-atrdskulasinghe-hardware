@@ -221,6 +221,8 @@ include "../../config/database.php";
 
                             <?php
 
+                            $error = false;
+
                             if (isset($_GET['type']) && isset($_GET['search'])) {
                                 $searchType = $_GET['type'];
                                 $searchValue = $_GET['search'];
@@ -245,6 +247,8 @@ include "../../config/database.php";
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+
+                                            $error = true;
 
                                             echo '
                                         <a href="./cashier-view.php?user=' . $user_id . '" class="card">
@@ -286,8 +290,6 @@ include "../../config/database.php";
                                         
                                         ';
                                         }
-                                    } else {
-                                        echo "No cashier users found.";
                                     }
                                 } else if ($searchType == "cashier_id") {
 
@@ -321,6 +323,8 @@ include "../../config/database.php";
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
 
+                                            $error = true;
+
                                             echo '
                                         <a href="./cashier-view.php?user=' . $user_id . '" class="card">
                                             <div class="technician-image">
@@ -361,8 +365,6 @@ include "../../config/database.php";
                                         
                                         ';
                                         }
-                                    } else {
-                                        echo "No cashier users found.";
                                     }
                                 } else if ($searchType == "user_name") {
 
@@ -384,6 +386,8 @@ include "../../config/database.php";
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
 
+                                            $error = true;
+
                                             echo '
                                         <a href="./cashier-view.php?user=' . $user_id . '" class="card">
                                             <div class="technician-image">
@@ -424,8 +428,6 @@ include "../../config/database.php";
                                         
                                         ';
                                         }
-                                    } else {
-                                        echo "No cashier users found.";
                                     }
                                 }
                             } else {
@@ -448,6 +450,8 @@ include "../../config/database.php";
                                         $account_type = $userData['account_type'];
                                         $profile_url = $userData['profile_url'];
                                         $password = $userData['password'];
+
+                                        $error = true;
 
                                         echo '
                                     <a href="./cashier-view.php?user=' . $user_id . '" class="card">
@@ -489,9 +493,11 @@ include "../../config/database.php";
                                     
                                     ';
                                     }
-                                } else {
-                                    echo "No cashier users found.";
                                 }
+                            }
+
+                            if ($error == false) {
+                                echo "No cashier users found.";
                             }
 
                             ?>

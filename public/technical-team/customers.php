@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="../assets/css/card.css">
     <link rel="stylesheet" href="../assets/css/search.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+    <?php
+    include "../../config/database.php";
+    ?>
 </head>
 
 <body>
@@ -22,7 +25,7 @@
             include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
-            <aside class="active aside">
+        <aside class="active aside">
                 <!-- menu -->
                 <div class="menu">
                 <div class="menu-header">
@@ -144,248 +147,306 @@
                 </div>
             </div>
             </aside>
-            <section class="active section">
-                <div class="content">
-                
-                    <div class="technician">
-                        <form class="search-2" method="GET" action="./technicians.html">
-                            <div class="search-content-1">
-                                <select name="type" id="">
-                                    <option value="emp">By Employee No</option>
-                                </select>
-                            </div>
-                            <div class="search-content-2">
-                                <input type="text" name="search">
-                            </div>
-                            <div class="search-content-3">
-                                <input type="submit" class="btn" value="Search">
-                                <button type="submit" class="btn-icon btn">
-                                    <i class="ri-search-line"></i>
-                                </button>
-                            </div>
-                        </form>
-                        <div class="card-content  margin-top-40">
-                            <div class="card-list">
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="" class="card">
-                                    <div class="technician-image">
-                                        <img src="./images/profile.jpg" alt="">
-                                    </div>
-                                    <div class="technician-name">
-                                        <h3>Nimal Sankalpa</h3>
-                                    </div>
-                                    <div class="technician-details">
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>City</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Colombo</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Age</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>20</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Years of experience</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>2 year</p>
-                                            </div>
-                                        </div>
-                                        <div class="technician-details-content">
-                                            <div class="technician-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="technician-details-content-2">
-                                                <p>Bike</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+        <section class="active section">
+            <div class="content">
+                <div class="technician">
+                    <form class="search-2" method="GET" action="./customers.php">
+                        <div class="search-content-1">
+                            <select name="type" id="">
+                                <option value="user_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_id') echo 'selected'; ?>>By User ID</option>
+                                <option value="customer_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'customer_id') echo 'selected'; ?>>By Customer ID</option>
+                                <option value="user_name" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_name') echo 'selected'; ?>>By User Name</option>
+                            </select>
+                        </div>
+                        <div class="search-content-2">
+                            <input type="text" name="search" value="<?php if (isset($_GET['type']) && isset($_GET['search'])) {
+                                                                        echo $_GET['search'];
+                                                                    } ?>">
+                        </div>
+                        <div class="search-content-3">
+                            <input type="submit" class="btn" value="Search">
+                            <button type="submit" class="btn-icon btn">
+                                <i class="ri-search-line"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="card-content  margin-top-40">
+                        <div class="card-list">
+
+                            <?php
+
+                            $error = false;
+
+                            if (isset($_GET['type']) && isset($_GET['search'])) {
+                                $searchType = $_GET['type'];
+                                $searchValue = $_GET['search'];
+                                if ($searchType == "user_id") {
+
+                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'customer' AND `user_id` = '$searchValue'";
+                                    $result = $conn->query($selectCashierQuery);
+
+                                    if ($result && $result->num_rows > 0) {
+                                        while ($userData = $result->fetch_assoc()) {
+                                            $user_id = $userData['user_id'];
+                                            $first_name = $userData['first_name'];
+                                            $last_name = $userData['last_name'];
+                                            $email = $userData['email'];
+                                            $phone_number = $userData['phone_number'];
+                                            $dob = $userData['dob'];
+                                            $house_no = $userData['house_no'];
+                                            $state = $userData['state'];
+                                            $city = $userData['city'];
+                                            $account_type = $userData['account_type'];
+                                            $profile_url = $userData['profile_url'];
+                                            $password = $userData['password'];
+
+                                            $error = true;
+
+                                            echo '
+                                                <a href="./customer-view.php?user=' . $user_id . '" class="card">
+                                                    <div class="technician-image">
+                                                        <img src="../assets/images/customer/' . $profile_url . '" alt="">
+                                                    </div>
+                                                    <div class="technician-name">
+                                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                                    </div>
+                                                    <div class="technician-details">
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>City</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $city . '</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>Phone Number</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $phone_number . '</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>Email</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $email . '</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                        ';
+                                        }
+                                    } 
+                                } else if ($searchType == "customer_id") {
+
+                                    $user_id = "";
+
+                                    $selectCashierQuery1 = "SELECT * FROM `customer` WHERE `customer_id` = '$searchValue'";
+                                    $result1 = $conn->query($selectCashierQuery1);
+
+                                    if ($result1 && $result1->num_rows > 0) {
+                                        while ($userData = $result1->fetch_assoc()) {
+
+                                            $user_id = $userData['user_id'];
+                                        }
+                                    }
+
+                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'customer' AND `user_id` = '$user_id'";
+                                    $result = $conn->query($selectCashierQuery);
+
+                                    if ($result && $result->num_rows > 0) {
+                                        while ($userData = $result->fetch_assoc()) {
+                                            $user_id = $userData['user_id'];
+                                            $first_name = $userData['first_name'];
+                                            $last_name = $userData['last_name'];
+                                            $email = $userData['email'];
+                                            $phone_number = $userData['phone_number'];
+                                            $dob = $userData['dob'];
+                                            $house_no = $userData['house_no'];
+                                            $state = $userData['state'];
+                                            $city = $userData['city'];
+                                            $account_type = $userData['account_type'];
+                                            $profile_url = $userData['profile_url'];
+                                            $password = $userData['password'];
+
+                                            $error = true;
+
+                                            echo '
+                                                <a href="./customer-view.php?user=' . $user_id . '" class="card">
+                                                    <div class="technician-image">
+                                                        <img src="../assets/images/customer/' . $profile_url . '" alt="">
+                                                    </div>
+                                                    <div class="technician-name">
+                                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                                    </div>
+                                                    <div class="technician-details">
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>City</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $city . '</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>Phone Number</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $phone_number . '</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>Email</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $email . '</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                        ';
+                                        }
+                                    } 
+                                } else if ($searchType == "user_name") {
+
+                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'customer' AND (`first_name` LIKE '%$searchValue%' OR `last_name` LIKE '%$searchValue%')";
+                                    $result = $conn->query($selectCashierQuery);
+
+                                    if ($result && $result->num_rows > 0) {
+                                        while ($userData = $result->fetch_assoc()) {
+                                            $user_id = $userData['user_id'];
+                                            $first_name = $userData['first_name'];
+                                            $last_name = $userData['last_name'];
+                                            $email = $userData['email'];
+                                            $phone_number = $userData['phone_number'];
+                                            $dob = $userData['dob'];
+                                            $house_no = $userData['house_no'];
+                                            $state = $userData['state'];
+                                            $city = $userData['city'];
+                                            $account_type = $userData['account_type'];
+                                            $profile_url = $userData['profile_url'];
+                                            $password = $userData['password'];
+
+                                            $error = true;
+
+                                            echo '
+                                                <a href="./customer-view.php?user=' . $user_id . '" class="card">
+                                                    <div class="technician-image">
+                                                        <img src="../assets/images/customer/' . $profile_url . '" alt="">
+                                                    </div>
+                                                    <div class="technician-name">
+                                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                                    </div>
+                                                    <div class="technician-details">
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>City</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $city . '</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>Phone Number</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $phone_number . '</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="technician-details-content">
+                                                            <div class="technician-details-content-1">
+                                                                <p>Email</p>
+                                                            </div>
+                                                            <div class="technician-details-content-2">
+                                                                <p>' . $email . '</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                        ';
+                                        }
+                                    } 
+                                }
+                            } else {
+
+                                $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'customer'";
+                                $result = $conn->query($selectCashierQuery);
+
+                                if ($result && $result->num_rows > 0) {
+                                    while ($userData = $result->fetch_assoc()) {
+                                        $user_id = $userData['user_id'];
+                                        $first_name = $userData['first_name'];
+                                        $last_name = $userData['last_name'];
+                                        $email = $userData['email'];
+                                        $phone_number = $userData['phone_number'];
+                                        $dob = $userData['dob'];
+                                        $house_no = $userData['house_no'];
+                                        $state = $userData['state'];
+                                        $city = $userData['city'];
+                                        $account_type = $userData['account_type'];
+                                        $profile_url = $userData['profile_url'];
+                                        $password = $userData['password'];
+
+                                        $error = true;
+
+                                        echo '
+                                            <a href="./customer-view.php?user=' . $user_id . '" class="card">
+                                                <div class="technician-image">
+                                                    <img src="../assets/images/customer/' . $profile_url . '" alt="">
+                                                </div>
+                                                <div class="technician-name">
+                                                    <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                                </div>
+                                                <div class="technician-details">
+                                                    <div class="technician-details-content">
+                                                        <div class="technician-details-content-1">
+                                                            <p>City</p>
+                                                        </div>
+                                                        <div class="technician-details-content-2">
+                                                            <p>' . $city . '</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="technician-details-content">
+                                                        <div class="technician-details-content-1">
+                                                            <p>Phone Number</p>
+                                                        </div>
+                                                        <div class="technician-details-content-2">
+                                                            <p>' . $phone_number . '</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="technician-details-content">
+                                                        <div class="technician-details-content-1">
+                                                            <p>Email</p>
+                                                        </div>
+                                                        <div class="technician-details-content-2">
+                                                            <p>' . $email . '</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                    ';
+                                    }
+                                } 
+                            }
+
+                            if ($error == false) {
+                                echo "No customers found.";
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
         <!-- </div> -->
     </div>
-
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
 </body>
-
 </html>

@@ -1,3 +1,9 @@
+<?php
+
+$type = "admin";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,15 +21,17 @@
                 <p>Dashboard</p>
             </div>
             <div class="nav-content-2">
-                <a href="">
+                <a href="./message.php">
                     <i class="ri-mail-line"></i>
                 </a>
                 <a href="">
                     <i class="ri-notification-3-line"></i>
                 </a>
+
                 <a href="">
                     <img src="./images/profile.jpg" alt="">
                 </a>
+
             </div>
         </div>
     </nav>

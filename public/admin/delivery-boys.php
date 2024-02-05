@@ -215,10 +215,11 @@
 
                             <?php
 
+                            $error = false;
+
                             if (isset($_GET['type']) && isset($_GET['search'])) {
                                 $searchType = $_GET['type'];
                                 $searchValue = $_GET['search'];
-
 
                                 if ($searchType == "user_id") {
 
@@ -240,23 +241,24 @@
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
                                             $vehical = "";
-    
+
                                             $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
-    
+
                                             $status = "approved";
-    
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
-    
+
                                                     $vehical = $userData1['vehicle_type'];
-    
+
                                                     $status = $userData1['status'];
                                                 }
                                             }
-    
-    
+
+
                                             if ($status == "approved") {
+                                                $error = true;
                                                 echo '
     
                                         <a href="./delivery-boy-view.php?user=' . $user_id . '" class="card">
@@ -295,10 +297,8 @@
                                 </a>
                                         
                                         ';
-                                            } 
+                                            }
                                         }
-                                    } else {
-                                        echo "No delivery Boys found.";
                                     }
                                 } else if ($searchType == "delivery_boy_id") {
 
@@ -332,23 +332,24 @@
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
                                             $vehical = "";
-    
+
                                             $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
-    
+
                                             $status = "approved";
-    
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
-    
+
                                                     $vehical = $userData1['vehicle_type'];
-    
+
                                                     $status = $userData1['status'];
                                                 }
                                             }
-    
-    
+
+
                                             if ($status == "approved") {
+                                                $error = true;
                                                 echo '
     
                                         <a href="./delivery-boy-view.php?user=' . $user_id . '" class="card">
@@ -387,10 +388,8 @@
                                 </a>
                                         
                                         ';
-                                            } 
+                                            }
                                         }
-                                    } else {
-                                        echo "No delivery Boys found.";
                                     }
                                 } else if ($searchType == "user_name") {
 
@@ -412,23 +411,26 @@
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
                                             $vehical = "";
-    
+
                                             $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
-    
+
                                             $status = "approved";
-    
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
-    
+
                                                     $vehical = $userData1['vehicle_type'];
-    
+
                                                     $status = $userData1['status'];
                                                 }
                                             }
-    
-    
+
+
                                             if ($status == "approved") {
+
+                                                $error = true;
+
                                                 echo '
     
                                         <a href="./delivery-boy-view.php?user=' . $user_id . '" class="card">
@@ -467,10 +469,8 @@
                                 </a>
                                         
                                         ';
-                                            } 
+                                            }
                                         }
-                                    } else {
-                                        echo "No delivery Boys found.";
                                     }
                                 }
                             } else {
@@ -511,6 +511,7 @@
 
 
                                         if ($status == "approved") {
+                                            $error = true;
                                             echo '
 
                                     <a href="./delivery-boy-view.php?user=' . $user_id . '" class="card">
@@ -549,12 +550,15 @@
                             </a>
                                     
                                     ';
-                                        } 
+                                        }
                                     }
-                                } else {
-                                    echo "No delivery Boys found.";
                                 }
                             }
+
+                            if ($error == false) {
+                                echo "No delivery boy found.";
+                            }
+
 
                             ?>
 

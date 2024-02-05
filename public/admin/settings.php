@@ -4,7 +4,7 @@ include "../../config/database.php";
 
 $user_id = 4;
 
-$firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $password = $profileUrl = $nicImageUrl = "";
+$firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $profileUrl = $nicImageUrl = $old_password = $password = $passwordDB = $old_passwordDB = "";
 
 $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
 $result = $conn->query($selectUserQuery);
@@ -21,8 +21,11 @@ if ($result->num_rows > 0) {
     $houseNumber = $row['house_no'];
     $state = $row['state'];
     $city = $row['city'];
-    $password = $row['password'];
+
     $profileUrl = $row['profile_url'];
+
+    $passwordDB = $row['password'];
+    // $old_passwordDB = $row['old_password'];
 }
 
 $selectUserQuery1 = "SELECT * FROM `admin` WHERE `user_id` = $user_id";
@@ -34,7 +37,7 @@ if ($result1->num_rows > 0) {
     $nicImageUrl = $row['nic_image_url'];
 }
 
-$firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError = "";
+$firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError =  $oldPsswordError =  $passwordError = "";
 
 if (isset($_POST['save_change'])) {
 
@@ -47,6 +50,8 @@ if (isset($_POST['save_change'])) {
     $houseNumber = $_POST["house_number"];
     $state = $_POST["state"];
     $city = $_POST["city"];
+    $password = $_POST['password'];
+    $old_password = $_POST['old_password'];
 
     if (empty($firstName)) {
         $firstNameError = "Please enter your first name";
@@ -68,7 +73,6 @@ if (isset($_POST['save_change'])) {
         $phoneNumberError = "Please enter your phone number";
     }
 
-
     if (empty($houseNumber)) {
         $houseNumberError = "Please enter your house number";
     }
@@ -80,6 +84,27 @@ if (isset($_POST['save_change'])) {
     if (empty($city)) {
         $cityError = "Please enter your city";
     }
+
+
+    if (!empty($old_password)) {
+        if ($passwordDB !== $old_password) {
+            $oldPsswordError = "Your old password is incorrect";
+        } else {
+            if (empty($password)) {
+                $passwordError = "Please enter your password";
+            } else {
+                $updateUserQuery = "UPDATE `user` SET 
+                `password` = '$password'
+                WHERE `user_id` = $user_id";
+
+                    if ($conn->query($updateUserQuery) === TRUE) {
+                        // login code
+                    }
+            }
+        }
+    }
+
+
 
     // last user id
 
@@ -100,15 +125,6 @@ if (isset($_POST['save_change'])) {
     `state` = '$state', 
     `city` = '$city'
     WHERE `user_id` = $user_id";
-
-    // $updateUserQuery = "UPDATE `admin` SET 
-    // `first_name` = '$firstName', 
-    // `last_name` = '$lastName'
-    // WHERE `user_id` = $user_id";
-
-    // $updateCashierQuery = "UPDATE `admin` SET 
-    // `nic_image_url` = '$nicUrl' 
-    // WHERE `user_id` = $user_id";
 
     // image path
 
@@ -421,8 +437,30 @@ $conn->close();
                                     <div class="input-two-content-2">
                                         <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="../assets/images/admin/<?php echo $nicImageUrl;?>" alt="">
+                                            <img src="../assets/images/admin/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <div class="profile-content-1">
+                            <h1>Security Information</h1>
+                            <p>Edit your account details and settings.</p>
+                        </div>
+                        <div class="profile-content-2">
+                            <div class="input-content">
+                                <div class="input-two-content">
+                                    <div class="input-two-content-1">
+                                        <p>old password</p>
+                                        <input type="password" name="old_password" value="">
+                                        <p class="input-error"><?php echo $oldPsswordError ?></p>
+                                    </div>
+                                    <div class="input-two-content-2">
+                                        <p>password</p>
+                                        <input type="password" name="password" value="">
+                                        <p class="input-error"><?php echo $passwordError ?></p>
                                     </div>
                                 </div>
 
@@ -434,7 +472,6 @@ $conn->close();
                             </div>
                         </div>
                     </div>
-
 
                 </form>
 

@@ -145,7 +145,6 @@
                                             <p><img src="../assets/images/ui/add item.png" alt="">Add Item</p>
                                         </a>
                                     </div>
-
                                     <div class="menu-link-button menu-hidden-button">
                                         <a href="./item-category.php">
                                             <p><img src="../assets/images/ui/category.png" alt="">Item Category</p>
@@ -153,6 +152,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- menu link 1
+                            <div class="menu-link-button">
+                                <a href="./index.php">
+                                    <p><img src="../assets/images/ui/admin.png" alt="">Admin</p>
+                                </a>
+                            </div> -->
                             <!-- menu link 1 -->
                             <div class="menu-link-button">
                                 <a href="./customers.php">
@@ -165,7 +170,6 @@
                                     <p><img src="../assets/images/ui/income.png" alt="">Income Report</p>
                                 </a>
                             </div>
-                           
                             <!-- menu link 1 -->
                             <div class="menu-link-button">
                                 <a href="./settings.php">

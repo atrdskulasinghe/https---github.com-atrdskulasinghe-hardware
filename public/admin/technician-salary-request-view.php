@@ -1,3 +1,83 @@
+<?php
+include "../../config/database.php";
+
+
+$user_id = $_GET['user'];
+
+$first_name = $last_name = "";
+
+$selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
+$result = $conn->query($selectUserQuery);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+
+    $user_type = $row['account_type'];
+    $first_name = $row['first_name'];
+    $last_name = $row['last_name'];
+
+    if ($user_type !== 'technician') {
+        header('location: technician-salary-request.php');
+    }
+} else {
+    header('location: technician-salary-request.php');
+}
+
+$bank_details_id = $bank_name =  $branch = $holder_name = $account_no = "";
+$technician_id = $date = $time =  $amount = "";
+
+$selectBankQuery = "SELECT * FROM `bank_details` WHERE `user_id` = '$user_id'";
+$result = $conn->query($selectBankQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+    $bank_name = $row['bank_name'];
+    $branch = $row['branch'];
+    $holder_name = $row['holder_name'];
+    $account_no = $row['account_no'];
+}
+
+$selectBankQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
+$result = $conn->query($selectBankQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+    $technician_id = $row['technician_id'];
+}
+
+$selectBankQuery = "SELECT * FROM `payment` WHERE `user_id` = '$user_id' AND `status` = 'pending'";
+$result = $conn->query($selectBankQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+    $date = $row['date'];
+    $time = $row['time'];
+    $amount = $row['amount'];
+}else{
+    header('location: technician-salary-request.php');
+}
+
+if (isset($_POST['paid'])) {
+
+    $updateUserQuery = "UPDATE `payment` SET 
+    `status` = 'paid'
+    WHERE `user_id` = $user_id";
+
+    if ($conn->query($updateUserQuery) === TRUE) {
+        header('location: technician-salary-request.php');
+    }
+
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,9 +95,7 @@
     <link rel="stylesheet" href="../assets/css/input.css">
     <link rel="stylesheet" href="../assets/css/dashboard-profile.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
-    <?php
-        include "../../config/database.php";
-    ?>
+   
 </head>
 
 <body>
@@ -188,25 +266,25 @@
                 </div>
         </aside>
         <section class="active section">
-            <div class="content">
-                <form class="profile">
+        <div class="content">
+                <form class="profile" method="POST">
                     <div class="profile-content">
                         <div class="profile-content-1">
                             <h1>Technician & Bank Details</h1>
                             <p>Edit your account details and settings.</p>
                         </div>
                         <div class="profile-content-2">
-                            
+
                             <div class="input-content">
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
-                                        <p>TECHNICIAN ID</p>
-                                        <input type="text" name="">
+                                        <p>technician ID</p>
+                                        <input type="text" name="" disabled value="<?php echo $technician_id ?>">
                                         <!-- <p class="input-error">Please enter your first name</p> -->
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>TECHNICIAN NAME</p>
-                                        <input type="text" name="">
+                                        <input type="text" name="" disabled value="<?php echo $first_name . " " . $last_name ?>">
                                         <!-- <p class="input-error">Please enter your first name</p> -->
                                     </div>
                                 </div>
@@ -214,12 +292,12 @@
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>BANK NAME</p>
-                                        <input type="text" name="">
+                                        <input type="text" name="" disabled value="<?php echo $bank_name ?>">
                                         <!-- <p class="input-error">Please enter your date of birth</p> -->
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>BRANCH</p>
-                                        <input type="text" name="">
+                                        <input type="text" name="" disabled value="<?php echo $branch ?>">
                                         <!-- <p class="input-error">Please enter your nic number</p> -->
                                     </div>
                                 </div>
@@ -227,16 +305,16 @@
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>HOLDER NAME</p>
-                                        <input type="text" name="">
+                                        <input type="text" name="" disabled value="<?php echo $holder_name ?>">
                                         <!-- <p class="input-error">Please enter your phone number</p> -->
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>ACCOUNT NO</p>
-                                        <input type="text" name="">
+                                        <input type="text" name="" disabled value="<?php echo $account_no ?>">
                                         <!-- <p class="input-error">Please enter your email</p> -->
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
@@ -250,28 +328,29 @@
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>AMOUNT</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your category</p>
+                                        <input type="text" name="" disabled value="<?php echo $amount ?>">
+                                        <!-- <p class="input-error">Please enter your category</p> -->
                                     </div>
                                     <div class="input-two-content-2">
-                                        <p>REQUESTED TIME</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your work experience</p>
+                                        <p>REQUESTED DATE</p>
+                                        <input type="text" name="" disabled value="<?php echo $date ?>">
+                                        <!-- <p class="input-error">Please enter your cost per day</p> -->
                                     </div>
+
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
-                                        <p>REQUESTED DATE</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your cost per day</p>
+                                        <p>REQUESTED TIME</p>
+                                        <input type="text" name="" disabled value="<?php echo $time ?>">
+                                        <!-- <p class="input-error">Please enter your work experience</p> -->
                                     </div>
                                 </div>
 
                                 <div class="right-button margin-top-30">
                                     <!-- <input type="submit" value="Save Change"> -->
                                     <!-- <input type="submit" value="Reject"> -->
-                                    <input type="submit" value="Paid" name="">
+                                    <input type="submit" value="Paid" name="paid">
                                 </div>
                             </div>
                         </div>

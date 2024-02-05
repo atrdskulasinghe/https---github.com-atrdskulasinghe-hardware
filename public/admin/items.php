@@ -218,6 +218,8 @@
 
                             <?php
 
+                            $error = false;
+
                             if (isset($_GET['type']) && isset($_GET['search'])) {
                                 $searchType = $_GET['type'];
                                 $searchValue = $_GET['search'];
@@ -244,19 +246,21 @@
                                             $manufacturer = $itemData['manufacturer'];
                                             $description = $itemData['description'];
                                             $image1 = "";
-    
+
                                             $selectCashierQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id' LIMIT 1";
                                             $result1 = $conn->query($selectCashierQuery1);
-    
+
                                             if ($result1) {
                                                 if ($result1->num_rows > 0) {
                                                     $itemData1 = $result1->fetch_assoc();
                                                     $image1 = $itemData1['image_url'];
                                                 }
                                             }
-    
+
+                                            $error = true;
+
                                             echo '
-                                            <a href="./item-view.php?item_id='.$item_id.'" class="card">
+                                            <a href="./item-view.php?item_id=' . $item_id . '" class="card">
                                                <div class="product-image">
                                                    <img src="../assets/images/product/' . $image1 . '" alt="">
                                                </div>
@@ -291,8 +295,6 @@
                                            </a>
                                             ';
                                         }
-                                    } else {
-                                        echo "No Items found.";
                                     }
                                 } else if ($searchType == "item_name") {
 
@@ -315,19 +317,21 @@
                                             $manufacturer = $itemData['manufacturer'];
                                             $description = $itemData['description'];
                                             $image1 = "";
-    
+
                                             $selectCashierQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id' LIMIT 1";
                                             $result1 = $conn->query($selectCashierQuery1);
-    
+
                                             if ($result1) {
                                                 if ($result1->num_rows > 0) {
                                                     $itemData1 = $result1->fetch_assoc();
                                                     $image1 = $itemData1['image_url'];
                                                 }
                                             }
-    
+
+                                            $error = true;
+
                                             echo '
-                                            <a href="./item-view.php?item_id='.$item_id.'" class="card">
+                                            <a href="./item-view.php?item_id=' . $item_id . '" class="card">
                                                <div class="product-image">
                                                    <img src="../assets/images/product/' . $image1 . '" alt="">
                                                </div>
@@ -362,8 +366,6 @@
                                            </a>
                                             ';
                                         }
-                                    } else {
-                                        echo "No Items found.";
                                     }
                                 }
                             } else {
@@ -398,8 +400,10 @@
                                             }
                                         }
 
+                                        $error = true;
+
                                         echo '
-                                        <a href="./item-view.php?item_id='.$item_id.'" class="card">
+                                        <a href="./item-view.php?item_id=' . $item_id . '" class="card">
                                            <div class="product-image">
                                                <img src="../assets/images/product/' . $image1 . '" alt="">
                                            </div>
@@ -434,9 +438,11 @@
                                        </a>
                                         ';
                                     }
-                                } else {
-                                    echo "No Items found.";
                                 }
+                            }
+
+                            if ($error == false) {
+                                echo "No Items found.";
                             }
 
                             ?>

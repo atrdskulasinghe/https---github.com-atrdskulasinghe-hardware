@@ -1,117 +1,3 @@
-<?php
-include "../../config/database.php";
-
-$user_id = "";
-
-if(isset($_GET['user'])){
-    $user_id = $_GET['user'];
-} else {
-    header('location: customers.php');
-}
-
-$firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $password = $profileUrl = $nicImageUrl = "";
-
-$selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
-$result = $conn->query($selectUserQuery);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $firstName = $row['first_name'];
-    $lastName = $row['last_name'];
-    $dob = $row['dob'];
-    $phoneNumber = $row['phone_number'];
-    $email = $row['email'];
-    $houseNumber = $row['house_no'];
-    $state = $row['state'];
-    $city = $row['city'];
-    $password = $row['password'];
-    $profileUrl = $row['profile_url'];
-} else {
-    header('location: customers.php');
-}
-
-$firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError = "";
-
-if (isset($_POST['save_change'])) {
-
-    $firstName = $_POST["first_name"];
-    $lastName = $_POST["last_name"];
-    $dob = $_POST["dob"];
-    $phoneNumber = $_POST["phone_number"];
-    $houseNumber = $_POST["house_number"];
-    $state = $_POST["state"];
-    $city = $_POST["city"];
-
-    if (empty($firstName)) {
-        $firstNameError = "Please enter your first name";
-    }
-
-    if (empty($lastName)) {
-        $lastNameError = "Please enter your last name";
-    }
-
-    if (empty($dob)) {
-        $dobError = "Please enter your date of birth";
-    }
-
-    if (empty($phoneNumber)) {
-        $phoneNumberError = "Please enter your phone number";
-    }
-
-    if (empty($houseNumber)) {
-        $houseNumberError = "Please enter your house number";
-    }
-
-    if (empty($state)) {
-        $stateError = "Please enter your state";
-    }
-
-    if (empty($city)) {
-        $cityError = "Please enter your city";
-    }
-
-    // last user id
-
-    $lastUserId = $user_id;
-
-    // sql code
-
-    $profileUrl = $lastUserId . '_profile.jpg';
-    $nicUrl = $lastUserId . '_nic.jpg';
-
-    $updateUserQuery = "UPDATE `user` SET 
-    `first_name` = '$firstName', 
-    `last_name` = '$lastName', 
-    `phone_number` = '$phoneNumber', 
-    `dob` = '$dob', 
-    `house_no` = '$houseNumber', 
-    `state` = '$state', 
-    `city` = '$city'
-    WHERE `user_id` = $user_id";
-
-    // image path
-
-    $targetDirectory = "../assets/images/customer/";
-
-    if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError)) {
-        // user save
-        if ($conn->query($updateUserQuery) === TRUE) {
-            // cashier save
-            if (!empty($_FILES["profile_image"]["name"]) && $_FILES["profile_image"]["error"] == UPLOAD_ERR_OK) {
-                $newFileName = $lastUserId . "_profile.jpg";
-                $targetFile = $targetDirectory . $newFileName;
-                if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFile)) {
-                }
-            }
-            header('location: customer-view.php');
-        }
-    }
-}
-
-$conn->close();
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -124,6 +10,7 @@ $conn->close();
     <link rel="stylesheet" href="../assets/css/dashboard-nav.css">
     <link rel="stylesheet" href="../assets/css/dashboard-profile.css">
     <link rel="stylesheet" href="../assets/css/dashboard-review.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-message.css">
     <link rel="stylesheet" href="../assets/css/button.css">
     <link rel="stylesheet" href="../assets/css/card.css">
     <link rel="stylesheet" href="../assets/css/search.css">
@@ -132,7 +19,7 @@ $conn->close();
     <link rel="stylesheet" href="../assets/css/stars.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
     <?php
-    include "../../config/database.php";
+        include "../../config/database.php";
     ?>
 </head>
 
@@ -140,7 +27,7 @@ $conn->close();
     <div class="container">
         <!-- navigation -->
         <?php
-        include "../../template/dashboard-nav.php";
+            include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
@@ -245,7 +132,7 @@ $conn->close();
                             </div>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button active">
+                        <div class="menu-link-button">
                             <a href="./customers.php">
                                 <p><img src="../assets/images/ui/customer.png" alt="">Customer</p>
                             </a>
@@ -266,77 +153,110 @@ $conn->close();
             </div>
             </aside>
         <section class="active section">
-            <div class="content">
-                <form class="profile" method="POST" enctype="multipart/form-data">
-                    <div class="profile-content">
-                        <div class="profile-content-1">
-                            <h1>Basic Information</h1>
-                            <p>Edit your account details and settings.</p>
+            <div class="message">
+                <form class="message-content" method="GET">
+                    <div class="message-content-1">
+                        <div class="message-list-button">
+                            <button id="message-list-button" type="button">
+                                <i class="ri-arrow-right-s-line"></i>
+                            </button>
                         </div>
-                        <div class="profile-content-2">
-                            <div class="profile-image">
-                                <div class="profile-image-content-1">
-                                    <h2>AVATAR</h2>
-                                    <img src="../assets/images/customer/<?php echo $profileUrl ?>" alt="" id="preview-image">
-                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/customer/<?php echo $profileUrl ?>">
+                        <div class="message-list">
+                            <a href=""  class="message-list-content active">
+                                <div class="message-list-content-1">
+                                    <img src="./images/profile.jpg" alt="">
                                 </div>
-                                <div class="profile-image-content-2">
-                                    <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
+                                <div class="message-list-content-2">
+                                    <h3>Tharindu Kulasinghe</h3>
+                                    <p>hello, how can...</p>
+                                    <p>12.00pm</p>
+                                </div>
+                            </a>
+                            <a href="" class="message-list-content ">
+                                <div class="message-list-content-1">
+                                    <img src="./images/profile.jpg" alt="">
+                                </div>
+                                <div class="message-list-content-2">
+                                    <h3>Tharindu Kulasinghe</h3>
+                                    <p>hello, how can...</p>
+                                    <p>12.00pm</p>
+                                </div>
+                            </a>
+                            <a href="" class="message-list-content ">
+                                <div class="message-list-content-1">
+                                    <img src="./images/profile.jpg" alt="">
+                                </div>
+                                <div class="message-list-content-2">
+                                    <h3>Tharindu Kulasinghe</h3>
+                                    <p>hello, how can...</p>
+                                    <p>12.00pm</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="message-content-2">
+                        <div class="message-input">
+                            <div class="message-input-content">
+                                <div class="message-input-content-1">
+                                    <img src="./images/ui/image.png" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="">
+                                </div>
+                                <div class="message-input-content-2">
+                                    <input type="text" placeholder="Type your message here" name="">
+                                </div>
+                                <div class="message-input-content-3">
+                                    <button type="submit">
+                                        <img src="./images/ui/send-plane-fill 2.png" alt="">
+                                    </button>
                                 </div>
                             </div>
-                            <div class="input-content">
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>First Name</p>
-                                        <input type="text" name="first_name" value="<?php echo $firstName ?>">
-                                        <p class="input-error"><?php echo $firstNameError ?></p>
+                        </div>
+                        <div class="all-message">
+                            <div class="content">
+                                <div class="all-message-content">
+                                    <div class="message-receiver">
+                                        <div class="message-receiver-content">
+                                            <img src="./images/profile.jpg" alt="">
+                                            <p>
+                                                fasdf
+                                            </p>
+
+                                        </div>
                                     </div>
-                                    <div class="input-two-content-2">
-                                        <p>Last Name</p>
-                                        <input type="text" name="last_name" value="<?php echo $lastName ?>">
-                                        <p class="input-error"><?php echo $lastNameError ?></p>
+                                    <div class="message-send">
+                                        <div class="message-send-content">
+                                            <p>
+                                                fasdf
+                                            </p>
+                                            <img src="./images/profile.jpg" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>DATE OF BIRTH</p>
-                                        <input type="date" name="dob" value="<?php echo $dob ?>">
-                                        <p class="input-error"><?php echo $dobError ?></p>
+                                    <div class="message-send">
+                                        <div class="message-send-content">
+                                            <p>
+                                                fasdf
+                                            </p>
+                                            <img src="./images/profile.jpg" alt="">
+                                        </div>
                                     </div>
-                                    <div class="input-two-content-2">
-                                        <p>PHONE NUMBER</p>
-                                        <input type="text" name="phone_number" value="<?php echo $phoneNumber ?>">
-                                        <p class="input-error"><?php echo $phoneNumberError ?></p>
+                                    <div class="message-send">
+                                        <div class="message-send-content">
+                                            <p>
+                                                fasdf
+                                            </p>
+                                            <img src="./images/profile.jpg" alt="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>HOUSE NUMBER</p>
-                                        <input type="text" name="house_number" value="<?php echo $houseNumber ?>">
-                                        <p class="input-error"><?php echo $houseNumberError ?></p>
+                                    <div class="message-receiver">
+                                        <div class="message-receiver-content">
+                                            <img src="./images/profile.jpg" alt="">
+                                            <p>
+                                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi
+                                                architecto distinctio quisquam vel nihil. Facere repellat eligendi
+                                                praesentium omnis tenetur.
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="input-two-content-2">
-                                        <p>EMAIL</p>
-                                        <input type="text" name="email" style="user-select: none;" value="<?php echo $email ?>" disabled>
-                                        <p class="input-error"><?php echo $emailError ?></p>
-                                    </div>
-                                </div>
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>STATE</p>
-                                        <input type="text" name="state" value="<?php echo $state ?>">
-                                        <p class="input-error"><?php echo $stateError ?></p>
-                                    </div>
-                                    <div class="input-two-content-2">
-                                        <p>CITY</p>
-                                        <input type="text" name="city" value="<?php echo $city ?>">
-                                        <p class="input-error"><?php echo $cityError ?></p>
-                                    </div>
-                                </div>
-                                <div class="right-button ">
-                                    <!-- <input type="submit" value="Remove" name="remove"> -->
-                                    <input type="submit" value="Save Change" name="save_change">
-                                    <!-- <input type="submit" value="Save" name="save"> -->
                                 </div>
                             </div>
                         </div>
@@ -349,7 +269,7 @@ $conn->close();
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/profile.js"></script>
+    <script src="../assets/js/message.js"></script>
 </body>
 
 </html>
