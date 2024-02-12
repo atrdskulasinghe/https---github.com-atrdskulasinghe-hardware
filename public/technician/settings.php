@@ -1,3 +1,171 @@
+<?php
+include "../../config/database.php";
+
+
+$user_id = 6;
+
+$firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $profileUrl = $nicImageUrl = $old_password = $password = $passwordDB = $old_passwordDB = "";
+
+$selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
+$result = $conn->query($selectUserQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+    $firstName = $row['first_name'];
+    $lastName = $row['last_name'];
+    $dob = $row['dob'];
+    $phoneNumber = $row['phone_number'];
+    $email = $row['email'];
+    $houseNumber = $row['house_no'];
+    $state = $row['state'];
+    $city = $row['city'];
+
+    $profileUrl = $row['profile_url'];
+
+    $passwordDB = $row['password'];
+    // $old_passwordDB = $row['old_password'];
+}
+
+$selectUserQuery1 = "SELECT * FROM `technician` WHERE `user_id` = $user_id";
+$result1 = $conn->query($selectUserQuery1);
+
+if ($result1->num_rows > 0) {
+    $row = $result1->fetch_assoc();
+    $nicNumber = $row['nic_number'];
+    $nicImageUrl = $row['nic_photo_url'];
+}
+
+$firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError =  $oldPsswordError =  $passwordError = "";
+
+if (isset($_POST['save_change'])) {
+
+    $firstName = $_POST["first_name"];
+    $lastName = $_POST["last_name"];
+    $dob = $_POST["dob"];
+    // $nicNumber = $_POST["nic_number"];
+    $phoneNumber = $_POST["phone_number"];
+    // $email = $_POST["email"];
+    $houseNumber = $_POST["house_number"];
+    $state = $_POST["state"];
+    $city = $_POST["city"];
+    $password = $_POST['password'];
+    $old_password = $_POST['old_password'];
+
+    if (empty($firstName)) {
+        $firstNameError = "Please enter your first name";
+    }
+
+    if (empty($lastName)) {
+        $lastNameError = "Please enter your last name";
+    }
+
+    if (empty($dob)) {
+        $dobError = "Please enter your date of birth";
+    }
+
+    if (empty($nicNumber)) {
+        $nicNumberError = "Please enter your NIC number";
+    }
+
+    if (empty($phoneNumber)) {
+        $phoneNumberError = "Please enter your phone number";
+    }
+
+    if (empty($houseNumber)) {
+        $houseNumberError = "Please enter your house number";
+    }
+
+    if (empty($state)) {
+        $stateError = "Please enter your state";
+    }
+
+    if (empty($city)) {
+        $cityError = "Please enter your city";
+    }
+
+
+    if (!empty($old_password)) {
+        if ($passwordDB !== $old_password) {
+            $oldPsswordError = "Your old password is incorrect";
+        } else {
+            if (empty($password)) {
+                $passwordError = "Please enter your password";
+            } else {
+                $updateUserQuery = "UPDATE `user` SET 
+                `password` = '$password'
+                WHERE `user_id` = $user_id";
+
+                if ($conn->query($updateUserQuery) === TRUE) {
+                    // login code
+                }
+            }
+        }
+    }
+
+
+
+    // last user id
+
+    $lastUserId = $user_id;
+
+    // sql code
+
+    $profileUrl = $lastUserId . '_profile.jpg';
+    $nicUrl = $lastUserId . '_nic.jpg';
+
+    $updateUserQuery = "UPDATE `user` SET 
+    `first_name` = '$firstName', 
+    `last_name` = '$lastName', 
+    -- `email` = '$email', 
+    `phone_number` = '$phoneNumber', 
+    `dob` = '$dob', 
+    `house_no` = '$houseNumber', 
+    `state` = '$state', 
+    `city` = '$city'
+    WHERE `user_id` = $user_id";
+
+    // image path
+
+    $targetDirectory = "../assets/images/admin/";
+
+    if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($nicNumberError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError) && empty($nicImageError)) {
+
+        // user save
+        if ($conn->query($updateUserQuery) === TRUE) {
+            // admin save
+            if ($conn->query($updateUserQuery) === TRUE) {
+                // profile image save
+                if (!empty($_FILES["profile_image"]["name"]) && $_FILES["profile_image"]["error"] == UPLOAD_ERR_OK) {
+                    $newFileName = $lastUserId . "_profile.jpg";
+                    $targetFile = $targetDirectory . $newFileName;
+                    if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFile)) {
+                        // nic image save
+                        // echo "Hello";
+
+                    }
+                }
+
+                // if (!empty($_FILES["nic_image"]["name"]) && $_FILES["nic_image"]["error"] == UPLOAD_ERR_OK) {
+                //     $newFileName = $lastUserId . "_nic.jpg";
+                //     $targetFile = $targetDirectory . $newFileName;
+                //     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
+                //         header('location: cashier-view.php?user=' . $lastUserId . '');
+                //     }
+                // } else {
+                //     header('location: cashier-view.php?user=' . $lastUserId . '');
+                // }
+            }
+        }
+    }
+}
+
+$conn->close();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +191,7 @@
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
@@ -44,8 +212,8 @@
                             </a>
                         </div>
 
-                         <!-- menu link 1 -->
-                         <div class="menu-link-button">
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
                             <a href="./booking.php">
                                 <p><img src="../assets/images/ui/booking.png" alt="">Booking</p>
                             </a>
@@ -60,6 +228,12 @@
                         <div class="menu-link-button">
                             <a href="./wallet.php">
                                 <p><img src="../assets/images/ui/Wallet.png" alt="">My Wallet</p>
+                            </a>
+                        </div>
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
+                            <a href="./salary-request.php">
+                                <p><img src="../assets/images/ui/salary-request.png" alt="">Salary Request</p>
                             </a>
                         </div>
                         <!-- menu link 1 -->
@@ -87,7 +261,7 @@
                                 <p><img src="../assets/images/ui/Settings.png" alt="">Settings</p>
                             </a>
                         </div>
-                       
+
                     </div>
                     <div class="menu-logout">
                         <a href="">
@@ -99,7 +273,7 @@
         </aside>
         <section class="active section">
             <div class="content">
-                <form class="profile">
+                <form class="profile" method="POST" enctype="multipart/form-data">
                     <div class="profile-content">
                         <div class="profile-content-1">
                             <h1>Basic Information</h1>
@@ -109,113 +283,111 @@
                             <div class="profile-image">
                                 <div class="profile-image-content-1">
                                     <h2>AVATAR</h2>
-                                    <img src="./images/profile.jpg" alt="" id="preview-image">
-                                    <input type="file" id="file-input" name="">
+                                    <img src="../assets/images/techninican/<?php echo $profileUrl ?>" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/techninican/<?php echo $profileUrl ?>">
                                 </div>
                                 <div class="profile-image-content-2">
-                                    <input type="submit" class="btn" value="Choose Photo" id="file-button" name="">
+                                    <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
                                 </div>
                             </div>
                             <div class="input-content">
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>First Name</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your first name</p>
+                                        <input type="text" name="first_name" value="<?php echo $firstName ?>">
+                                        <p class="input-error"><?php echo $firstNameError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>Last Name</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your first name</p>
+                                        <input type="text" name="last_name" value="<?php echo $lastName ?>">
+                                        <p class="input-error"><?php echo $lastNameError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>DATE OF BIRTH</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your date of birth</p>
+                                        <input type="date" name="dob" value="<?php echo $dob ?>">
+                                        <p class="input-error"><?php echo $dobError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>NIC NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your nic number</p>
+                                        <input type="text" name="nic_number" value="<?php echo $nicNumber ?> " disabled>
+                                        <p class="input-error"><?php echo $nicNumberError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>PHONE NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your phone number</p>
+                                        <input type="text" name="phone_number" value="<?php echo $phoneNumber ?>">
+                                        <p class="input-error"><?php echo $phoneNumberError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>EMAIL</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your email</p>
+                                        <input type="text" name="email" style="user-select: none;" value="<?php echo $email ?>" disabled>
+                                        <p class="input-error"><?php echo $emailError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>HOUSE NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your house number</p>
+                                        <input type="text" name="house_number" value="<?php echo $houseNumber ?>">
+                                        <p class="input-error"><?php echo $houseNumberError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
                                         <p>STATE</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your state</p>
+                                        <input type="text" name="state" value="<?php echo $state ?>">
+                                        <p class="input-error"><?php echo $stateError ?></p>
                                     </div>
                                 </div>
 
                                 <div class="input-two-content">
                                     <div class="input-two-content-1">
                                         <p>CITY</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your city</p>
-                                    </div>
-                                </div>
-
-                                <div class="input-one-content">
-                                    <p>BIO / DESCRIPTION</p>
-                                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                                    <p class="input-error">Please enter your first name</p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="profile-content margin-top-20">
-                        <div class="profile-content-1">
-                            <h1>Personal Information</h1>
-                            <p>Edit your account details and settings.</p>
-                        </div>
-                        <div class="profile-content-2">
-
-                            <div class="input-content">
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <p>NIC NUMBER</p>
-                                        <input type="text" name="">
-                                        <p class="input-error">Please enter your first name</p>
+                                        <input type="text" name="city" value="<?php echo $city ?>">
+                                        <p class="input-error"><?php echo $cityError ?></p>
                                     </div>
                                     <div class="input-two-content-2">
-                                        <p>NIC PHOTO</p>
+                                        <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="" alt="">
+                                            <img src="../assets/images/techninican/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-content">
+                        <div class="profile-content-1">
+                            <h1>Security Information</h1>
+                            <p>Edit your account details and settings.</p>
+                        </div>
+                        <div class="profile-content-2">
+                            <div class="input-content">
+                                <div class="input-two-content">
+                                    <div class="input-two-content-1">
+                                        <p>old password</p>
+                                        <input type="password" name="old_password" value="">
+                                        <p class="input-error"><?php echo $oldPsswordError ?></p>
+                                    </div>
+                                    <div class="input-two-content-2">
+                                        <p>password</p>
+                                        <input type="password" name="password" value="">
+                                        <p class="input-error"><?php echo $passwordError ?></p>
+                                    </div>
+                                </div>
 
-                                <div class="right-button margin-top-30">
-                                    <input type="submit" value="Contact" name="">
-                                    <input type="submit" value="Suspend Account" name="">
-                                    <input type="submit" value="Save Change" name="">
+                                <div class="right-button ">
+                                    <!-- <input type="submit" value="Remove" name="remove"> -->
+                                    <input type="submit" value="Save Change" name="save_change">
+                                    <!-- <input type="submit" value="Save" name="save"> -->
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </form>
 
             </div>
@@ -225,6 +397,7 @@
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/profile.js"></script>
 </body>
 
 </html>

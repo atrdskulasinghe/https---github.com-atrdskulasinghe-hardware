@@ -2,9 +2,28 @@
 include "../../config/database.php";
 
 
-$user_id = $_GET['user'];
+$payment_id = $_GET['payment_id'];
 
 $first_name = $last_name = "";
+
+$bank_details_id = $bank_name =  $branch = $holder_name = $account_no = "";
+$technician_id = $date = $time =  $amount = $user_id = "";
+
+$selectBankQuery = "SELECT * FROM `payment` WHERE `payment_id` = '$payment_id' AND `status` = 'pending'";
+$result = $conn->query($selectBankQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+
+    $date = $row['date'];
+    $user_id = $row['user_id'];
+    $time = $row['time'];
+    $amount = $row['amount'];
+} else {
+    header('location: technician-salary-request.php');
+}
+
 
 $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
 $result = $conn->query($selectUserQuery);
@@ -23,8 +42,6 @@ if ($result->num_rows > 0) {
     header('location: technician-salary-request.php');
 }
 
-$bank_details_id = $bank_name =  $branch = $holder_name = $account_no = "";
-$technician_id = $date = $time =  $amount = "";
 
 $selectBankQuery = "SELECT * FROM `bank_details` WHERE `user_id` = '$user_id'";
 $result = $conn->query($selectBankQuery);
@@ -49,33 +66,20 @@ if ($result->num_rows > 0) {
     $technician_id = $row['technician_id'];
 }
 
-$selectBankQuery = "SELECT * FROM `payment` WHERE `user_id` = '$user_id' AND `status` = 'pending'";
-$result = $conn->query($selectBankQuery);
-
-if ($result->num_rows > 0) {
-
-    $row = $result->fetch_assoc();
-
-    $date = $row['date'];
-    $time = $row['time'];
-    $amount = $row['amount'];
-}else{
-    header('location: technician-salary-request.php');
-}
 
 if (isset($_POST['paid'])) {
 
     $updateUserQuery = "UPDATE `payment` SET 
     `status` = 'paid'
-    WHERE `user_id` = $user_id";
+    WHERE `payment_id` = $payment_id";
 
     if ($conn->query($updateUserQuery) === TRUE) {
         header('location: technician-salary-request.php');
     }
-
 }
 
 ?>
+
 
 
 <!DOCTYPE html>
@@ -95,19 +99,19 @@ if (isset($_POST['paid'])) {
     <link rel="stylesheet" href="../assets/css/input.css">
     <link rel="stylesheet" href="../assets/css/dashboard-profile.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
-   
+
 </head>
 
 <body>
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
-                <!-- menu -->
-                <div class="menu">
+            <!-- menu -->
+            <div class="menu">
                 <div class="menu-header">
                     <h1>Logo</h1>
                     <div class="menu-close">
@@ -226,9 +230,9 @@ if (isset($_POST['paid'])) {
                     </div>
                 </div>
             </div>
-            </aside>
+        </aside>
         <section class="active section">
-        <div class="content">
+            <div class="content">
                 <form class="profile" method="POST">
                     <div class="profile-content">
                         <div class="profile-content-1">

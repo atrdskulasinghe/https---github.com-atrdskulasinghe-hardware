@@ -198,35 +198,37 @@
 
                             if ($result && $result->num_rows > 0) {
                                 while ($userData = $result->fetch_assoc()) {
-                                    $user_id = $userData['user_id'];
+                                    $user_idDB = $userData['user_id'];
                                     $status = $userData['status'];
+                                    $payment_id = $userData['payment_id'];
 
                                     if ($status == "pending") {
 
-                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = '$user_id'";
-                                        $result = $conn->query($selectUserQuery);
+                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = '$user_idDB'";
+                                        $resultUser = $conn->query($selectUserQuery);
 
-                                        if ($result && $result->num_rows > 0) {
-                                            while ($userData = $result->fetch_assoc()) {
-                                                $user_id = $userData['user_id'];
-                                                $first_name = $userData['first_name'];
-                                                $last_name = $userData['last_name'];
-                                                $email = $userData['email'];
-                                                $phone_number = $userData['phone_number'];
-                                                $dob = $userData['dob'];
-                                                $house_no = $userData['house_no'];
-                                                $state = $userData['state'];
-                                                $city = $userData['city'];
-                                                $account_type = $userData['account_type'];
-                                                $profile_url = $userData['profile_url'];
-                                                $password = $userData['password'];
+                                        if ($resultUser && $resultUser->num_rows > 0) {
 
-                                                if ($account_type == "delivery_boy") {
-                                                    $error = true;
-                                                    echo '
-                                                    <a href="./delivery-boy-salary-request-view.php?user=' . $user_id . '" class="card">
+                                            $userData = $resultUser->fetch_assoc();
+                                            $user_id = $userData['user_id'];
+                                            $first_name = $userData['first_name'];
+                                            $last_name = $userData['last_name'];
+                                            $email = $userData['email'];
+                                            $phone_number = $userData['phone_number'];
+                                            $dob = $userData['dob'];
+                                            $house_no = $userData['house_no'];
+                                            $state = $userData['state'];
+                                            $city = $userData['city'];
+                                            $account_type = $userData['account_type'];
+                                            $profile_url = $userData['profile_url'];
+                                            $password = $userData['password'];
+
+                                            if ($account_type == "delivery_boy") {
+                                                $error = true;
+                                                echo '
+                                                    <a href="./delivery-boy-salary-request-view.php?payment_id=' . $payment_id . '" class="card">
                                                         <div class="delivery-boy-image">
-                                                            <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
+                                                            <img src="../assets/images/delivery-boy/' . $profile_url . '" alt="">
                                                         </div>
                                                         <div class="delivery-boy-name">
                                                             <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -253,7 +255,6 @@
                                                     </a>
                                                     
                                                     ';
-                                                }
                                             }
                                         }
                                     }

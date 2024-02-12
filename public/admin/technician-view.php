@@ -89,7 +89,6 @@ if (isset($_POST['save_change'])) {
         $phoneNumberError = "Please enter phone number";
     }
 
-
     if (empty($houseNumber)) {
         $houseNumberError = "Please enter house number";
     }
@@ -453,27 +452,12 @@ if (isset($_POST['save_change'])) {
                                     <div class="input-two-content-2">
                                         <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="../assets/images/deliver-boy/<?php echo $nicImageUrl; ?>" alt="">
+                                            <img src="../assets/images/technician/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <!-- <p>NIC Photo</p> -->
-                                        <!-- <div class="profile-image">
-                                            <div class="profile-image-content-1">
-                                                <img src="../assets/images/deliver-boy/<?php echo $nicImageUrl ?>" alt="" id="preview-image-2">
-                                                <input type="file" id="file-input-2" name="nic_image" value="../assets/images/deliver-boy/<?php echo $nicImageUrl ?>">
-                                                <p class="input-error"><?php echo $nicImageError ?></p>
-                                            </div>
-                                            <div class="profile-image-content-2">
-                                                <input type="button" class="btn" value="Choose Photo" id="file-button-2" name="">
-                                            </div>
-                                        </div> -->
-
-                                    </div>
-                                </div>
+                                
 
                             </div>
                         </div>
@@ -792,6 +776,7 @@ if (isset($_POST['save_change'])) {
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/profile.js"></script>
 </body>
 
 </html>

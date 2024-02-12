@@ -63,6 +63,12 @@
                             </a>
                         </div>
                         <!-- menu link 1 -->
+                        <div class="menu-link-button">
+                            <a href="./salary-request.php">
+                                <p><img src="../assets/images/ui/salary-request.png" alt="">Salary Request</p>
+                            </a>
+                        </div>
+                        <!-- menu link 1 -->
                         <div class="menu-link-button active">
                             <a href="./feedback.php">
                                 <p><img src="../assets/images/ui/Feedback.png" alt="">Feedback</p>

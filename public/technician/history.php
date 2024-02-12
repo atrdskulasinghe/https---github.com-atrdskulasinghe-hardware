@@ -1,3 +1,23 @@
+<?php
+
+include "../../config/database.php";
+
+$user_id = 6;
+
+$technician_id = "";
+
+$selectUserQuery = "SELECT * FROM `technician` WHERE `user_id` = $user_id";
+$result = $conn->query($selectUserQuery);
+
+if ($result->num_rows > 0) {
+
+    $row = $result->fetch_assoc();
+    $technician_id = $row['technician_id'];
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +37,7 @@
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
@@ -38,8 +58,8 @@
                             </a>
                         </div>
 
-                         <!-- menu link 1 -->
-                         <div class="menu-link-button">
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
                             <a href="./booking.php">
                                 <p><img src="../assets/images/ui/booking.png" alt="">Booking</p>
                             </a>
@@ -54,6 +74,12 @@
                         <div class="menu-link-button">
                             <a href="./wallet.php">
                                 <p><img src="../assets/images/ui/Wallet.png" alt="">My Wallet</p>
+                            </a>
+                        </div>
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
+                            <a href="./salary-request.php">
+                                <p><img src="../assets/images/ui/salary-request.png" alt="">Salary Request</p>
                             </a>
                         </div>
                         <!-- menu link 1 -->
@@ -81,7 +107,7 @@
                                 <p><img src="../assets/images/ui/Settings.png" alt="">Settings</p>
                             </a>
                         </div>
-                       
+
                     </div>
                     <div class="menu-logout">
                         <a href="">
@@ -104,30 +130,94 @@
                                 <td>Cost</td>
                                 <td>Action</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <img src="../assets/images/ui/Wallet.png" alt="">
-                                </td>
-                                <td>#234324</td>
-                                <td>14 Dec 2023 10.25am</td>
-                                <td>Processing</td>
-                                <td>-</td>
-                                <td>
-                                    <button class="btn">View</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="../assets/images/ui/Wallet.png" alt="">
-                                </td>
-                                <td>#234324</td>
-                                <td>14 Dec 2023 10.25am</td>
-                                <td>Processing</td>
-                                <td>-</td>
-                                <td>
-                                    <button class="btn">View</button>
-                                </td>
-                            </tr>
+
+                            <?php
+
+                            $error = false;
+
+                            $selectUserQuery = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
+                            $result = $conn->query($selectUserQuery);
+
+                            if ($result && $result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $booking_id = $row['booking_id'];
+                                    $technician_idDB = $row['technician_id'];
+                                    $customer_id = $row['customer_id'];
+                                    $status = $row['status'];
+                                    $booked_date = $row['booked_date'];
+                                    $booked_time = $row['booked_time'];
+                                    $accept_date = $row['accept_date'];
+                                    $accept_time = $row['accept_time'];
+                                    $start_date = $row['start_date'];
+                                    $start_time = $row['start_time'];
+                                    $photo_url = $row['photo_url'];
+                                    $location_url = $row['location_url'];
+                                    $house_no = $row['house_no'];
+                                    $state = $row['state'];
+                                    $city = $row['city'];
+                                    $payment_status = $row['payment_status'];
+                                    $payment_method = $row['payment_method'];
+                                    $cost = $row['cost'];
+                                    $description = $row['description'];
+
+                                    $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $customer_id";
+                                    $resultUser = $conn->query($selectUserQuery);
+
+                                    if ($resultUser->num_rows > 0) {
+
+                                        $rowUser = $resultUser->fetch_assoc();
+
+                                        $customer_name = $rowUser['first_name'] . " " . $rowUser['last_name'];
+                                        $phone_number = $rowUser['phone_number'];
+                                        $email = $rowUser['email'];
+
+                                        if ($technician_idDB == $technician_id) {
+
+                                            if ($status == "accept" || $status == "start" || $status == "finish") {
+                                                $error = true;
+
+                                                echo '
+                                                <tr>
+                                                    <td>
+                                                        <img src="../assets/images/booking/' . $photo_url . '" alt="">
+                                                    </td>
+                                                    <td>' . $booking_id . '</td>
+                                                    <td>' . $booked_date . ' /  ' . DateTime::createFromFormat('H:i:s', $booked_time)->format('h:ia') . '</td>
+
+                                                    <td>' . ucfirst($status) . 'ed</td>
+                                                    <td>LKR.' . $cost . '</td>
+                                                    <td>
+                                                    <button class="btn" onclick="window.location.href=\'history-view.php?book_id=' . $booking_id . ' \'">View</button>
+                                                    </td>
+                                                </tr>
+                                            ';
+                                            } else if ($status == "cancel") {
+                                                echo '
+                                            <tr>
+                                                <td>
+                                                    <img src="../assets/images/booking/' . $photo_url . '" alt="">
+                                                </td>
+                                                <td>' . $booking_id . '</td>
+                                                <td>' . $booked_date . ' /  ' . DateTime::createFromFormat('H:i:s', $booked_time)->format('h:ia') . '</td>
+
+                                                <td>' . ucfirst($status) . 'ed</td>
+                                                <td>LKR.'.$cost.'</td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                        ';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            // if ($error == false) {
+                            //     echo '<div class="margin-bottom-20">Booking not found</div>';
+                            // }
+
+                            ?>
+
                         </table>
                     </div>
                 </div>

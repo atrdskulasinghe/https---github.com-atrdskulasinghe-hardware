@@ -193,7 +193,7 @@
                         <div class="search-content-1">
                             <select name="type" id="">
                                 <option value="user_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_id') echo 'selected'; ?>>By User ID</option>
-                                <option value="delivery_boy_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'delivery_boy_id') echo 'selected'; ?>>By Delivery Boy ID</option>
+                                <option value="technician_id" <?php if (isset($_GET['type']) && $_GET['type'] == 'technician_id') echo 'selected'; ?>>By Delivery Boy ID</option>
                                 <option value="user_name" <?php if (isset($_GET['type']) && $_GET['type'] == 'user_name') echo 'selected'; ?>>By User Name</option>
                             </select>
 
@@ -229,7 +229,7 @@
 
                                 if ($searchType == "user_id") {
 
-                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy' AND `user_id` = '$searchValue'";
+                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'technician' AND `user_id` = '$searchValue'";
                                     $result = $conn->query($selectCashierQuery);
 
                                     if ($result && $result->num_rows > 0) {
@@ -248,16 +248,27 @@
                                             $password = $userData['password'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                            $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
 
                                             $status = "pending";
 
+                                            $category = "";
+                                            $nic_number = "";
+                                            $nic_photo_url = "";
+                                            $work_experience = "";
+                                            $cost_per_day = "";
+                                            $cost_per_hour = "";
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
 
-                                                    $vehical = $userData1['vehicle_type'];
-
+                                                    $category = $userData1['category'];
+                                                    $nic_number = $userData1['nic_number'];
+                                                    $nic_photo_url = $userData1['nic_photo_url'];
+                                                    $work_experience = $userData1['work_experience'];
+                                                    $cost_per_day = $userData1['cost_per_day'];
+                                                    $cost_per_hour = $userData1['cost_per_hour'];
                                                     $status = $userData1['status'];
                                                 }
                                             }
@@ -266,51 +277,65 @@
                                             if ($status == "pending") {
                                                 $error = true;
                                                 echo '
-    
-                                        <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
-                                    <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
-                                    </div>
-                                    <div class="delivery-boy-name">
-                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                    </div>
-                                    <div class="delivery-boy-details">
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>City</p>
+
+                                            <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
+                                            <div class="technician-image">
+                                                <img src="../assets/images/technician/' . $profile_url . '" alt="">
                                             </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $city . '</p>
+                                            <div class="technician-name">
+                                                <h3>' . $first_name . ' ' . $last_name . '</h3>
                                             </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Date of Birth</p>
+                                            <div class="technician-details">
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>City</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $city . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Date Of Birth</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $dob . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Years of experience</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $work_experience . ' Years</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Day</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_day . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Hour</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_hour . '</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $dob . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $vehical . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                        
-                                        ';
+                                        </a>';
                                             }
                                         }
                                     }
-                                } else if ($searchType == "delivery_boy_id") {
+                                } else if ($searchType == "technician_id") {
 
                                     $user_id = "";
 
-                                    $selectCashierQuery1 = "SELECT * FROM `delivery_boy` WHERE `delivery_boy_id` = '$searchValue'";
+                                    $selectCashierQuery1 = "SELECT * FROM `technician` WHERE `technician_id` = '$searchValue'";
                                     $result1 = $conn->query($selectCashierQuery1);
 
                                     if ($result1 && $result1->num_rows > 0) {
@@ -320,7 +345,7 @@
                                         }
                                     }
 
-                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy' AND `user_id` = '$user_id'";
+                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'technician' AND `user_id` = '$user_id'";
                                     $result = $conn->query($selectCashierQuery);
 
                                     if ($result && $result->num_rows > 0) {
@@ -339,16 +364,27 @@
                                             $password = $userData['password'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                            $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
 
                                             $status = "pending";
 
+                                            $category = "";
+                                            $nic_number = "";
+                                            $nic_photo_url = "";
+                                            $work_experience = "";
+                                            $cost_per_day = "";
+                                            $cost_per_hour = "";
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
 
-                                                    $vehical = $userData1['vehicle_type'];
-
+                                                    $category = $userData1['category'];
+                                                    $nic_number = $userData1['nic_number'];
+                                                    $nic_photo_url = $userData1['nic_photo_url'];
+                                                    $work_experience = $userData1['work_experience'];
+                                                    $cost_per_day = $userData1['cost_per_day'];
+                                                    $cost_per_hour = $userData1['cost_per_hour'];
                                                     $status = $userData1['status'];
                                                 }
                                             }
@@ -357,49 +393,63 @@
                                             if ($status == "pending") {
                                                 $error = true;
                                                 echo '
-    
-                                        <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
-                                    <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
-                                    </div>
-                                    <div class="delivery-boy-name">
-                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                    </div>
-                                    <div class="delivery-boy-details">
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>City</p>
+
+                                            <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
+                                            <div class="technician-image">
+                                                <img src="../assets/images/technician/' . $profile_url . '" alt="">
                                             </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $city . '</p>
+                                            <div class="technician-name">
+                                                <h3>' . $first_name . ' ' . $last_name . '</h3>
                                             </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Date of Birth</p>
+                                            <div class="technician-details">
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>City</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $city . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Date Of Birth</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $dob . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Years of experience</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $work_experience . ' Years</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Day</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_day . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Hour</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_hour . '</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $dob . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $vehical . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                        
-                                        ';
+                                        </a>';
                                             }
                                         }
                                     }
                                 } else if ($searchType == "user_name") {
 
-                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy' AND (`first_name` LIKE '%$searchValue%' OR `last_name` LIKE '%$searchValue%')";
+                                    $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'technician' AND (`first_name` LIKE '%$searchValue%' OR `last_name` LIKE '%$searchValue%')";
                                     $result = $conn->query($selectCashierQuery);
 
                                     if ($result && $result->num_rows > 0) {
@@ -418,16 +468,27 @@
                                             $password = $userData['password'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                            $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
 
                                             $status = "pending";
 
+                                            $category = "";
+                                            $nic_number = "";
+                                            $nic_photo_url = "";
+                                            $work_experience = "";
+                                            $cost_per_day = "";
+                                            $cost_per_hour = "";
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
 
-                                                    $vehical = $userData1['vehicle_type'];
-
+                                                    $category = $userData1['category'];
+                                                    $nic_number = $userData1['nic_number'];
+                                                    $nic_photo_url = $userData1['nic_photo_url'];
+                                                    $work_experience = $userData1['work_experience'];
+                                                    $cost_per_day = $userData1['cost_per_day'];
+                                                    $cost_per_hour = $userData1['cost_per_hour'];
                                                     $status = $userData1['status'];
                                                 }
                                             }
@@ -436,43 +497,57 @@
                                             if ($status == "pending") {
                                                 $error = true;
                                                 echo '
-    
-                                        <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
-                                    <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
-                                    </div>
-                                    <div class="delivery-boy-name">
-                                        <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                    </div>
-                                    <div class="delivery-boy-details">
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>City</p>
+
+                                            <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
+                                            <div class="technician-image">
+                                                <img src="../assets/images/technician/' . $profile_url . '" alt="">
                                             </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $city . '</p>
+                                            <div class="technician-name">
+                                                <h3>' . $first_name . ' ' . $last_name . '</h3>
                                             </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Date of Birth</p>
+                                            <div class="technician-details">
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>City</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $city . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Date Of Birth</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $dob . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Years of experience</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $work_experience . ' Years</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Day</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_day . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Hour</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_hour . '</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $dob . '</p>
-                                            </div>
-                                        </div>
-                                        <div class="delivery-boy-details-content">
-                                            <div class="delivery-boy-details-content-1">
-                                                <p>Vehicle</p>
-                                            </div>
-                                            <div class="delivery-boy-details-content-2">
-                                                <p>' . $vehical . '</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                        
-                                        ';
+                                        </a>';
                                             }
                                         }
                                     }
@@ -480,7 +555,6 @@
                             } else {
                                 $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'technician'";
                                 $result = $conn->query($selectCashierQuery);
-
 
                                 if ($result && $result->num_rows > 0) {
                                     while ($userData = $result->fetch_assoc()) {
@@ -580,7 +654,6 @@
                                         </a>';
                                         }
                                     }
-                                } else {
                                 }
                             }
 

@@ -1,0 +1,170 @@
+.booking-content {
+    width: 100%;
+    /* background-color: red; */
+    padding: 60px 0;
+    font-family: sans-serif;
+}
+
+.calendar-content {
+    width: calc(100% - 0px);
+    padding: 10px 2px;
+    margin: auto;
+    overflow: auto;
+}
+
+
+
+.calendar {
+    width: calc(100% - 40px);
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(247, 247, 247)1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+}
+
+@media(max-width:768px) {
+    .calendar-content {
+        width: calc(100%);
+        padding: 0;
+    }
+
+    .calendar {
+        width: calc(100%);
+        padding: 0;
+
+    }
+}
+
+
+.calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th,
+.calendar td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.calendar th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.calendar td {
+    /* */
+    position: relative;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+}
+
+.calendar-nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+
+.event-dot {
+    display: block;
+    width: 5px;
+    height: 5px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.selected-date {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.past-date{
+    background-color: rgb(177, 177, 177);
+    color: white;
+}
+
+.calendar-nav {
+    width: 40px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.time-content {
+    margin-top: 10px;
+    display: flex;
+}
+
+
+
+
+.time-selector {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    background-color: #fff;
+    border-radius: 5px;
+    /* padding: 10px; */
+    /* background-color: rgb(247, 247, 247)1; */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); */
+    width: 100%;
+    /* justify-content: center; */
+    margin-top: -4px;
+}
+
+/* .time-selector label {
+    margin-right: 10px;
+} */
+
+.time-selector input[type="time"] {
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: inherit;
+    outline: none;
+    width:calc(100% - 10px)
+    /* Adjust width as needed */
+}
+
+
+
+#map {
+    height: 250px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+
+.time-selector .am-pm-buttons button:hover {
+    background-color: #45a049;
+}
+
+
+.other-details {
+    max-width: calc(100%);
+    margin: auto;
+    margin-top: 20px;
+}
+

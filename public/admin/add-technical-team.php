@@ -102,14 +102,14 @@ if (isset($_POST['save'])) {
     $profileUrl = $lastUserId . '_profile.jpg';
 
     $sql = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `phone_number`, `dob`, `house_no`, `state`, `city`, `account_type`, `profile_url`, `password`) 
-    VALUES ('$firstName','$lastName','$email','$phoneNumber','$dob','$houseNumber','$state','$city','technical-team','$profileUrl','$hashedPassword')";
+    VALUES ('$firstName','$lastName','$email','$phoneNumber','$dob','$houseNumber','$state','$city','technical_team','$profileUrl','$hashedPassword')";
 
     $nicUrl = $lastUserId . '_nic.jpg';
     $sql2 = "INSERT INTO `technical_team`(`user_id`, `nic_image_url`) VALUES ('$lastUserId','$nicUrl')";
 
     // image path
 
-    $targetDirectory = "../assets/images/technical-team/";
+    $targetDirectory = "../assets/images/technical_team/";
 
     if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($nicNumberError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError) && empty($nicImageError) && empty($passwordError) && empty($confirmPasswordError)) {
 

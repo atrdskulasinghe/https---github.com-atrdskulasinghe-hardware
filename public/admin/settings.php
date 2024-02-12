@@ -93,8 +93,9 @@ if (isset($_POST['save_change'])) {
             if (empty($password)) {
                 $passwordError = "Please enter your password";
             } else {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $updateUserQuery = "UPDATE `user` SET 
-                `password` = '$password'
+                `password` = '$hashedPassword'
                 WHERE `user_id` = $user_id";
 
                     if ($conn->query($updateUserQuery) === TRUE) {
@@ -146,16 +147,6 @@ if (isset($_POST['save_change'])) {
 
                     }
                 }
-
-                // if (!empty($_FILES["nic_image"]["name"]) && $_FILES["nic_image"]["error"] == UPLOAD_ERR_OK) {
-                //     $newFileName = $lastUserId . "_nic.jpg";
-                //     $targetFile = $targetDirectory . $newFileName;
-                //     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
-                //         header('location: cashier-view.php?user=' . $lastUserId . '');
-                //     }
-                // } else {
-                //     header('location: cashier-view.php?user=' . $lastUserId . '');
-                // }
             }
         }
     }

@@ -2,9 +2,28 @@
 include "../../config/database.php";
 
 
-$user_id = $_GET['user'];
+$payment_id = $_GET['payment_id'];
 
-$first_name = $last_name = "";
+$first_name = $last_name =  $user_id = "";
+$date = "";
+$time = "";
+
+$bank_details_id = $bank_name =  $branch = $holder_name = $account_no = "";
+$delivery_boy_id = $date = $time =  $amount = "";
+
+$selectQuery = "SELECT * FROM `payment` WHERE `payment_id` = '$payment_id' AND `status` = 'pending'";
+$result = $conn->query($selectQuery);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+
+    $user_id = $row['user_id'];
+    $date = $row['date'];
+    $time = $row['time'];
+    $amount = $row['amount'];
+} else {
+    header('location: delivery-boy-salary-request.php');
+}
 
 $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $user_id";
 $result = $conn->query($selectUserQuery);
@@ -23,8 +42,7 @@ if ($result->num_rows > 0) {
     header('location: delivery-boy-salary-request.php');
 }
 
-$bank_details_id = $bank_name =  $branch = $holder_name = $account_no = "";
-$delivery_boy_id = $date = $time =  $amount = "";
+
 
 $selectBankQuery = "SELECT * FROM `bank_details` WHERE `user_id` = '$user_id'";
 $result = $conn->query($selectBankQuery);
@@ -49,30 +67,16 @@ if ($result->num_rows > 0) {
     $delivery_boy_id = $row['delivery_boy_id'];
 }
 
-$selectBankQuery = "SELECT * FROM `payment` WHERE `user_id` = '$user_id' AND `status` = 'pending'";
-$result = $conn->query($selectBankQuery);
-
-if ($result->num_rows > 0) {
-
-    $row = $result->fetch_assoc();
-
-    $date = $row['date'];
-    $time = $row['time'];
-    $amount = $row['amount'];
-}else{
-    header('location: delivery-boy-salary-request.php');
-}
 
 if (isset($_POST['paid'])) {
 
     $updateUserQuery = "UPDATE `payment` SET 
     `status` = 'paid'
-    WHERE `user_id` = $user_id";
+    WHERE `payment_id` = $payment_id";
 
     if ($conn->query($updateUserQuery) === TRUE) {
         header('location: delivery-boy-salary-request.php');
     }
-
 }
 
 ?>
@@ -105,8 +109,8 @@ if (isset($_POST['paid'])) {
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
-                <!-- menu -->
-                <div class="menu">
+            <!-- menu -->
+            <div class="menu">
                 <div class="menu-header">
                     <h1>Logo</h1>
                     <div class="menu-close">
@@ -225,7 +229,7 @@ if (isset($_POST['paid'])) {
                     </div>
                 </div>
             </div>
-            </aside>
+        </aside>
         <section class="active section">
             <div class="content">
                 <form class="profile" method="POST">

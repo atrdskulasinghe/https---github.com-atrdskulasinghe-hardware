@@ -262,7 +262,7 @@
     
                                         <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
+                                        <img src="../assets/images/delivery-boy/' . $profile_url . '" alt="">
                                     </div>
                                     <div class="delivery-boy-name">
                                         <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -353,7 +353,7 @@
     
                                         <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
+                                        <img src="../assets/images/delivery-boy/' . $profile_url . '" alt="">
                                     </div>
                                     <div class="delivery-boy-name">
                                         <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -432,7 +432,7 @@
     
                                         <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
-                                        <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
+                                        <img src="../assets/images/delivery-boy/' . $profile_url . '" alt="">
                                     </div>
                                     <div class="delivery-boy-name">
                                         <h3>' . $first_name . ' ' . $last_name . '</h3>
@@ -513,7 +513,7 @@
 
                                     <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                 <div class="delivery-boy-image">
-                                    <img src="../assets/images/deliver-boy/' . $profile_url . '" alt="">
+                                    <img src="../assets/images/delivery-boy/' . $profile_url . '" alt="">
                                 </div>
                                 <div class="delivery-boy-name">
                                     <h3>' . $first_name . ' ' . $last_name . '</h3>

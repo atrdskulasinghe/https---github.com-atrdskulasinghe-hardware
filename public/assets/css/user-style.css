@@ -1,0 +1,106 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
+:root {
+    /* --background-color: linear-gradient(to right, #319795, #0066FF); */
+    --background-color: linear-gradient(90deg, #0a0494 0%, #3454d1 61%, #009fff 100%);
+    --shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    --main-color: linear-gradient(90deg, #0a0494 0%, #3454d1 61%, #009fff 100%);
+    --second-color: rgb(77, 77, 255);
+    --xxl-font-size: 40px;
+    --large-font-size: 16px;
+    --medium-font-size: 14px;
+    --small-font-size: 12px;
+    --main-font-family: sans-serif;
+    --second-font-family: sans-serif;
+    --text-color: #707070;
+    --text-active-color: rgba(255, 255, 255, 0.8);
+    --border: 1px solid rgb(202, 202, 202);
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.box {
+    width: 1200px;
+    margin: auto;
+}
+
+@media(max-width: 1240px) {
+    .box {
+        width: calc(100% - 40px);
+    }
+}
+
+.visibility-hidden{
+    visibility: hidden;
+}
+
+.margin-top-0{
+    margin-top: 0px;
+}
+
+.margin-top{
+    margin-top: 20px;
+}
+
+.margin-top-10{
+    margin-top: 10px;
+}
+
+.margin-top-20{
+    margin-top: 20px;
+}
+
+.margin-top-30{
+    margin-top: 30px;
+}
+
+.margin-top-40{
+    margin-top: 40px !important;
+}
+
+.margin-bottom-20{
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+section {
+    width: 100%;
+    min-height: calc(100vh - 270px);
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.display-none {
+    display: none;
+}
+
+@media(max-width: 576px) {
+    .display-none-576 {
+        display: none;
+    }
+}

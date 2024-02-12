@@ -1,0 +1,212 @@
+menu{
+    width: 400px;
+    height: 100vh;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    box-shadow: var(--shadow);
+    left: -576px;
+    transition: all .5s ease;
+    z-index: 10;
+    visibility: hidden;
+}
+
+@media(max-width: 576px){
+    menu{
+        width: calc(100% - 80px);
+        left: calc(-(100% - 80px));
+    }
+}
+
+menu.active{
+    visibility: visible;
+    left: 0;
+}
+
+.menu-header{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.menu-header-content-1{
+    width: calc(100% - 50px);
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+
+
+/* menu profile */
+
+.menu-profile{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    color: black;
+    /* display: none; */
+}
+
+.menu-profile:hover{
+    background:var(--background-color);
+    color: white;
+}
+
+.menu-header-profile{
+    width: 45px;
+    height: 45px;
+    /* background-color: rgb(0, 47, 255); */
+    margin-left: 20px;
+}
+
+.menu-header-profile img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.menu-header-details{
+    margin-left: 10px;
+    width: calc(100% - 60px);
+    overflow: hidden;
+}
+
+.menu-header-details h4{
+    font-family: sans-serif;
+}
+
+.menu-header-details p{
+    font-family: sans-serif;
+    font-size: 13px;
+}
+
+/* menu button */
+
+.menu-login-button{
+    width: 100%;
+    height: 100%;
+    /* background-color: red; */
+    /* display: none; */
+    align-items: center;
+    display: flex;
+}
+
+.menu-login-button a{
+    display: flex;
+    width: calc(50% - 10px);
+    height: 30px;
+    background: transparent;
+    margin-left: 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    font-family: sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: rgb(0, 0, 0);
+    outline: 1px solid rgb(153, 153, 153);
+}
+
+.menu-login-button a:nth-child(2){
+    margin-left: 10px;
+}
+
+.menu-login-button a:hover{
+    outline: none;
+    color: white;
+    background: linear-gradient(to left, #319795, #0066FF);;
+}
+
+/* menu header content 2 */
+
+.menu-header-content-2{
+    width: 50px;
+    height: 100%;
+    /* background-color: green; */
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.menu-header i{
+    font-size: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.menu-content ul li{
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+}
+
+.menu-content ul li:hover{
+    background: var(--background-color);
+}
+
+.menu-content ul li a{
+    width: calc(100% - 40px);
+    display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    font-size: 14px;
+    color: black;
+    font-family: sans-serif;
+    text-transform: capitalize;
+}
+
+.menu-content ul li:hover a{
+    color: white;
+}
+
+.menu-content ul li a img{
+    width: 20px;
+    margin-right: 10px;
+}
+
+.menu-content ul li:hover img{
+    filter: invert(100%);
+}
+
+.menu-logout{
+    width: 100%;
+    height: 40px;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    bottom: 0;
+}
+
+.menu-logout:hover{
+    background: var(--background-color);
+}
+
+.menu-logout a{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: black;
+    font-family: sans-serif;
+    text-transform: capitalize;
+    justify-content: center;
+}
+
+.menu-logout:hover a{
+    color: white;
+}
+
+.menu-logout a img{
+    width: 20px;
+    margin-right: 10px;
+}
+
+.menu-logout:hover img{
+    filter: invert(100%);
+}

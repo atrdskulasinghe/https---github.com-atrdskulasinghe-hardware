@@ -1,0 +1,259 @@
+.technician {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.technician-url {
+    width: 100%;
+    user-select: none;
+}
+
+.technician-url ul li {
+    display: inline-block;
+    color: #707070;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+.technician-url ul li a {
+    color: #707070;
+}
+
+.technician-url ul li:last-child a {
+    color: blue;
+}
+
+.technician-content {
+    width: calc(100% - 40px);
+    margin-top: 40px;
+    background-color: #EEECEC;
+    padding: 20px;
+}
+
+@media(max-width:768px) {
+    .technician-content {
+        width: calc(100%);
+        background-color: #ffffff;
+        padding: 0px;
+    }
+
+
+    .technician-url {
+        display: none;
+    }
+}
+
+.technician-header {
+    width: 100%;
+    display: flex;
+}
+
+.technician-content-1 {
+    width: calc(100% - 300px);
+    /* background-color: green; */
+
+}
+
+.technician-profile {
+    width: 100%;
+    height: 150px;
+    /* background-color: red; */
+    display: flex;
+}
+
+.technician-profile-content-1 {
+    width: 150px;
+    /* height: 100%; */
+    /* background-color: blue; */
+}
+
+.technician-profile-content-1 img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    user-select: none;
+}
+
+.technician-profile-content-2 {
+    margin-left: 20px;
+    position: relative;
+    width: calc(100% - 150px);
+}
+
+.technician-profile-content-2 h1 {
+    font-family: sans-serif;
+    font-size: 18px;
+}
+
+.technician-profile-content-2 p {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.technician-profile-content-2 img {
+    width: 15px;
+    height: 15px;
+}
+
+.technician-profile-content-2 a {
+    font-family: sans-serif;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 2px;
+    color: blue;
+    font-weight: 600;
+}
+
+
+.technician-profile-button {
+    max-width: 100%;
+    /* background-color: green; */
+    padding-right: 20px;
+    margin-top: 40px;
+}
+
+.technician-profile-button button {
+    width: calc((100% / 2) - 3px);
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    background: var(--background-color);
+    transition: .4s ease all;
+    border: 0px solid #707070;
+}
+
+.technician-profile-button button:hover {
+    background: white;
+    border: 1px solid #707070;
+    color: #707070;
+}
+
+.technician-profile-button button:nth-child(2) {
+    margin-left: 2px;
+    background: white;
+    border: 1px solid #707070;
+    color: #707070;
+}
+
+.technician-profile-button button:nth-child(2):hover {
+    background: var(--background-color);
+    border: 0px solid #707070;
+    color: white;
+}
+
+
+@media(max-width: 768px) {
+    .technician-profile {
+        display: block;
+        height: auto;
+    }
+
+    .technician-profile-content-1 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .technician-profile-content-2 {
+        width: 100%;
+        /* background-color: green; */
+        margin: 0;
+        margin-top: 20px;
+    }
+
+    .technician-profile-button {
+        margin-top: 20px;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .technician-profile-button button {
+        width: 100%;
+    }
+    
+}
+
+
+
+.technician-content-2 {
+    width: 300px;
+    /* background-color: yellow; */
+    display: flex;
+    justify-content: right;
+}
+
+.technician-details {
+    width: 100%;
+    display: flex;
+}
+
+.technician-details-content-1 {
+    width: calc(100% / 2);
+}
+
+.technician-details-content-1 ul li {
+    list-style: none;
+    margin: 10px 0;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #707070;
+}
+
+.technician-details-content-1 ul li:first-child {
+    margin-top: 0;
+}
+
+.technician-details-content-2 {
+    width: calc(100% / 2);
+    display: flex;
+    justify-content: right;
+}
+
+.technician-details-content-2 ul li {
+    text-align: right;
+    list-style: none;
+    margin: 8px 0;
+
+}
+
+
+.technician-details-content-2 ul li a {
+    color: blue;
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.technician-details-content-2 ul li:first-child {
+    margin-top: 0;
+}
+
+@media(max-width: 768px) {
+    .technician-header {
+        display: block;
+    }
+
+    .technician-content-1 {
+        width: 100%;
+    }
+
+    .technician-content-2 {
+        width: 100%;
+        margin: 0;
+        margin-top: 20px;
+    }
+
+}
+
+
+
+.review {
+    margin-top: 80px;
+}

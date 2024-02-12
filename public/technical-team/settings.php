@@ -2,7 +2,7 @@
 include "../../config/database.php";
 
 
-$user_id = 4;
+$user_id = 3;
 
 $firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $profileUrl = $nicImageUrl = $old_password = $password = $passwordDB = $old_passwordDB = "";
 
@@ -28,7 +28,7 @@ if ($result->num_rows > 0) {
     // $old_passwordDB = $row['old_password'];
 }
 
-$selectUserQuery1 = "SELECT * FROM `admin` WHERE `user_id` = $user_id";
+$selectUserQuery1 = "SELECT * FROM `technical_team` WHERE `user_id` = $user_id";
 $result1 = $conn->query($selectUserQuery1);
 
 if ($result1->num_rows > 0) {
@@ -128,7 +128,7 @@ if (isset($_POST['save_change'])) {
 
     // image path
 
-    $targetDirectory = "../assets/images/admin/";
+    $targetDirectory = "../assets/images/technical_team/";
 
     if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($nicNumberError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError) && empty($nicImageError)) {
 
@@ -330,8 +330,8 @@ $conn->close();
                             <div class="profile-image">
                                 <div class="profile-image-content-1">
                                     <h2>AVATAR</h2>
-                                    <img src="../assets/images/admin/<?php echo $profileUrl ?>" alt="" id="preview-image">
-                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/admin/<?php echo $profileUrl ?>">
+                                    <img src="../assets/images/technical_team/<?php echo $profileUrl ?>" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/technical_team/<?php echo $profileUrl ?>">
                                 </div>
                                 <div class="profile-image-content-2">
                                     <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
@@ -399,7 +399,7 @@ $conn->close();
                                     <div class="input-two-content-2">
                                         <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="../assets/images/admin/<?php echo $nicImageUrl; ?>" alt="">
+                                            <img src="../assets/images/technical_team/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
                                     </div>
                                 </div>

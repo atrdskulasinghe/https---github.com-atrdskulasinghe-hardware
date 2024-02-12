@@ -1,3 +1,142 @@
+<?php
+
+include "../../config/database.php";
+
+$booking_id = "";
+$user_id = 6;
+
+$status = $customer_id = $booked_date = $booked_time = $accept_date = $accept_time = $start_date = $start_time = $finished_date = $finished_time = $photo_url = $location_url = $house_no = $state = $city = $payment_status = $payment_method = $cost = $description = "";
+
+$technician_id = "";
+
+$selectUserQuery = "SELECT * FROM `technician` WHERE `user_id` = $user_id";
+$result = $conn->query($selectUserQuery);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $technician_id = $row['technician_id'];
+}
+
+if (isset($_GET['book_id'])) {
+    if ($_GET['book_id'] !== "") {
+
+
+        $booking_id = $_GET['book_id'];
+
+        $selectUserQuery = "SELECT * FROM `booking` WHERE `booking_id` = $booking_id";
+        $result = $conn->query($selectUserQuery);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $technician_idDB = $row['technician_id'];
+            $customer_id = $row['customer_id'];
+            $status = $row['status'];
+            $booked_date = $row['booked_date'];
+            $booked_time = $row['booked_time'];
+            $accept_date = $row['accept_date'];
+            $accept_time = $row['accept_time'];
+            $start_date = $row['start_date'];
+            $start_time = $row['start_time'];
+            $finished_date = $row['finished_date'];
+            $finished_time = $row['finished_time'];
+            $photo_url = $row['photo_url'];
+            $location_url = $row['location_url'];
+            $house_no = $row['house_no'];
+            $state = $row['state'];
+            $city = $row['city'];
+            $payment_status = $row['payment_status'];
+            $payment_method = $row['payment_method'];
+            $cost = $row['cost'];
+            $description = $row['description'];
+
+
+            if ($technician_idDB == $technician_id) {
+                if ($status !== 'pending') {
+                } else {
+                    header('location: history.php');
+                }
+            } else {
+                header('location: history.php');
+            }
+        }
+    } else {
+        header('location: history.php');
+    }
+} else {
+    header('location: history.php');
+}
+
+$currentDate = date("Y-m-d");
+$currentTime = date("H:i:s");
+
+if (isset($_POST['start'])) {
+    $updateQuery = "UPDATE `booking` SET 
+        `status` = 'start',
+        `start_date` = '$currentDate',
+        `start_time` = '$currentTime'
+        WHERE `booking_id` = $booking_id";
+
+    if ($conn->query($updateQuery) === TRUE) {
+        header('location: history-view.php?book_id=' . $booking_id . '');
+    } else {
+        header('location: booking.php');
+    }
+}
+
+if (isset($_POST['finish'])) {
+    $updateQuery = "UPDATE `booking` SET 
+        `status` = 'finish',
+        `finished_date` = '$currentDate',
+        `finished_time` = '$currentTime'
+        WHERE `booking_id` = $booking_id";
+
+    if ($conn->query($updateQuery) === TRUE) {
+        header('location: history-view.php?book_id=' . $booking_id . '');
+    } else {
+        header('location: booking.php');
+    }
+}
+
+if (isset($_POST['paid'])) {
+
+    if ($payment_method == "cash") {
+
+
+
+
+        // echo "ff";
+
+        $selectUserQuery = "SELECT * FROM `technician` WHERE `technician_id` = $technician_id";
+        $result = $conn->query($selectUserQuery);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+
+            $balance = $row['balance'];
+            $now_balance = $balance + 10;
+
+            $updateQuery = "UPDATE `technician` SET 
+                    `balance` = '$now_balance'
+                    WHERE `technician_id` = $technician_id";
+
+            if ($conn->query($updateQuery) === TRUE) {
+                $updateQuery = "UPDATE `booking` SET 
+                    `payment_status` = 'paid',
+                    `cost` = '1000'
+                    WHERE `booking_id` = $booking_id";
+
+                if ($conn->query($updateQuery) === TRUE) {
+                    header('location: history-view.php?book_id=' . $booking_id . '');
+                }
+            }
+        }
+    } else {
+        header('location: history.php');
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +157,7 @@
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
@@ -39,8 +178,8 @@
                             </a>
                         </div>
 
-                         <!-- menu link 1 -->
-                         <div class="menu-link-button">
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
                             <a href="./booking.php">
                                 <p><img src="../assets/images/ui/booking.png" alt="">Booking</p>
                             </a>
@@ -55,6 +194,12 @@
                         <div class="menu-link-button">
                             <a href="./wallet.php">
                                 <p><img src="../assets/images/ui/Wallet.png" alt="">My Wallet</p>
+                            </a>
+                        </div>
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
+                            <a href="./salary-request.php">
+                                <p><img src="../assets/images/ui/salary-request.png" alt="">Salary Request</p>
                             </a>
                         </div>
                         <!-- menu link 1 -->
@@ -82,7 +227,7 @@
                                 <p><img src="../assets/images/ui/Settings.png" alt="">Settings</p>
                             </a>
                         </div>
-                       
+
                     </div>
                     <div class="menu-logout">
                         <a href="">
@@ -96,9 +241,9 @@
             <div class="content">
                 <div class="history">
                     <div class="history-details-1">
-                        <p>Date : Dec 30, 2023</p>
-                        <p>Delivery ID: #234324</p>
-                        <p>Status: Accept</p>
+                        <p>Booked Date : <?php echo $booked_date ?></p>
+                        <p>Booking ID: <?php echo $booking_id ?></p>
+                        <p>Status: <?php echo ucfirst($status) ?></p>
                     </div>
                     <div class="history-details-2">
                         <div class="line-content">
@@ -107,19 +252,31 @@
                                     <i class="ri-check-line"></i>
                                     <h4>Booking Confirmed</h4>
                                 </div>
-                                <div class="line line-1 active"></div>
-                                <div class="line-circle line-circle-2 active">
+                                <div class="line line-1 <?php if ($status == "accept" || $status == "start" ||  $status == "finish") {
+                                                            echo "active";
+                                                        } ?>"></div>
+                                <div class="line-circle line-circle-2  <?php if ($status == "accept" || $status == "start" ||  $status == "finish") {
+                                                                            echo "active";
+                                                                        } ?>">
                                     <i class="ri-check-line"></i>
-                                    <h4>Accept</h4>
+                                    <h4>Accepted</h4>
                                 </div>
-                                <div class="line  line-2 active"></div>
-                                <div class="line-circle line-circle-3 active">
+                                <div class="line  line-2 <?php if ($status == "start" || $status == "finish") {
+                                                                echo "active";
+                                                            } ?>"></div>
+                                <div class="line-circle line-circle-3  <?php if ($status == "start" || $status == "finish") {
+                                                                            echo "active";
+                                                                        } ?>">
                                     <i class="ri-check-line"></i>
                                     <h4>Started</h4>
                                 </div>
-                                <div class="line  line-3 active"></div>
-                                <div class="line-circle line-circle-4 active">
-                                    <i class="ri-check-line"></i>
+                                <div class="line  line-3 <?php if ($status == "finish") {
+                                                                echo "active";
+                                                            } ?>"></div>
+                                <div class="line-circle line-circle-4  <?php if ($status == "finish") {
+                                                                            echo "active";
+                                                                        } ?>">
+                                    <i class="ri-check-line "></i>
                                     <h4>Finished</h4>
                                 </div>
                             </div>
@@ -127,33 +284,56 @@
                     </div>
                     <div class="history-details-3">
                         <div class="history-details-3-content-1">
-                            <h4>Date</h4>
-                            <p>14 Dec 2023</p>
-                            <h4>Total Amount</h4>
-                            <p>LKR. 2000</p>
+                            <h4>Booked Date & Time</h4>
+                            <p><?php echo $accept_date . " " . $accept_time; ?></p>
+                            <h4>Accept Date & Time</h4>
+                            <p><?php echo $accept_date . " " . $accept_time; ?></p>
                         </div>
                         <div class="history-details-3-content-2">
                             <div>
+                                <h4>Cost</h4>
+                                <p>LKR.<?php echo $cost; ?></p>
                                 <h4>Payment Status</h4>
-                                <p>pending</p>
-                                <h4>Delivery Fee</h4>
-                                <p>LKR. 2000</p>
+                                <p><?php echo $payment_status; ?></p>
                             </div>
                         </div>
                         <div class="history-details-3-content-3">
                             <div>
                                 <h4>Payment Method</h4>
-                                <p>Card</p>
+                                <p><?php echo $payment_method?></p>
+
+                                <p><?php if ($status == "start") {
+                                        echo '<h4>Started Date & Time</h4>';
+                                        echo "<p>" . $start_date . " " . $start_time . "</p>";
+                                    } else if ($status == "finish") {
+                                        echo '<h4>Finished Date & Time</h4>';
+                                        echo "<p>" . $finished_date . " " . $finished_time . "</p>";
+                                    } ?></p>
                             </div>
                         </div>
                     </div>
-                    <div class="input-content">
+                    <form class="input-content" method="post">
                         <div class="right-button margin-top-30">
-                            <input type="submit" value="Contact" name="">
-                            <input type="submit" value="Location" name="">
-                            <input type="submit" value="Finish" name="">
+                            <input type="button" class="btn" onclick="contactUser(' . $user_id . ', ' . $booking_id . ')" value="Contact">
+                            <input type="button" class="btn" value="Location" onclick="window.location.href=''">
+                            <?php
+
+                            if ($status == "accept") {
+                                echo '<input type="submit" value="Start" name="start" class="btn" >';
+                            } else if ($status == "start") {
+                                echo '<input type="submit" value="Finish" name="finish" class="btn" >';
+                            } else if ($status == "finish") {
+                                if ($payment_method == "card") {
+                                    if ($payment_status == "pending") {
+                                        echo '<input type="submit" value="Paid" name="paid" class="btn" >';
+                                    }
+                                }
+                            }
+
+                            ?>
+
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </section>
@@ -162,6 +342,11 @@
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script>
+        function contactUser(userId, bookingId) {
+            window.location.href = 'message.php?receiver_id=' + userId + '&book_id=' + bookingId;
+        }
+    </script>
 </body>
 
 </html>

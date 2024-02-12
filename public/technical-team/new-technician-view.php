@@ -172,15 +172,7 @@ if (isset($_POST['save_change'])) {
                 }
 
                 header('location: new-technician.php');
-                // if (!empty($_FILES["nic_image"]["name"]) && $_FILES["nic_image"]["error"] == UPLOAD_ERR_OK) {
-                //     $newFileName = $lastUserId . "_nic.jpg";
-                //     $targetFile = $targetDirectory . $newFileName;
-                //     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
-                //         header('location: delivery-boy-view.php?user=' . $lastUserId . '');
-                //     }
-                // } else {
-                //     header('location: delivery-boy-view.php?user=' . $lastUserId . '');
-                // }
+                
             }
         }
     }
@@ -422,27 +414,11 @@ if (isset($_POST['save_change'])) {
                                     <div class="input-two-content-2">
                                         <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="../assets/images/deliver-boy/<?php echo $nicImageUrl; ?>" alt="">
+                                            <img src="../assets/images/technician/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="input-two-content">
-                                    <div class="input-two-content-1">
-                                        <!-- <p>NIC Photo</p> -->
-                                        <!-- <div class="profile-image">
-                                            <div class="profile-image-content-1">
-                                                <img src="../assets/images/deliver-boy/<?php echo $nicImageUrl ?>" alt="" id="preview-image-2">
-                                                <input type="file" id="file-input-2" name="nic_image" value="../assets/images/deliver-boy/<?php echo $nicImageUrl ?>">
-                                                <p class="input-error"><?php echo $nicImageError ?></p>
-                                            </div>
-                                            <div class="profile-image-content-2">
-                                                <input type="button" class="btn" value="Choose Photo" id="file-button-2" name="">
-                                            </div>
-                                        </div> -->
-
-                                    </div>
-                                </div>
 
                             </div>
                         </div>

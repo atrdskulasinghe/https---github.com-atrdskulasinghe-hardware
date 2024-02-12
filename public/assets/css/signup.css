@@ -1,0 +1,229 @@
+.all-signup{
+    width: 100%;
+    min-height: 100vh;
+    padding: 60px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: gray; */
+}
+.signup-box{
+    width: calc(800px - 40px);
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    padding: 60px 20px;
+    box-shadow: var(--shadow);
+}
+
+@media(max-width:992px){
+    .signup-box{
+        width: calc(100% - 40px);
+        box-shadow: none;
+    }
+}
+
+.signup-line{
+    width: calc(100% - 40px);
+    /* background-color: red; */
+    margin: auto;
+}
+
+.signup-content{
+    width: 100%;
+}
+
+.line-content{
+    width: 100%;
+    /* height: 100px; */
+    position: relative;
+    margin-bottom: 60px;
+    display: none;
+}
+
+.line-content.active{
+    display: flex;
+}
+
+.line-all-content-1{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.line-all-content-1 .line-circle{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    background-color: var(--text-color);
+    font-size: 18px;
+}
+
+.line-all-content-1 .line-circle h4{
+    color: var(--text-color);
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+}
+
+.line-all-content-1 .line-circle-1.active{
+    background-color: #4737FF;
+    color: white;
+}
+
+.line-all-content-1 .line-circle-2.active{
+    background-color: #6B37FF;
+    color: white;
+}
+
+
+.line-all-content-1 .line-circle-3.active{
+    background-color: #A64DFF;
+    color: white;
+}
+
+
+.line-all-content-1 .line{
+    width: calc((100% / 2) - (45px));
+    height: 5px;
+    background-color: var(--text-color);
+}
+
+.line-all-content-1 .line-1.active{
+    background: linear-gradient(to right, #4737FF, #714DFF);
+}
+
+
+.line-all-content-1 .line-2.active{
+    background: linear-gradient(to right, #714DFF, #A64DFF);
+}
+
+
+
+.line-all-content-2{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.line-all-content-2 .line-circle{
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--main-font-family);
+    color: var(--text-color);
+    background-color: var(--text-color);
+    font-size: 18px;
+}
+
+.line-all-content-2 .line-circle h4{
+    color: var(--text-color);
+    font-size: 14px;
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+}
+
+.line-all-content-2 .line-circle-1.active{
+    background-color: #4737FF;
+    color: white;
+}
+
+.line-all-content-2 .line-circle-2.active{
+    background-color: #6B37FF;
+    color: white;
+}
+
+
+.line-all-content-2 .line-circle-3.active{
+    background-color: #864DFF;
+    color: white;
+}
+
+.line-all-content-2 .line-circle-4.active{
+    background-color: #A64DFF;
+    color: white;
+}
+
+.line-all-content-2 .line{
+    width: calc((100% / 3) - (45px));
+    height: 5px;
+    background-color: var(--text-color);
+}
+
+.line-all-content-2 .line-1.active{
+    background: linear-gradient(to right, #4737FF, #6B37FF);
+}
+
+
+.line-all-content-2 .line-2.active{
+    background: linear-gradient(to right, #6B37FF, #864DFF);
+}
+
+.line-all-content-2 .line-3.active{
+    background: linear-gradient(to right, #864DFF, #A64DFF);
+}
+
+
+
+
+
+
+
+
+.profile-image {
+    width: 100%;
+    /* height: 200px; */
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-image-content-1 input {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.profile-image-content-2 {
+    margin-left: 20px;
+}
+
+.profile-image h2 {
+    font-family: var(--main-font-family);
+    font-size: var(--medium-font-size);
+    color: var(--text-color);
+}
+
+.profile-image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.profile-image input {
+    height: 25px !important;
+}
+
+.profile-nic {
+    width: 100%;
+    height: 150px;
+    margin-top: 5px;
+}
+
+.profile-nic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
