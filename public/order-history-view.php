@@ -3,6 +3,57 @@ include "../config/database.php";
 
 session_start();
 
+$booking_id = "";
+$photo_url = "";
+$status = "";
+$booked_date = "";
+$booked_time = "";
+$accept_date = "";
+$accept_time = "";
+$start_date = "";
+$start_time = "";
+$finished_date = "";
+$finished_time = "";
+$house_no = "";
+$state = "";
+$city = "";
+$payment_status = "";
+$payment_method = "";
+$cost = "";
+$description = "";
+$latitude = "";
+$longitude = "";
+
+$user_id = $_SESSION['id'];
+
+$selectTechnicianQuery1 = "SELECT * FROM `booking` WHERE `customer_id`= '$user_id'";
+$resultTechnician = $conn->query($selectTechnicianQuery1);
+
+if ($resultTechnician->num_rows > 0) {
+    while ($row = $resultTechnician->fetch_assoc()) {
+        $booking_id = $row['booking_id'];
+        $photo_url = $row['photo_url'];
+        $status = $row['status'];
+        $booked_date = $row['booked_date'];
+        $booked_time = $row['booked_time'];
+        $accept_date = $row['accept_date'];
+        $accept_time = $row['accept_time'];
+        $start_date = $row['start_date'];
+        $start_time = $row['start_time'];
+        $finished_date = $row['finished_date'];
+        $finished_time = $row['finished_time'];
+        $house_no = $row['house_no'];
+        $state = $row['state'];
+        $city = $row['city'];
+        $payment_status = $row['payment_status'];
+        $payment_method = $row['payment_method'];
+        $cost = $row['cost'];
+        $description = $row['description'];
+        $latitude = $row['latitude'];
+        $longitude = $row['longitude'];
+    }
+}
+
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
         // header('location: index.php');
@@ -17,7 +68,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technical_team") {
         header('location: ./technical-team/index.php');
     }
-}else{
+} else {
     header('location: ./login.php');
 }
 ?>
@@ -47,11 +98,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 
 <body>
     <div class="container">
-    <?php
-            include "../template/user-nav.php";
+        <?php
+        include "../template/user-nav.php";
         ?>
         <?php
-            include "../template/user-menu.php";
+        include "../template/user-menu.php";
         ?>
 
         <section>
@@ -59,9 +110,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                 <div class="box">
                     <div class="history">
                         <div class="history-details-1">
-                            <p>Date : Dec 30, 2023</p>
-                            <p>Delivery ID: #234324</p>
-                            <p>Status: Accept</p>
+                            <p>Date : <?php echo $booked_date ?></p>
+                            <p>Delivery ID: <?php echo $booked_date ?></p>
+                            <p>Status: <?php echo $booked_date ?></p>
                         </div>
                         <div class="history-details-2">
                             <div class="line-content">

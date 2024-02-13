@@ -3,6 +3,8 @@ include "../config/database.php";
 
 session_start();
 
+
+
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
         // header('location: index.php');
@@ -18,6 +20,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         header('location: ./technical-team/index.php');
     }
 }
+
+$user_id = $_SESSION['id'];
 
 $item_id = "";
 $item_category = "";
@@ -67,7 +71,7 @@ if ($resultItem->num_rows > 0) {
     $weight = $itemData['weight'];
     $manufacturer = $itemData['manufacturer'];
     $description = $itemData['description'];
-}else {
+} else {
     header('location: products.php');
 }
 
@@ -106,6 +110,47 @@ if ($resultItemImage->num_rows > 0) {
 }
 
 
+if (isset($_POST['add-to-cart'])) {
+
+
+    $quantity = $_POST['quantity'];
+
+    $selectCartQuery = "SELECT * FROM `cart` WHERE `item_id` = '$item_id' AND `user_id`='$user_id'";
+    $resultCart = $conn->query($selectCartQuery);
+
+    if ($resultCart->num_rows > 0) {
+        $itemCartData = $resultCart->fetch_assoc();
+
+        $quantityDB = $itemCartData['quantity'];
+        $newQuantity = $quantity + $quantityDB;
+
+        $updateUserQuery = "UPDATE `cart` SET 
+        `quantity` = '$newQuantity' 
+        WHERE `item_id` = '$item_id' AND `user_id` = '$user_id'";
+        if ($stock_quantity >= $newQuantity) {
+
+            if ($conn->query($updateUserQuery) === TRUE) {
+                header('location: ./cart.php');
+                // echo $quantity;
+            }
+        } else {
+            // error
+        }
+    } else {
+        $cartSql = "INSERT INTO `cart`(`user_id`, `item_id`, `quantity`) 
+        VALUES ('$user_id','$item_id','$quantity')";
+
+        if ($stock_quantity >= $newQuantity) {
+            if ($conn->query($cartSql) === TRUE) {
+                header('location: ./cart.php');
+                // echo $quantity;
+            }
+        } else {
+            // error
+        }
+    }
+}
+
 
 ?>
 
@@ -132,13 +177,13 @@ if ($resultItemImage->num_rows > 0) {
 
 <body>
     <div class="container">
-    <?php
-        
-        include "../template/user-nav.php"; 
-        
+        <?php
+
+        include "../template/user-nav.php";
+
         ?>
-                <?php
-            include "../template/user-menu.php";
+        <?php
+        include "../template/user-menu.php";
         ?>
         <section>
             <div class="product">
@@ -193,7 +238,7 @@ if ($resultItemImage->num_rows > 0) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-content-2">
+                            <form class="product-content-2" method="POST">
                                 <h1 class="product-content-2-title"><?php echo $name ?></h1>
                                 <div class="product-content-2-stars">
                                     <ul>
@@ -222,39 +267,6 @@ if ($resultItemImage->num_rows > 0) {
                                 <div class="product-content-2-price">
                                     <h1>LKR. <?php echo $price ?></h1>
                                 </div>
-                                <!-- <div class="product-content-2-color">
-                                    <h4>Color family : </h4>&nbsp;
-                                    <div class="product-content-2-color-content">
-                                        <h4>Warm White-Pin Type-E27</h4>
-                                        <ul>
-                                            <li>
-                                                <div class="product-content-2-color-image">
-                                                    <img src="images/product/pngwing 1.png" alt="">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="product-content-2-color-image">
-                                                    <img src="images/product/pngwing 1.png" alt="">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="product-content-2-color-image">
-                                                    <img src="images/product/pngwing 1.png" alt="">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="product-content-2-color-image">
-                                                    <img src="images/product/pngwing 1.png" alt="">
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="product-content-2-color-image">
-                                                    <img src="images/product/pngwing 1.png" alt="">
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div> -->
                                 <div class="product-content-2-warranty">
                                     <h4>Warranty : </h4>&nbsp;
                                     <a href=""><?php echo $warranty ?> year warranty</a>
@@ -266,18 +278,23 @@ if ($resultItemImage->num_rows > 0) {
                                             <i>-</i>
                                         </div>
                                         <div class="product-content-2-quantity-number">
-                                            <span id="quantity-number"><input type="text" style="width: 20px; text-align:center; border:none; outline:none; " disabled value="1"></span>
+                                            <span id="quantity-number">
+                                                <input type="text" id="quantity" name="quantity" style="width: 30px; text-align: center; border:none; outline:none; background:transparent;" value="1">
+                                            </span>
                                         </div>
                                         <div class="product-content-2-quantity-increment">
                                             <i>+</i>
                                         </div>
                                     </div>
+
+
+
                                 </div>
                                 <div class="product-content-2-button">
-                                    <button type="button">Add to Cart</button>
-                                    <button type="button">Buy Now</button>
+                                    <button type="submit" name="add-to-cart">Add to Cart</button>
+                                    <button type="submit" name="buy">Buy Now</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="product-details-2">
                             <div class="product-details-2-content-1">
@@ -686,7 +703,7 @@ if ($resultItemImage->num_rows > 0) {
                                     if ($resultItem->num_rows > 0) {
                                         while ($itemData = $resultItem->fetch_assoc()) {
 
-                                            
+
 
                                             if ($i == 5) {
                                                 break;
@@ -767,6 +784,19 @@ if ($resultItemImage->num_rows > 0) {
         ?>
     </div>
     <script src="./assets/js/user-script.js"></script>
+    <script>
+        let dec = document.querySelector(".product-content-2-quantity-decrement");
+        let inc = document.querySelector(".product-content-2-quantity-increment");
+        let quantity = document.getElementById("quantity");
+
+        dec.addEventListener("click", () => {
+            quantity.value = parseInt(quantity.value) - 1;
+        });
+
+        inc.addEventListener("click", () => {
+            quantity.value = parseInt(quantity.value) + 1;
+        });
+    </script>
 </body>
 
 </html>

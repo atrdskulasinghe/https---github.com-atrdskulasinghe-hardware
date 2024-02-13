@@ -9,7 +9,7 @@ $user_id = $_SESSION['id'];
 
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
-        // header('location: index.php');
+        
     } else if ($_SESSION['account_type'] == "cashier") {
         header('location: ./cashier/index.php');
     } else if ($_SESSION['account_type'] == "technician") {
@@ -44,7 +44,6 @@ if ($resultTechnician->num_rows > 0) {
     header('location: technicians.php');
 }
 
-// 
 $state_error = $house_no_error = $city_error = $date_error = "";
 
 if (isset($_POST['book'])) {
@@ -270,6 +269,7 @@ if (isset($_POST['book'])) {
         ?>
     </div>
     <?php
+
     $selectTechnicianQuery1 = "SELECT * FROM `booking` WHERE `technician_id`= '$technician_id'";
     $resultTechnician = $conn->query($selectTechnicianQuery1);
 
@@ -282,11 +282,11 @@ if (isset($_POST['book'])) {
             $event = $row['status'];
 
             if ($row['status'] !== "reject") {
-
                 $eventData[] = [$date, $time, $event];
             }
         }
     }
+
     ?>
 
     <script>

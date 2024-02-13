@@ -30,9 +30,9 @@ if(isset($_GET['product_name'])){
 
                 if (isset($_SESSION['id'])) {
                     echo '
-                    <a href="" class="menu-profile">
+                    <a href="./profile.php" class="menu-profile">
                     <div class="menu-header-profile">
-                        <img src="./assets/images/customer/' . $profile_url . '" alt="">
+                        <img src="./assets/images/customer/' . $user_profile_url . '" alt="">
                     </div>
                     <div class="menu-header-details">
                         <h4>' . $user_first_name . ' ' . $user_last_name . '</h4>

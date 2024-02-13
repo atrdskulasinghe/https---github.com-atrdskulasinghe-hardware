@@ -4,8 +4,8 @@ include "../template/user-data.php";
 
 $searchData = "";
 
-if(isset($_GET['product_name'])){
-    if($_GET['product_name'] !== ""){
+if (isset($_GET['product_name'])) {
+    if ($_GET['product_name'] !== "") {
         $searchData = $_GET['product_name'];
     }
 }
@@ -44,7 +44,7 @@ if(isset($_GET['product_name'])){
                 <!-- navigation search bar -->
                 <div class="nav-1-content-2">
                     <form class="nav-content-2-search" method="get" action="./products.php">
-                        <input type="text" placeholder="Search" name="product_name" value="<?php echo $searchData;?>">
+                        <input type="text" placeholder="Search" name="product_name" value="<?php echo $searchData; ?>">
                         <button type="submit">
                             <i class="bi bi-search"></i>
                         </button>
@@ -88,10 +88,10 @@ if(isset($_GET['product_name'])){
                         <ul>
                             <li>
                                 <a href="./profile.php"><img src="<?php if (isset($_SESSION['id'])) {
-                                                            echo './assets/images/ui/user2.png';
-                                                        } else {
-                                                            echo './assets/images/ui/user2.png';
-                                                        } ?>" alt=""><?php echo $user_first_name. " ". $user_last_name?></a>
+                                                                        echo './assets/images/customer/' . $user_profile_url;
+                                                                    } else {
+                                                                        echo './assets/images/ui/user2.png';
+                                                                    } ?>" alt=""><?php echo $user_first_name . " " . $user_last_name ?></a>
                             </li>
                             <li>
                                 <a href="./cart.php"><img src="./assets/images/ui/all items.png" alt="">Cart</a>
