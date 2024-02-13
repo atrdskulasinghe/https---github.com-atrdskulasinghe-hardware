@@ -58,7 +58,7 @@ if (isset($_GET['product_name'])) {
                     <div class="nav-1-content-3-content-1">
                         <ul>
                             <li>
-                                <a href="">
+                                <a href="./cart.php">
                                     <i class="bi bi-bag-fill" id="cart"></i>
                                 </a>
                             </li>

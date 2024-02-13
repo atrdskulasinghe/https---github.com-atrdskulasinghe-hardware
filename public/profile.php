@@ -14,7 +14,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -23,7 +23,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 } else {
     header('location: ./login.php');
 }
-
 
 $first_name_error = '';
 $last_name_error = '';

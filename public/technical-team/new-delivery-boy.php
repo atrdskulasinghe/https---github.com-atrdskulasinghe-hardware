@@ -1,3 +1,26 @@
+<?php
+
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        header('location: ../technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        // header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +38,8 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
     <?php
     include "../../config/database.php";
+    include "../../template/user-data.php";
+
     ?>
 </head>
 
@@ -150,7 +175,7 @@
         <section class="active section">
             <div class="content">
 
-                <div class="delivery-boy">
+            <div class="delivery-boy">
                     <form class="search-2" method="GET" action="./delivery-boys.php">
                         <div class="search-content-1">
                             <select name="type" id="">
@@ -201,26 +226,29 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+                                            $user_status = $userData['status'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
+                                            if ($user_status != "pending") {
 
-                                            $status = "pending";
+                                                $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                                $result1 = $conn->query($selectDBQuery);
 
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
+                                                $status = "pending";
 
-                                                    $vehical = $userData1['vehicle_type'];
+                                                if ($result1 && $result1->num_rows > 0) {
+                                                    while ($userData1 = $result1->fetch_assoc()) {
 
-                                                    $status = $userData1['status'];
+                                                        $vehical = $userData1['vehicle_type'];
+
+                                                        $status = $userData1['status'];
+                                                    }
                                                 }
-                                            }
 
 
-                                            if ($status == "pending") {
-                                                $error = true;
-                                                echo '
+                                                if ($status == "pending") {
+                                                    $error = true;
+                                                    echo '
     
                                         <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
@@ -258,6 +286,7 @@
                                 </a>
                                         
                                         ';
+                                                }
                                             }
                                         }
                                     }
@@ -292,26 +321,29 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+                                            $user_status = $userData['status'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
+                                            if ($user_status != "pending") {
 
-                                            $status = "pending";
+                                                $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                                $result1 = $conn->query($selectDBQuery);
 
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
+                                                $status = "pending";
 
-                                                    $vehical = $userData1['vehicle_type'];
+                                                if ($result1 && $result1->num_rows > 0) {
+                                                    while ($userData1 = $result1->fetch_assoc()) {
 
-                                                    $status = $userData1['status'];
+                                                        $vehical = $userData1['vehicle_type'];
+
+                                                        $status = $userData1['status'];
+                                                    }
                                                 }
-                                            }
 
 
-                                            if ($status == "pending") {
-                                                $error = true;
-                                                echo '
+                                                if ($status == "pending") {
+                                                    $error = true;
+                                                    echo '
     
                                         <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
@@ -349,6 +381,7 @@
                                 </a>
                                         
                                         ';
+                                                }
                                             }
                                         }
                                     }
@@ -371,26 +404,29 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+                                            $user_status = $userData['status'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
+                                            if ($user_status != "pending") {
 
-                                            $status = "pending";
+                                                $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                                $result1 = $conn->query($selectDBQuery);
 
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
+                                                $status = "pending";
 
-                                                    $vehical = $userData1['vehicle_type'];
+                                                if ($result1 && $result1->num_rows > 0) {
+                                                    while ($userData1 = $result1->fetch_assoc()) {
 
-                                                    $status = $userData1['status'];
+                                                        $vehical = $userData1['vehicle_type'];
+
+                                                        $status = $userData1['status'];
+                                                    }
                                                 }
-                                            }
 
 
-                                            if ($status == "pending") {
-                                                $error = true;
-                                                echo '
+                                                if ($status == "pending") {
+                                                    $error = true;
+                                                    echo '
     
                                         <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                     <div class="delivery-boy-image">
@@ -428,6 +464,7 @@
                                 </a>
                                         
                                         ';
+                                                }
                                             }
                                         }
                                     }
@@ -452,26 +489,29 @@
                                         $account_type = $userData['account_type'];
                                         $profile_url = $userData['profile_url'];
                                         $password = $userData['password'];
+                                        $user_status = $userData['status'];
                                         $vehical = "";
 
-                                        $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
-                                        $result1 = $conn->query($selectDBQuery);
+                                        if ($user_status != "pending") {
 
-                                        $status = "pending";
+                                            $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
+                                            $result1 = $conn->query($selectDBQuery);
 
-                                        if ($result1 && $result1->num_rows > 0) {
-                                            while ($userData1 = $result1->fetch_assoc()) {
+                                            $status = "pending";
 
-                                                $vehical = $userData1['vehicle_type'];
+                                            if ($result1 && $result1->num_rows > 0) {
+                                                while ($userData1 = $result1->fetch_assoc()) {
 
-                                                $status = $userData1['status'];
+                                                    $vehical = $userData1['vehicle_type'];
+
+                                                    $status = $userData1['status'];
+                                                }
                                             }
-                                        }
 
 
-                                        if ($status == "pending") {
-                                            $error = true;
-                                            echo '
+                                            if ($status == "pending") {
+                                                $error = true;
+                                                echo '
 
                                     <a href="./new-delivery-boy-view.php?user=' . $user_id . '" class="card">
                                 <div class="delivery-boy-image">
@@ -509,6 +549,7 @@
                             </a>
                                     
                                     ';
+                                            }
                                         }
                                     }
                                 }

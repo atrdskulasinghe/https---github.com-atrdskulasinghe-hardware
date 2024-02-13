@@ -2,6 +2,29 @@
 
 $type = "admin";
 
+// include "../../template/user-data.php";
+
+$this_profile_url = "";
+
+if(isset($_SESSION['id']) && isset($_SESSION['account_type'])){
+
+    
+
+    if ($_SESSION['account_type'] == "customer") {
+        $this_profile_url = "../assets/images/customer/".$user_profile_url;
+    } else if ($_SESSION['account_type'] == "cashier") {
+        $this_profile_url = "../assets/images/cashier/".$user_profile_url;
+    } else if ($_SESSION['account_type'] == "technician") {
+        $this_profile_url = "../assets/images/technician/".$user_profile_url;
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        $this_profile_url = "../assets/images/delivery-boy/".$user_profile_url;
+    } else if ($_SESSION['account_type'] == "admin") {
+        $this_profile_url = "../assets/images/admin/".$user_profile_url;
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        $this_profile_url = "../assets/images/technical_team/".$user_profile_url;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +51,8 @@ $type = "admin";
                     <i class="ri-notification-3-line"></i>
                 </a>
 
-                <a href="">
-                    <img src="./images/profile.jpg" alt="">
+                <a href="./settings.php">
+                    <img src="<?php echo $this_profile_url?>" alt="">
                 </a>
 
             </div>

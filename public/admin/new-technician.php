@@ -1,3 +1,24 @@
+<?php
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        header('location: ../technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        // header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +36,8 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
     <?php
     include "../../config/database.php";
+    include "../../template/user-data.php";
+
     ?>
 </head>
 
@@ -178,7 +201,7 @@
                         </div>
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                        <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>
@@ -246,37 +269,42 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+                                            $user_status = $userData['status'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
+                                            if ($user_status != "pending") {
 
-                                            $status = "pending";
 
-                                            $category = "";
-                                            $nic_number = "";
-                                            $nic_photo_url = "";
-                                            $work_experience = "";
-                                            $cost_per_day = "";
-                                            $cost_per_hour = "";
 
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
+                                                $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
+                                                $result1 = $conn->query($selectDBQuery);
 
-                                                    $category = $userData1['category'];
-                                                    $nic_number = $userData1['nic_number'];
-                                                    $nic_photo_url = $userData1['nic_photo_url'];
-                                                    $work_experience = $userData1['work_experience'];
-                                                    $cost_per_day = $userData1['cost_per_day'];
-                                                    $cost_per_hour = $userData1['cost_per_hour'];
-                                                    $status = $userData1['status'];
+                                                $status = "pending";
+
+                                                $category = "";
+                                                $nic_number = "";
+                                                $nic_photo_url = "";
+                                                $work_experience = "";
+                                                $cost_per_day = "";
+                                                $cost_per_hour = "";
+
+                                                if ($result1 && $result1->num_rows > 0) {
+                                                    while ($userData1 = $result1->fetch_assoc()) {
+
+                                                        $category = $userData1['category'];
+                                                        $nic_number = $userData1['nic_number'];
+                                                        $nic_photo_url = $userData1['nic_photo_url'];
+                                                        $work_experience = $userData1['work_experience'];
+                                                        $cost_per_day = $userData1['cost_per_day'];
+                                                        $cost_per_hour = $userData1['cost_per_hour'];
+                                                        $status = $userData1['status'];
+                                                    }
                                                 }
-                                            }
 
 
-                                            if ($status == "pending") {
-                                                $error = true;
-                                                echo '
+                                                if ($status == "pending") {
+                                                    $error = true;
+                                                    echo '
 
                                             <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
                                             <div class="technician-image">
@@ -328,6 +356,7 @@
                                                 </div>
                                             </div>
                                         </a>';
+                                                }
                                             }
                                         }
                                     }
@@ -362,37 +391,42 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+                                            $user_status = $userData['status'];
                                             $vehical = "";
 
-                                            $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
-                                            $result1 = $conn->query($selectDBQuery);
+                                            if ($user_status != "pending") {
 
-                                            $status = "pending";
 
-                                            $category = "";
-                                            $nic_number = "";
-                                            $nic_photo_url = "";
-                                            $work_experience = "";
-                                            $cost_per_day = "";
-                                            $cost_per_hour = "";
 
-                                            if ($result1 && $result1->num_rows > 0) {
-                                                while ($userData1 = $result1->fetch_assoc()) {
+                                                $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
+                                                $result1 = $conn->query($selectDBQuery);
 
-                                                    $category = $userData1['category'];
-                                                    $nic_number = $userData1['nic_number'];
-                                                    $nic_photo_url = $userData1['nic_photo_url'];
-                                                    $work_experience = $userData1['work_experience'];
-                                                    $cost_per_day = $userData1['cost_per_day'];
-                                                    $cost_per_hour = $userData1['cost_per_hour'];
-                                                    $status = $userData1['status'];
+                                                $status = "pending";
+
+                                                $category = "";
+                                                $nic_number = "";
+                                                $nic_photo_url = "";
+                                                $work_experience = "";
+                                                $cost_per_day = "";
+                                                $cost_per_hour = "";
+
+                                                if ($result1 && $result1->num_rows > 0) {
+                                                    while ($userData1 = $result1->fetch_assoc()) {
+
+                                                        $category = $userData1['category'];
+                                                        $nic_number = $userData1['nic_number'];
+                                                        $nic_photo_url = $userData1['nic_photo_url'];
+                                                        $work_experience = $userData1['work_experience'];
+                                                        $cost_per_day = $userData1['cost_per_day'];
+                                                        $cost_per_hour = $userData1['cost_per_hour'];
+                                                        $status = $userData1['status'];
+                                                    }
                                                 }
-                                            }
 
 
-                                            if ($status == "pending") {
-                                                $error = true;
-                                                echo '
+                                                if ($status == "pending") {
+                                                    $error = true;
+                                                    echo '
 
                                             <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
                                             <div class="technician-image">
@@ -444,6 +478,7 @@
                                                 </div>
                                             </div>
                                         </a>';
+                                                }
                                             }
                                         }
                                     }
@@ -466,7 +501,122 @@
                                             $account_type = $userData['account_type'];
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
+                                            $user_status = $userData['status'];
                                             $vehical = "";
+
+                                            if ($user_status != "pending") {
+
+
+
+                                                $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
+                                                $result1 = $conn->query($selectDBQuery);
+
+                                                $status = "pending";
+
+                                                $category = "";
+                                                $nic_number = "";
+                                                $nic_photo_url = "";
+                                                $work_experience = "";
+                                                $cost_per_day = "";
+                                                $cost_per_hour = "";
+
+                                                if ($result1 && $result1->num_rows > 0) {
+                                                    while ($userData1 = $result1->fetch_assoc()) {
+
+                                                        $category = $userData1['category'];
+                                                        $nic_number = $userData1['nic_number'];
+                                                        $nic_photo_url = $userData1['nic_photo_url'];
+                                                        $work_experience = $userData1['work_experience'];
+                                                        $cost_per_day = $userData1['cost_per_day'];
+                                                        $cost_per_hour = $userData1['cost_per_hour'];
+                                                        $status = $userData1['status'];
+                                                    }
+                                                }
+
+
+                                                if ($status == "pending") {
+                                                    $error = true;
+                                                    echo '
+
+                                            <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
+                                            <div class="technician-image">
+                                                <img src="../assets/images/technician/' . $profile_url . '" alt="">
+                                            </div>
+                                            <div class="technician-name">
+                                                <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                            </div>
+                                            <div class="technician-details">
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>City</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $city . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Date Of Birth</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $dob . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Years of experience</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $work_experience . ' Years</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Day</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_day . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="technician-details-content">
+                                                    <div class="technician-details-content-1">
+                                                        <p>Cost Per Hour</p>
+                                                    </div>
+                                                    <div class="technician-details-content-2">
+                                                        <p>' . $cost_per_hour . '</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'technician'";
+                                $result = $conn->query($selectCashierQuery);
+
+                                if ($result && $result->num_rows > 0) {
+                                    while ($userData = $result->fetch_assoc()) {
+                                        $user_id = $userData['user_id'];
+                                        $first_name = $userData['first_name'];
+                                        $last_name = $userData['last_name'];
+                                        $email = $userData['email'];
+                                        $phone_number = $userData['phone_number'];
+                                        $dob = $userData['dob'];
+                                        $house_no = $userData['house_no'];
+                                        $state = $userData['state'];
+                                        $city = $userData['city'];
+                                        $account_type = $userData['account_type'];
+                                        $profile_url = $userData['profile_url'];
+                                        $password = $userData['password'];
+                                        $user_status = $userData['status'];
+                                        $vehical = "";
+
+                                        if ($user_status != "pending") {
+
+
 
                                             $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
@@ -498,160 +648,57 @@
                                                 $error = true;
                                                 echo '
 
-                                            <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
-                                            <div class="technician-image">
-                                                <img src="../assets/images/technician/' . $profile_url . '" alt="">
-                                            </div>
-                                            <div class="technician-name">
-                                                <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                            </div>
-                                            <div class="technician-details">
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>City</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $city . '</p>
-                                                    </div>
+                                        <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
+                                        <div class="technician-image">
+                                            <img src="../assets/images/technician/' . $profile_url . '" alt="">
+                                        </div>
+                                        <div class="technician-name">
+                                            <h3>' . $first_name . ' ' . $last_name . '</h3>
+                                        </div>
+                                        <div class="technician-details">
+                                            <div class="technician-details-content">
+                                                <div class="technician-details-content-1">
+                                                    <p>City</p>
                                                 </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Date Of Birth</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $dob . '</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Years of experience</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $work_experience . ' Years</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Cost Per Day</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $cost_per_day . '</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Cost Per Hour</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $cost_per_hour . '</p>
-                                                    </div>
+                                                <div class="technician-details-content-2">
+                                                    <p>' . $city . '</p>
                                                 </div>
                                             </div>
-                                        </a>';
+                                            <div class="technician-details-content">
+                                                <div class="technician-details-content-1">
+                                                    <p>Date Of Birth</p>
+                                                </div>
+                                                <div class="technician-details-content-2">
+                                                    <p>' . $dob . '</p>
+                                                </div>
+                                            </div>
+                                            <div class="technician-details-content">
+                                                <div class="technician-details-content-1">
+                                                    <p>Years of experience</p>
+                                                </div>
+                                                <div class="technician-details-content-2">
+                                                    <p>' . $work_experience . ' Years</p>
+                                                </div>
+                                            </div>
+                                            <div class="technician-details-content">
+                                                <div class="technician-details-content-1">
+                                                    <p>Cost Per Day</p>
+                                                </div>
+                                                <div class="technician-details-content-2">
+                                                    <p>' . $cost_per_day . '</p>
+                                                </div>
+                                            </div>
+                                            <div class="technician-details-content">
+                                                <div class="technician-details-content-1">
+                                                    <p>Cost Per Hour</p>
+                                                </div>
+                                                <div class="technician-details-content-2">
+                                                    <p>' . $cost_per_hour . '</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>';
                                             }
-                                        }
-                                    }
-                                }
-                            } else {
-                                $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'technician'";
-                                $result = $conn->query($selectCashierQuery);
-
-                                if ($result && $result->num_rows > 0) {
-                                    while ($userData = $result->fetch_assoc()) {
-                                        $user_id = $userData['user_id'];
-                                        $first_name = $userData['first_name'];
-                                        $last_name = $userData['last_name'];
-                                        $email = $userData['email'];
-                                        $phone_number = $userData['phone_number'];
-                                        $dob = $userData['dob'];
-                                        $house_no = $userData['house_no'];
-                                        $state = $userData['state'];
-                                        $city = $userData['city'];
-                                        $account_type = $userData['account_type'];
-                                        $profile_url = $userData['profile_url'];
-                                        $password = $userData['password'];
-                                        $vehical = "";
-
-                                        $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
-                                        $result1 = $conn->query($selectDBQuery);
-
-                                        $status = "pending";
-
-                                        $category = "";
-                                        $nic_number = "";
-                                        $nic_photo_url = "";
-                                        $work_experience = "";
-                                        $cost_per_day = "";
-                                        $cost_per_hour = "";
-
-                                        if ($result1 && $result1->num_rows > 0) {
-                                            while ($userData1 = $result1->fetch_assoc()) {
-
-                                                $category = $userData1['category'];
-                                                $nic_number = $userData1['nic_number'];
-                                                $nic_photo_url = $userData1['nic_photo_url'];
-                                                $work_experience = $userData1['work_experience'];
-                                                $cost_per_day = $userData1['cost_per_day'];
-                                                $cost_per_hour = $userData1['cost_per_hour'];
-                                                $status = $userData1['status'];
-                                            }
-                                        }
-
-
-                                        if ($status == "pending") {
-                                            $error = true;
-                                            echo '
-
-                                            <a href="./new-technician-view.php?user=' . $user_id . '" class="card">
-                                            <div class="technician-image">
-                                                <img src="../assets/images/technician/' . $profile_url . '" alt="">
-                                            </div>
-                                            <div class="technician-name">
-                                                <h3>' . $first_name . ' ' . $last_name . '</h3>
-                                            </div>
-                                            <div class="technician-details">
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>City</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $city . '</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Date Of Birth</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $dob . '</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Years of experience</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $work_experience . ' Years</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Cost Per Day</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $cost_per_day . '</p>
-                                                    </div>
-                                                </div>
-                                                <div class="technician-details-content">
-                                                    <div class="technician-details-content-1">
-                                                        <p>Cost Per Hour</p>
-                                                    </div>
-                                                    <div class="technician-details-content-2">
-                                                        <p>' . $cost_per_hour . '</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>';
                                         }
                                     }
                                 }

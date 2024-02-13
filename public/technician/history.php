@@ -2,9 +2,33 @@
 
 include "../../config/database.php";
 
-$user_id = 6;
+
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        // header('location: ./technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
 
 $technician_id = "";
+$user_id = 6;
+if(isset($_SESSION['id'])){
+    $user_id = $_SESSION['id'];
+}
+include "../../template/user-data.php";
+
 
 $selectUserQuery = "SELECT * FROM `technician` WHERE `user_id` = $user_id";
 $result = $conn->query($selectUserQuery);
@@ -110,7 +134,7 @@ if ($result->num_rows > 0) {
 
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                        <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>
@@ -151,7 +175,7 @@ if ($result->num_rows > 0) {
                                     $start_date = $row['start_date'];
                                     $start_time = $row['start_time'];
                                     $photo_url = $row['photo_url'];
-                                    $location_url = $row['location_url'];
+                                    // $location_url = $row['location_url'];
                                     $house_no = $row['house_no'];
                                     $state = $row['state'];
                                     $city = $row['city'];

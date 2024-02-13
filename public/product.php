@@ -13,7 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -151,6 +151,7 @@ if (isset($_POST['add-to-cart'])) {
     }
 }
 
+$newQuantity = 1;
 
 ?>
 
@@ -286,13 +287,10 @@ if (isset($_POST['add-to-cart'])) {
                                             <i>+</i>
                                         </div>
                                     </div>
-
-
-
                                 </div>
                                 <div class="product-content-2-button">
                                     <button type="submit" name="add-to-cart">Add to Cart</button>
-                                    <button type="submit" name="buy">Buy Now</button>
+                                    <button type="button" name="buy" onclick="buyNow()">Buy Now</button>
                                 </div>
                             </form>
                         </div>
@@ -709,7 +707,7 @@ if (isset($_POST['add-to-cart'])) {
                                                 break;
                                             }
 
-                                            $item_id = $itemData['item_id'];
+                                            // $item_id = $itemData['item_id'];
                                             $item_category = $itemData['item_category'];
                                             $name = $itemData['name'];
                                             $price = $itemData['price'];
@@ -790,12 +788,26 @@ if (isset($_POST['add-to-cart'])) {
         let quantity = document.getElementById("quantity");
 
         dec.addEventListener("click", () => {
-            quantity.value = parseInt(quantity.value) - 1;
+
+            if (quantity.value > 1) {
+                quantity.value = parseInt(quantity.value) - 1;
+            }
+
+
         });
 
         inc.addEventListener("click", () => {
-            quantity.value = parseInt(quantity.value) + 1;
+
+            if (quantity.value < <?php echo $stock_quantity?>) {
+                quantity.value = parseInt(quantity.value) + 1;
+            }
         });
+
+        function buyNow() {
+            let item_id = "<?php echo $item_id ?>";
+            let quantity = document.getElementById("quantity").value;
+            window.location.href = 'order.php?item_id=' + item_id + '&quantity=' + quantity;
+        }
     </script>
 </body>
 

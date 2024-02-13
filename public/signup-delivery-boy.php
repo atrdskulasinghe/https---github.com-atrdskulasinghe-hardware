@@ -10,7 +10,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -116,7 +116,7 @@ if (isset($_POST['finish'])) {
         $profileUrl = $lastUserId . '_profile.jpg';
 
         $sql = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `phone_number`, `dob`, `house_no`, `state`, `city`, `account_type`, `profile_url`, `password`,`security_question`,`question_answer`,`status`,`activation_code`,`latitude`,`longitude`) 
-                    VALUES ('$first_name','$last_name','$email','$phone_number','$dob','$house_no','$state','$city','customer','$profileUrl','$hashedPassword','$security_question','$answer','pending','100','$latitude','$longitude')";
+                    VALUES ('$first_name','$last_name','$email','$phone_number','$dob','$house_no','$state','$city','delivery_boy','$profileUrl','$hashedPassword','$security_question','$answer','pending','100','$latitude','$longitude')";
 
         $nic_photo_url = $lastUserId . '_nic.jpg';
 

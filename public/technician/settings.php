@@ -1,8 +1,32 @@
 <?php
+
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        // header('location: ./technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
+
+
 include "../../config/database.php";
+include "../../template/user-data.php";
 
-
-$user_id = 6;
+$user_id = 1;
+if(isset($_SESSION['id'])){
+    $user_id = $_SESSION['id'];
+}
 
 $firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $profileUrl = $nicImageUrl = $old_password = $password = $passwordDB = $old_passwordDB = "";
 
@@ -128,7 +152,7 @@ if (isset($_POST['save_change'])) {
 
     // image path
 
-    $targetDirectory = "../assets/images/admin/";
+    $targetDirectory = "../assets/images/technician/";
 
     if (empty($firstNameError) && empty($lastNameError) && empty($dobError) && empty($nicNumberError) && empty($phoneNumberError) && empty($emailError) && empty($houseNumberError) && empty($stateError) && empty($cityError) && empty($nicImageError)) {
 
@@ -264,7 +288,7 @@ $conn->close();
 
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                        <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>
@@ -283,8 +307,8 @@ $conn->close();
                             <div class="profile-image">
                                 <div class="profile-image-content-1">
                                     <h2>AVATAR</h2>
-                                    <img src="../assets/images/techninican/<?php echo $profileUrl ?>" alt="" id="preview-image">
-                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/techninican/<?php echo $profileUrl ?>">
+                                    <img src="../assets/images/technician/<?php echo $profileUrl ?>" alt="" id="preview-image">
+                                    <input type="file" id="file-input" name="profile_image" value="../assets/images/technician/<?php echo $profileUrl ?>">
                                 </div>
                                 <div class="profile-image-content-2">
                                     <input type="button" class="btn" value="Choose Photo" id="file-button" name="">
@@ -352,7 +376,7 @@ $conn->close();
                                     <div class="input-two-content-2">
                                         <p>NIC Photo</p>
                                         <div class="profile-nic">
-                                            <img src="../assets/images/techninican/<?php echo $nicImageUrl; ?>" alt="">
+                                            <img src="../assets/images/technician/<?php echo $nicImageUrl; ?>" alt="">
                                         </div>
                                     </div>
                                 </div>

@@ -1,3 +1,28 @@
+<?php
+
+session_start();
+
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        // header('location: ./technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
+include "../../config/database.php";
+include "../../template/user-data.php";
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +48,7 @@
     <div class="container">
         <!-- navigation -->
         <?php
-            include "../../template/dashboard-nav.php";
+        include "../../template/dashboard-nav.php";
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
@@ -44,8 +69,8 @@
                             </a>
                         </div>
 
-                         <!-- menu link 1 -->
-                         <div class="menu-link-button">
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button">
                             <a href="./booking.php">
                                 <p><img src="../assets/images/ui/booking.png" alt="">Booking</p>
                             </a>
@@ -93,7 +118,7 @@
                                 <p><img src="../assets/images/ui/Settings.png" alt="">Settings</p>
                             </a>
                         </div>
-                       
+
                     </div>
                     <div class="menu-logout">
                         <a href="">

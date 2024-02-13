@@ -1,5 +1,27 @@
 <?php
+
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        header('location: ../technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        // header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
+
 include "../../config/database.php";
+include "../../template/user-data.php";
+
 
 $firstName = $lastName = $dob = $nicNumber = $phoneNumber = $email = $houseNumber = $state = $city = $password = $confirmPassword = "";
 $firstNameError = $lastNameError = $dobError = $nicNumberError = $phoneNumberError = $emailError = $houseNumberError = $stateError = $cityError = $nicImageError = $passwordError = $confirmPasswordError = "";
@@ -101,8 +123,8 @@ if (isset($_POST['save'])) {
 
     $profileUrl = $lastUserId . '_profile.jpg';
 
-    $sql = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `phone_number`, `dob`, `house_no`, `state`, `city`, `account_type`, `profile_url`, `password`) 
-    VALUES ('$firstName','$lastName','$email','$phoneNumber','$dob','$houseNumber','$state','$city','technical_team','$profileUrl','$hashedPassword')";
+    $sql = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `phone_number`, `dob`, `house_no`, `state`, `city`, `account_type`, `profile_url`, `password`,`status`) 
+    VALUES ('$firstName','$lastName','$email','$phoneNumber','$dob','$houseNumber','$state','$city','technical_team','$profileUrl','$hashedPassword','active')";
 
     $nicUrl = $lastUserId . '_nic.jpg';
     $sql2 = "INSERT INTO `technical_team`(`user_id`, `nic_image_url`) VALUES ('$lastUserId','$nicUrl')";
@@ -324,7 +346,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                        <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>

@@ -3,8 +3,6 @@ include "../config/database.php";
 
 session_start();
 
-$user_id = $_SESSION['id'];
-
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
         // header('location: index.php');
@@ -13,7 +11,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -23,12 +21,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     header('location: ./login.php');
 }
 
+$user_id = $_SESSION['id'];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $item_id = $_POST['item_id'];
     $newQuantity = $_POST['newQuantity'];
 
-    $updateSql = "UPDATE cart SET quantity = '$newQuantity' WHERE item_id = '$item_id'";
+    $updateSql = "UPDATE cart SET quantity = '$newQuantity' WHERE item_id = '$item_id' AND user_id = '$user_id'";
 
     if ($conn->query($updateSql) === TRUE) {
         echo "Quantity updated successfully";
@@ -41,6 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $all_item_total_amount = 0;
+$item_count = 0;
 
 
 ?>
@@ -83,8 +84,7 @@ $all_item_total_amount = 0;
 
 
                             <?php
-                            // Assuming $count is defined somewhere in your PHP code
-                            $count = 1; // For demonstration purposes
+                            $count = 1;
 
                             $selectCartItemQuery1 = "SELECT * FROM `cart` WHERE `user_id` = '$user_id'";
                             $resultCartItem = $conn->query($selectCartItemQuery1);
@@ -117,6 +117,7 @@ $all_item_total_amount = 0;
                                             $image_url =  $itemImageData['image_url'];
 
                                             $all_item_total_amount += $total_amount_item;
+                                            $item_count += 1;
 
                                             echo '
                                                 <div class="user-cart-product">
@@ -132,7 +133,7 @@ $all_item_total_amount = 0;
                                                                 <div class="cart-q">
                                                                     <input type="button" value="-" onclick="dec(this, ' . $item_id . ',' . $price . ',' . $quantity . ')" style="width:20px">
                                                                     <input class="quantity" type="text" value="' . $quantity . '" disabled>
-                                                                    <input type="button" value="+" onclick="inc(this, ' . $item_id . ',' . $price . ',' . $quantity . ')"style="width:20px">
+                                                                    <input type="button" value="+" onclick="inc(this, ' . $item_id . ',' . $price . ',' . $quantity . ',' . $stock_quantity . ')"style="width:20px">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -155,9 +156,6 @@ $all_item_total_amount = 0;
                             }
                             ?>
 
-
-
-
                         </div>
                         <div class="user-cart-content-2">
                             <h3 style="font-family: sans-serif">Order Summery</h3>
@@ -173,7 +171,7 @@ $all_item_total_amount = 0;
                                     <h4 id="total">LKR. <?php echo $all_item_total_amount + 200 ?>.00</h4>
                                 </div>
                             </div>
-                            <input type="submit" class="btn" value="Checkout">
+                            <input type="submit" class="btn" value="Checkout" onclick="window.location.href='order.php?cart=t'">
                         </div>
                     </div>
 
@@ -203,7 +201,7 @@ $all_item_total_amount = 0;
             xhr.send("item_id=" + encodeURIComponent(item_id) + "&newQuantity=" + encodeURIComponent(newQuantity));
         }
 
-        function inc(element, item_id, price, quantity) {
+        function inc(element, item_id, price, quantity, stock_quantity) {
             let inputField = element.parentElement.querySelector(".quantity");
             let cartProduct = element.closest(".user-cart-product");
             let inputFieldPrice = cartProduct.querySelector(".total-amount-item");
@@ -211,12 +209,14 @@ $all_item_total_amount = 0;
             let total = document.getElementById("total");
             let count = parseInt(inputField.value);
             count += 1;
-            inputField.value = count;
-            inputFieldPrice.innerHTML = 'LKR.' + (price * count);
-            let currentSubTotal = parseFloat(subTotal.innerHTML.replace("LKR.", ""));
-            subTotal.innerHTML = 'LKR.' + (currentSubTotal + price).toFixed(2);
-            total.innerHTML = 'LKR.' + (currentSubTotal + price + 200).toFixed(2);
-            updateQuantity(item_id, count);
+            if (count <= stock_quantity) {
+                inputField.value = count;
+                inputFieldPrice.innerHTML = 'LKR.' + (price * count);
+                let currentSubTotal = parseFloat(subTotal.innerHTML.replace("LKR.", ""));
+                subTotal.innerHTML = 'LKR.' + (currentSubTotal + price).toFixed(2);
+                total.innerHTML = 'LKR.' + (currentSubTotal + price + 200).toFixed(2);
+                updateQuantity(item_id, count);
+            }
         }
 
         function dec(element, item_id, price, quantity) {

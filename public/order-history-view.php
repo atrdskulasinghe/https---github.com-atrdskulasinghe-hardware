@@ -25,34 +25,15 @@ $latitude = "";
 $longitude = "";
 
 $user_id = $_SESSION['id'];
+$order_id = "";
 
-$selectTechnicianQuery1 = "SELECT * FROM `booking` WHERE `customer_id`= '$user_id'";
-$resultTechnician = $conn->query($selectTechnicianQuery1);
-
-if ($resultTechnician->num_rows > 0) {
-    while ($row = $resultTechnician->fetch_assoc()) {
-        $booking_id = $row['booking_id'];
-        $photo_url = $row['photo_url'];
-        $status = $row['status'];
-        $booked_date = $row['booked_date'];
-        $booked_time = $row['booked_time'];
-        $accept_date = $row['accept_date'];
-        $accept_time = $row['accept_time'];
-        $start_date = $row['start_date'];
-        $start_time = $row['start_time'];
-        $finished_date = $row['finished_date'];
-        $finished_time = $row['finished_time'];
-        $house_no = $row['house_no'];
-        $state = $row['state'];
-        $city = $row['city'];
-        $payment_status = $row['payment_status'];
-        $payment_method = $row['payment_method'];
-        $cost = $row['cost'];
-        $description = $row['description'];
-        $latitude = $row['latitude'];
-        $longitude = $row['longitude'];
+if (isset($_GET['order_id'])) {
+    if (!empty($_GET['order_id'])) {
+        $order_id = $_GET['order_id'];
     }
 }
+
+
 
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
@@ -62,7 +43,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -71,6 +52,107 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 } else {
     header('location: ./login.php');
 }
+
+
+
+
+$order_id = "";
+$date_of_pickup = "";
+$time_of_pickup = "";
+$date_of_delivered = "";
+$time_of_delivered = "";
+$status = "";
+$house_no = "";
+$state = "";
+$city = "";
+$location_url = "";
+$delivery_cost = "";
+$description = "";
+$time = "";
+$date = "";
+$total_amount = 0;
+$payment_method = "";
+$payment_status = "";
+$customer_user_id = "";
+$delivery_boy_id = "";
+
+$order_id = $_GET['order_id'];
+
+if (isset($_GET['order_id'])) {
+    if (!empty($_GET['order_id'])) {
+        $order_id = $_GET['order_id'];
+    }
+}
+
+$selectOrderQuery = "SELECT * FROM `orders` WHERE `order_id` = $order_id";
+$resultOrder = $conn->query($selectOrderQuery);
+
+if ($resultOrder->num_rows > 0) {
+
+    while ($rowOrder = $resultOrder->fetch_assoc()) {
+
+        $customer_id = $rowOrder['customer_id'];
+        $date = $rowOrder['date'];
+        $time = $rowOrder['time'];
+        $payment_method = $rowOrder['payment_method'];
+        $payment_status = $rowOrder['payment_status'];
+        $order_status = $rowOrder['order_status'];
+
+        $selectDeliveryQuery = "SELECT * FROM `delivery` WHERE `order_id` = $order_id";
+        $resultDelivery = $conn->query($selectDeliveryQuery);
+
+        if ($resultDelivery->num_rows > 0) {
+            $rowDelivery = $resultDelivery->fetch_assoc();
+
+            $delivery_boy_id = $rowDelivery['delivery_boy_id'];
+            $date_of_pickup = $rowDelivery['date_of_pickup'];
+            $time_of_pickup = $rowDelivery['time_of_pickup'];
+            $date_of_delivered = $rowDelivery['date_of_delivered'];
+            $time_of_delivered = $rowDelivery['time_of_delivered'];
+            $first_name = $rowDelivery['first_name'];
+            $last_name = $rowDelivery['last_name'];
+            $phone_no = $rowDelivery['phone_no'];
+            $status = $rowDelivery['status'];
+            $house_no = $rowDelivery['house_no'];
+            $state = $rowDelivery['state'];
+            $city = $rowDelivery['city'];
+            $delivery_cost = $rowDelivery['delivery_cost'];
+            $description = $rowDelivery['description'];
+            $latitude = $rowDelivery['latitude'];
+            $longitude = $rowDelivery['longitude'];
+
+            $selectOrderDetailsQuery = "SELECT * FROM `order_details` WHERE `order_id` = $order_id";
+            $resultOrderDetails = $conn->query($selectOrderDetailsQuery);
+
+            if ($resultOrderDetails->num_rows > 0) {
+
+                while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
+                    $item_id = $rowOrderDetails['item_id'];
+                    $order_type = $rowOrderDetails['order_type'];
+                    $quantity = $rowOrderDetails['quantity'];
+
+                    $selectItemQuery = "SELECT * FROM `item` WHERE `item_id` = $item_id";
+                    $resultItem = $conn->query($selectItemQuery);
+
+                    if ($resultItem->num_rows > 0) {
+                        $rowItem = $resultItem->fetch_assoc();
+
+                        $name = $rowItem['name'];
+                        $price = $rowItem['price'];
+                        $stock_quantity = $rowItem['stock_quantity'];
+
+                        $total_amount += $quantity * $price;
+                        
+                    }
+                }
+            }
+        }
+        
+    }
+}
+
+$total_amount += 200;
+
 ?>
 
 
@@ -92,7 +174,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     <link rel="stylesheet" href="./assets/css/user-cart.css">
     <link rel="stylesheet" href="./assets/css/button.css">
     <link rel="stylesheet" href="./assets/css/dashboard-history-view.css">
-    <link rel="stylesheet" href="./assets/css/line-2.css">
+    <link rel="stylesheet" href="./assets/css/line-1.css">
     <link rel="stylesheet" href="./assets/css/dashboard-history.css">
 </head>
 
@@ -110,64 +192,93 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                 <div class="box">
                     <div class="history">
                         <div class="history-details-1">
-                            <p>Date : <?php echo $booked_date ?></p>
-                            <p>Delivery ID: <?php echo $booked_date ?></p>
-                            <p>Status: <?php echo $booked_date ?></p>
+                            <p>Order ID: <?php echo $order_id ?></p>
+                            <p>Status: <?php echo ucfirst($status) ?></p>
+                            <p>Total Amount : LKR.<?php echo $total_amount ?></p>
                         </div>
                         <div class="history-details-2">
                             <div class="line-content">
                                 <div class="line-all-content">
-                                    <div class="line-circle line-circle-1 active">
+                                    <div class="line-circle line-circle-1 <?php if ($status == "accept" || $status == "pickedup" || $status == "delivered") {
+                                                                                echo "active";
+                                                                            } ?>">
                                         <i class="ri-check-line"></i>
-                                        <h4>Booking Confirmed</h4>
+                                        <h4>Order Accepted</h4>
                                     </div>
-                                    <div class="line line-1 active"></div>
-                                    <div class="line-circle line-circle-2 active">
+                                    <div class="line line-1 <?php if ($status == "pickedup" || $status == "delivered") {
+                                                                echo "active";
+                                                            } ?>"></div>
+                                    <div class="line-circle line-circle-2 <?php if ($status == "pickedup" || $status == "delivered") {
+                                                                                echo "active";
+                                                                            } ?>">
                                         <i class="ri-check-line"></i>
-                                        <h4>Accept</h4>
+                                        <h4>Picked up order</h4>
                                     </div>
-                                    <div class="line  line-2 active"></div>
-                                    <div class="line-circle line-circle-3 active">
+                                    <div class="line  line-2 <?php if ($status == "delivered") {
+                                                                    echo "active";
+                                                                } ?>"></div>
+                                    <div class="line-circle line-circle-3 <?php if ($status == "delivered") {
+                                                                                echo "active";
+                                                                            } ?>">
                                         <i class="ri-check-line"></i>
-                                        <h4>Started</h4>
-                                    </div>
-                                    <div class="line  line-3 active"></div>
-                                    <div class="line-circle line-circle-4 active">
-                                        <i class="ri-check-line"></i>
-                                        <h4>Finished</h4>
+                                        <h4>Delivered</h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="history-details-3">
                             <div class="history-details-3-content-1">
-                                <h4>Date</h4>
-                                <p>14 Dec 2023</p>
-                                <h4>Total Amount</h4>
-                                <p>LKR. 2000</p>
+                                <h4>Ordered Date & Time</h4>
+                                <p><?php echo $date . ' / ' . $time ?></p>
+                                <h4>Pickup Date & Time</h4>
+                                <p><?php if (!empty($date_of_pickup)) {
+                                        echo $date_of_pickup . ' / ' . $time_of_pickup;
+                                    } else {
+                                        echo "-";
+                                    } ?></p>
                             </div>
                             <div class="history-details-3-content-2">
                                 <div>
+                                    <h4>Delivered Date & Time</h4>
+                                    <p><?php if (!empty($date_of_delivered)) {
+                                            echo $date_of_delivered . ' / ' . $time_of_delivered;
+                                        } else {
+                                            echo "-";
+                                        } ?></p>
                                     <h4>Payment Status</h4>
-                                    <p>pending</p>
-                                    <h4>Delivery Fee</h4>
-                                    <p>LKR. 2000</p>
+                                    <p><?php echo ucfirst($payment_status) ?></p>
                                 </div>
                             </div>
                             <div class="history-details-3-content-3">
                                 <div>
                                     <h4>Payment Method</h4>
-                                    <p>Card</p>
+                                    <p><?php echo ucfirst($payment_method) ?></p>
+                                    <h4>Address</h4>
+                                    <p><?php echo ucfirst($house_no) . ',<br>' . ucfirst($state) . ',<br>' . ucfirst($city) ?></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-content">
-                            <div class="right-button margin-top-30">
-                                <input type="submit" value="Contact">
-                                <input type="submit" value="Location">
-                                <input type="submit" value="Finish">
-                            </div>
-                        </div>
+                        <!-- <div class="input-content">
+                            <form class="right-button margin-top-30" method="POST">
+                                <input type="button" class="btn" value="Contact" onclick="window.location.href='message.php?receiver_id=<?php echo $customer_user_id ?>delivery_id=<?php echo $delivery_id ?>'">
+                                <input type="button" class="btn" value="Location" onclick="window.location.href=''">
+                                <?php
+
+                                if ($status == "accept") {
+                                    echo '<input type="submit" value="Picked up" name="pickedup" class="btn" >';
+                                } else if ($status == "pickedup") {
+                                    echo '<input type="submit" value="Finished" name="finished" class="btn" >';
+                                } else if ($status == "delivered") {
+                                    if ($payment_method == "card") {
+                                        if ($payment_status == "pending") {
+                                            echo '<input type="submit" value="Paid" name="paid" class="btn" >';
+                                        }
+                                    }
+                                }
+
+                                ?>
+                            </form>
+                        </div> -->
                     </div>
                 </div>
             </div>

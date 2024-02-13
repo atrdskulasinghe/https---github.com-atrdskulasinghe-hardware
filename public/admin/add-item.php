@@ -1,5 +1,27 @@
 <?php
+session_start();
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        header('location: ../index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ../cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        header('location: ../technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ../delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        // header('location: ../admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ../technical-team/index.php');
+    }
+} else {
+    header('location: ../login.php');
+}
+
+
 include "../../config/database.php";
+include "../../template/user-data.php";
+
 
 $itemName = $itemCategory = $price = $quantity = $creationDate = $expirationDate = $brand = $discount = $warranty = $weight = $manufacturer = $description = '';
 $itemNameError = $itemCategoryError = $priceError = $quantityError = $creationDateError = $expirationDateError = $brandError = $discountError = $warrantyError = $weightError = $manufacturerError = $descriptionError = $image1Error = $image2Error = $image3Error = $image4Error = $image5Error = '';
@@ -362,7 +384,7 @@ if (isset($_POST['save'])) {
                         </div>
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                        <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>

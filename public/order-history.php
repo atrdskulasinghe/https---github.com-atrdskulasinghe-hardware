@@ -13,7 +13,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -68,67 +68,108 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
             <div class="user-cart">
                 <div class="box">
 
-
-
                     <div class="history">
                         <div class="history-table">
                             <table>
                                 <tr>
-                                    <td></td>
-                                    <td>Book Id</td>
-                                    <td>Date</td>
+                                    <td>Order ID</td>
+                                    <td>Ordered Date</td>
                                     <td>Status</td>
-                                    <td>Cost</td>
-                                    <td>Action</td>
+                                    <td>Amount</td>
+                                    <td>Delivery Fee</td>
+                                    <td></td>
                                 </tr>
+
                                 <?php
+                                $error = false;
 
-                                $selectTechnicianQuery1 = "SELECT * FROM `booking` WHERE `customer_id`= '$user_id'";
-                                $resultTechnician = $conn->query($selectTechnicianQuery1);
+                                $selectUserQuery = "SELECT * FROM `orders` WHERE `customer_id` = $user_id";
+                                $resultOrder = $conn->query($selectUserQuery);
+
+                                if ($resultOrder->num_rows > 0) {
+
+                                    while ($rowOrder = $resultOrder->fetch_assoc()) {
+
+                                        $order_id = $rowOrder['order_id'];
+                                        $time = $rowOrder['time'];
+                                        $date = $rowOrder['date'];
+                                        $total_amount = 0;
+
+                                        $selectDeliveryQuery = "SELECT * FROM `delivery` WHERE `order_id` = $order_id";
+                                        $resultDelivery = $conn->query($selectDeliveryQuery);
 
 
-                                if ($resultTechnician->num_rows > 0) {
-                                    while ($row = $resultTechnician->fetch_assoc()) {
+                                        if ($resultDelivery->num_rows > 0) {
 
-                                        $booking_id = $row['booking_id'];
-                                        $photo_url = $row['photo_url'];
-                                        $status = $row['status'];
-                                        $booked_date = $row['booked_date'];
-                                        $booked_time = $row['booked_time'];
-                                        $accept_date = $row['accept_date'];
-                                        $accept_time = $row['accept_time'];
-                                        $start_date = $row['start_date'];
-                                        $start_time = $row['start_time'];
-                                        $finished_date = $row['finished_date'];
-                                        $finished_time = $row['finished_time'];
-                                        $house_no = $row['house_no'];
-                                        $state = $row['state'];
-                                        $city = $row['city'];
-                                        $payment_status = $row['payment_status'];
-                                        $payment_method = $row['payment_method'];
-                                        $cost = $row['cost'];
-                                        $description = $row['description'];
-                                        $latitude = $row['latitude'];
-                                        $longitude = $row['longitude'];
 
-                                        echo '
-                                            <tr>
-                                                <td>
-                                                    <img src="./assets/images/' . $photo_url . '" alt="">
-                                                </td>
-                                                <td>' . $booking_id . '</td>
-                                                <td>' . $booked_date . ' ' . $booked_time . '</td>
-                                                <td>' . $status . '</td>
-                                                <td>' . $cost . '</td>
-                                                <td>
-                                                    <button class="btn" onclick="window.location.href=\'order-history-view.php?booking_id=' . $booking_id . '\'">View</button>
-                                                </td>
-                                            </tr>
+                                            $rowDelivery = $resultDelivery->fetch_assoc();
+
+                                            $delivery_id = $rowDelivery['delivery_id'];
+                                            $delivery_boy_idDB = $rowDelivery['delivery_boy_id'];
+                                            $date_of_pickup = $rowDelivery['date_of_pickup'];
+                                            $time_of_pickup = $rowDelivery['time_of_pickup'];
+                                            $date_of_delivered = $rowDelivery['date_of_delivered'];
+                                            $time_of_delivered = $rowDelivery['time_of_delivered'];
+                                            $status = $rowDelivery['status'];
+                                            $house_no = $rowDelivery['house_no'];
+                                            $state = $rowDelivery['state'];
+                                            $city = $rowDelivery['city'];
+                                            // $location_url = $row['location_url'];
+                                            $delivery_cost = $rowDelivery['delivery_cost'];
+                                            $description = $rowDelivery['description'];
+
+                                            // if ($delivery_boy_idDB == $delivery_boy_id) {
+
+                                            $selectOrderDetailsQuery = "SELECT * FROM `order_details` WHERE `order_id` = $order_id";
+                                            $resultOrderDetails = $conn->query($selectOrderDetailsQuery);
+
+                                            if ($resultOrderDetails->num_rows > 0) {
+
+
+                                                while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
+
+                                                    $item_id = $rowOrderDetails['item_id'];
+                                                    $quantity = $rowOrderDetails['quantity'];
+
+                                                    $selectUserQuery = "SELECT * FROM `item` WHERE `item_id` = $item_id";
+                                                    $result = $conn->query($selectUserQuery);
+
+                                                    if ($result->num_rows > 0) {
+
+                                                        $row = $result->fetch_assoc();
+                                                        $price = $row['price'];
+
+                                                        $total_amount += $quantity * $price;
+                                                    }
+                                                }
+                                            }
+
+                                            $total_amount += $delivery_cost;
+
+                                            echo '
+                                                <tr>
+                                                    <td>' . $order_id . '</td>
+                                                    <td>' . $date . ' / ' . $time . '</td>
+                                                    <td>' . ucfirst($status) . '</td>
+                                                    <td>LKR. ' . $total_amount . '</td>
+                                                    <td>LKR. ' . $delivery_cost . '</td>
+                                                    <td>
+                                                    <button class="btn" onclick="window.location.href=\'order-history-view.php?order_id=' . $order_id . ' \'">View</button>
+                                                    </td>
+                                                </tr>
                                         ';
+                                        }
+                                        // }
                                     }
                                 }
 
+
+
+
+
+
                                 ?>
+
                             </table>
                         </div>
                     </div>

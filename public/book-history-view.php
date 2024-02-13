@@ -70,7 +70,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     } else if ($_SESSION['account_type'] == "technician") {
         header('location: ./technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-doy/index.php');
+        header('location: ./delivery-boy/index.php');
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ./admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -233,11 +233,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                         } else if ($status == "start") {
                                             echo '<input type="submit" value="Finish" name="finish" class="btn" >';
                                         } else if ($status == "finish") {
-                                            // if ($payment_method == "card") {
-                                            //     if ($payment_status == "pending") {
-                                            //         echo '<input type="submit" value="Paid" name="paid" class="btn" >';
-                                            //     }
-                                            // }
                                         }
 
                                         ?> -->
