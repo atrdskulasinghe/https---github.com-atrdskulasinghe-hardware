@@ -142,12 +142,10 @@ if ($resultOrder->num_rows > 0) {
                         $stock_quantity = $rowItem['stock_quantity'];
 
                         $total_amount += $quantity * $price;
-                        
                     }
                 }
             }
         }
-        
     }
 }
 
@@ -280,8 +278,133 @@ $total_amount += 200;
                             </form>
                         </div> -->
                     </div>
+                    <!-- fdsafadsfasdf asfsafsafasfdasas fafasfasfasfsssfs asdfasf -->
+                    <div class="user-cart">
+                        <div class="box">
+                            <h3>All Items</h3>
+                            <div class="user-cart-content">
+
+                                <div style="width: 100%; ">
+                                    <!-- <div class="user-cart-content-1"> -->
+
+                                    <?php
+                                    $selectOrderQuery = "SELECT * FROM `orders` WHERE `order_id` = $order_id";
+                                    $resultOrder = $conn->query($selectOrderQuery);
+
+                                    if ($resultOrder->num_rows > 0) {
+
+                                        while ($rowOrder = $resultOrder->fetch_assoc()) {
+
+                                            $customer_id = $rowOrder['customer_id'];
+                                            $date = $rowOrder['date'];
+                                            $time = $rowOrder['time'];
+                                            $payment_method = $rowOrder['payment_method'];
+                                            $payment_status = $rowOrder['payment_status'];
+                                            $order_status = $rowOrder['order_status'];
+
+                                            $selectDeliveryQuery = "SELECT * FROM `delivery` WHERE `order_id` = $order_id";
+                                            $resultDelivery = $conn->query($selectDeliveryQuery);
+
+                                            if ($resultDelivery->num_rows > 0) {
+                                                $rowDelivery = $resultDelivery->fetch_assoc();
+
+                                                $delivery_boy_id = $rowDelivery['delivery_boy_id'];
+                                                $date_of_pickup = $rowDelivery['date_of_pickup'];
+                                                $time_of_pickup = $rowDelivery['time_of_pickup'];
+                                                $date_of_delivered = $rowDelivery['date_of_delivered'];
+                                                $time_of_delivered = $rowDelivery['time_of_delivered'];
+                                                $first_name = $rowDelivery['first_name'];
+                                                $last_name = $rowDelivery['last_name'];
+                                                $phone_no = $rowDelivery['phone_no'];
+                                                $status = $rowDelivery['status'];
+                                                $house_no = $rowDelivery['house_no'];
+                                                $state = $rowDelivery['state'];
+                                                $city = $rowDelivery['city'];
+                                                $delivery_cost = $rowDelivery['delivery_cost'];
+                                                $description = $rowDelivery['description'];
+                                                $latitude = $rowDelivery['latitude'];
+                                                $longitude = $rowDelivery['longitude'];
+
+                                                $selectOrderDetailsQuery = "SELECT * FROM `order_details` WHERE `order_id` = $order_id";
+                                                $resultOrderDetails = $conn->query($selectOrderDetailsQuery);
+
+                                                if ($resultOrderDetails->num_rows > 0) {
+
+                                                    while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
+
+                                                        $item_id = $rowOrderDetails['item_id'];
+                                                        $quantity = $rowOrderDetails['quantity'];
+
+                                                        $selectItemQuery = "SELECT * FROM `item` WHERE `item_id` = $item_id";
+                                                        $resultItem = $conn->query($selectItemQuery);
+
+                                                        if ($resultItem->num_rows > 0) {
+                                                            $rowItem = $resultItem->fetch_assoc();
+
+                                                            $name = $rowItem['name'];
+                                                            $price = $rowItem['price'];
+                                                            $stock_quantity = $rowItem['stock_quantity'];
+                                                            $creation_date = $rowItem['creation_date'];
+                                                            $expiration_date = $rowItem['expiration_date'];
+                                                            $brand = $rowItem['brand'];
+                                                            $discount = $rowItem['discount'];
+                                                            $warranty = $rowItem['warranty'];
+                                                            $weight = $rowItem['weight'];
+                                                            $manufacturer = $rowItem['manufacturer'];
+                                                            $description = $rowItem['description'];
+
+                                                            $selectItemImageQuery = "SELECT * FROM `item_image` WHERE `item_id` = $item_id";
+                                                            $resultItemImage = $conn->query($selectItemImageQuery);
+
+                                                            if ($resultItemImage->num_rows > 0) {
+                                                                $rowItemImage = $resultItemImage->fetch_assoc();
+                                                                $image_url = $rowItemImage['image_url'];
+
+                                                                $total_amount_item = $price * $quantity;
+
+                                                                echo '
+                                                                    <div class="user-cart-product">
+                                                                        <div class="cart-product-1">
+                                                                            <div class="cart-product-1-1">
+                                                                                <img src="./assets/images/product/' . $image_url . '" alt="" style="object-fit:cover;">
+                                                                            </div>
+                                                                            <div class="cart-product-1-2">
+                                                                                <div class="cart-product-1-2-1">
+                                                                                    <p>' . $name . '</p>
+                                                                                </div>
+                                                                                <div class="cart-product-1-2-2">
+                                                                                    <div class="cart-q">
+                                                                                    <p>Quantity: <input class="quantity" type="text" value="' . $quantity . '" disabled></p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="cart-product-2">
+                                                                            <div class="cart-product-1-2-1">
+                                                                                <p class="total-amount-item">Warranty: ' . $warranty . ' Year</p>
+                                                                            </div>
+                                                                            <div class="cart-product-1-2-2">
+                                                                                <p class="total-amount-item">Total Amount: LKR.' . $total_amount_item . '</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ';
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                                <!-- </div> -->
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </section>
         <?php
         include "../template/user-footer.php";
