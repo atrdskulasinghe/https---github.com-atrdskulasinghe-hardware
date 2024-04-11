@@ -36,32 +36,38 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     <link rel="stylesheet" href="./assets/css/user-menu.css">
     <link rel="stylesheet" href="./assets/css/user-search-bar.css">
     <link rel="stylesheet" href="./assets/css/user-footer.css">
-    <link rel="stylesheet" href="./assets/css/user-product-list.css">
-    <link rel="stylesheet" href="./assets/css/user-home.css">
     <link rel="stylesheet" href="./assets/css/user-style.css">
+    <link rel="stylesheet" href="./assets/css/button.css">
+    <link rel="stylesheet" href="./assets/css/user-contact.css">
+    <link rel="stylesheet" href="./assets/css/input.css">
+    <link rel="stylesheet" href="./assets/css/user-home.css">
+    <link rel="stylesheet" href="./assets/css/user-product-list.css">
+    <link rel="stylesheet" href="./assets/css/user-products.css">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
     <div class="container">
         <?php
-
         include "../template/user-nav.php";
-
         ?>
-                <?php
-            include "../template/user-menu.php";
+        <?php
+        include "../template/user-menu.php";
         ?>
         <section>
-            <div class="home">
+            <div class="header">
                 <div class="box">
-                    <div class="home-header">
-                        <div class="home-header-content-1">
-                            <div class="header-content-1-header">
-                                <i class="bi bi-filter-left"></i>
-                                <h4>ALL CATEGORIES</h4>
-                            </div>
-                            <div class="header-content-1-content ">
-                                <ul>
+                    <div class="header-content">
+                        <div class="header-content-1 ">
+                            <div class="header-category ">
+                                <div class="header-category-header">
+                                    <i class="bi bi-filter-left"></i>
+                                    <h4>ALL CATEGORIES</h4>
+                                </div>
+                                <div class="header-category-content">
                                     <?php
 
                                     $selectItemCategoryQuery1 = "SELECT * FROM `item_category` WHERE 1";
@@ -74,43 +80,162 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                             $itemCategoryId = $itemCategoryData['item_catagory_id'];
 
                                             echo '
-                                                <li>
-                                                    <a href="products.php?category_id=' . $itemCategoryId . '">' . $itemCategoryName . '</a>
-                                                </li>
-                                    ';
+                                                <a href="products.php?category_id=' . $itemCategoryId . '">' . $itemCategoryName . '</a>
+                                ';
                                         }
                                     }
                                     ?>
-
-                                </ul>
+                                </div>
                             </div>
                         </div>
-                        <div class="home-header-content-2">
-                            <div class="home-header-content-2-images">
-                                <img src="./assets/images/ui/header-1.png" alt="">
+                        <div class="header-content-2">
+                            <div class="slick-carousel">
+                                <div><img src="./assets/images/ui/header/1.jpg" alt=""></div>
+                                <div><img src="./assets/images/ui/header/2.jpg" alt=""></div>
+                                <div><img src="./assets/images/ui/header/3.jpg" alt=""></div>
+                                <div><img src="./assets/images/ui/header/4.jpg" alt=""></div>
+                                <div><img src="./assets/images/ui/header/5.jpg" alt=""></div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="loop--slider">
+                    <div class="loop--slide--track">
 
-                    <div class="home-content-2 margin-top-40">
-                        <h3>Top Products</h3>
-                        <div class="product-list">
 
+
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/129.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <!-- <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/187698.svg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div> -->
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/Cat_logo_PNG1.png" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/Ceylon_Steel_Corp_Colour_Logo_Sinhala_version.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/ingco-500x500.webp" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/kevilton.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/logo.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/logo (1).jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/orange-logo.png" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+
+
+
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/129.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <!-- <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/187698.svg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div> -->
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/Cat_logo_PNG1.png" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/Ceylon_Steel_Corp_Colour_Logo_Sinhala_version.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/ingco-500x500.webp" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/kevilton.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/logo.jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/logo (1).jpg" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                        <div class="loop--slide">
+                            <img src="./assets/images/ui/logo/orange-logo.png" height="100" width="250" alt="" style="height:50px;object-fit:contain;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+
+                <div class="header-title">
+                    <h4>Product Category</h4>
+                </div>
+                <div class="category-content">
+                    <div class="category-arrow category-arrow-left">
+                        <div class="category-arrow-content category-arrow-left-content">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </div>
+                    </div>
+                    <div class="category-list-1">
+                        <div class="category-list-content">
                             <?php
 
-                            $selectItemQuery1 = "SELECT * FROM `item` WHERE 1";
-                            $resultItem = $conn->query($selectItemQuery1);
+                            $selectItemCategoryQuery1 = "SELECT * FROM `item_category` WHERE 1";
+                            $resultItemCategory = $conn->query($selectItemCategoryQuery1);
 
-                            $i = 0;
+                            if ($resultItemCategory->num_rows > 0) {
+                                while ($itemCategoryData = $resultItemCategory->fetch_assoc()) {
 
-                            if ($resultItem->num_rows > 0) {
-                                while ($itemData = $resultItem->fetch_assoc()) {
+                                    $itemCategoryName = $itemCategoryData['name'];
+                                    $itemCategoryId = $itemCategoryData['item_catagory_id'];
+                                    $itemCategoryImage = $itemCategoryData['image_url'];
 
 
-                                    if ($i == 5) {
-                                        break;
-                                    }
+                                    echo '
+                                        
+                                    <a href="products.php?category_id=' . $itemCategoryId . '" class="category-card">
+                                        <div class="category-image">
+                                            <img src="./assets/images/item_category/' . $itemCategoryImage . '" alt="">
+                                        </div>
+                                        <h4>' . $itemCategoryName . '</h4>
+                                    </a>
+                               
+                                    ';
+                                }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="category-arrow category-arrow-right">
+                        <div class="category-arrow-content category-arrow-right-content">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="header-title">
+                    <h4>Top Product</h4>
+                </div>
+                <div class="product-list">
+
+                    <?php
+
+                    $sql = "SELECT `item_id`, SUM(`quantity`) AS `total_quantity` FROM `order_details` GROUP BY `item_id` ORDER BY `total_quantity` DESC LIMIT 5";
+
+                    $result = mysqli_query($conn, $sql);
+
+                    if ($result) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $item_id = $row['item_id'];
+
+                            $selectItemQuery1 = "SELECT * FROM `item` WHERE `item_id` = '$item_id'";
+                            $resultItem = mysqli_query($conn, $selectItemQuery1);
+
+                            if (mysqli_num_rows($resultItem) > 0) {
+                                while ($itemData = mysqli_fetch_assoc($resultItem)) {
                                     $item_id = $itemData['item_id'];
                                     $item_category = $itemData['item_category'];
                                     $name = $itemData['name'];
@@ -126,161 +251,195 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                     $description = $itemData['description'];
 
                                     $selectItemImageQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id'";
-                                    $resultItemImage = $conn->query($selectItemImageQuery1);
+                                    $resultItemImage = mysqli_query($conn, $selectItemImageQuery1);
 
-                                    if ($resultItemImage->num_rows > 0) {
-                                        $itemImageData = $resultItemImage->fetch_assoc();
-
-                                        $i += 1;
+                                    if (mysqli_num_rows($resultItemImage) > 0) {
+                                        $itemImageData = mysqli_fetch_assoc($resultItemImage);
                                         $image_url = $itemImageData['image_url'];
 
                                         echo '
-                                    
-                                    <a href="product.php?item_id=' . $item_id . '" class="product-card">
-                                        <div class="product-image">
-                                            <img src="./assets/images/product/' . $image_url . '" alt="">
-                                        </div>
-                                        <div class="product-details">
-                                            <p>' . $description . '</p>
-                                            <h4>LKR.' . $price . '</h4>
-                                            <div class="product-stars">
-                                                <ul>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                </ul>
-                                                <span>(200)</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    
-                                    ';
+                    <a href="product.php?item_id=' . $item_id . '" class="product-card">
+                        <div class="product-image">
+                            <img src="./assets/images/product/' . $image_url . '" alt="">
+                        </div>
+                        <div class="product-details">
+                            <p>' . $name . '</p>
+                            <h4>LKR.' . $price . '</h4>
+                            <div class="product-stars">
+                                <ul>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                    <li><i class="bi bi-star-fill"></i></li>
+                                </ul>
+                                <span>(200)</span>
+                            </div>
+                        </div>
+                    </a>';
                                     }
                                 }
                             }
+                        }
+                    } else {
+                        echo "No records found.";
+                    }
 
+                    ?>
 
+                </div>
+            </div>
 
-                            ?>
-
+            <div class="box">
+                <div class="header-title">
+                    <h4>Technician Category</h4>
+                </div>
+                <div class="category-content">
+                    <div class="category-arrow category-arrow-left">
+                        <div class="category-arrow-content category-arrow-left-content-2">
+                            <i class="ri-arrow-left-s-line"></i>
                         </div>
                     </div>
-                </div>
-                <div class="home-content-3">
-                    <img src="./assets/images/ui/home.jpg" alt="">
-                    <div class="box">
-                        <div class="home-content-3-content">
-                            <h4>Starting At Only $1,235</h4>
-                            <h1>
-                                Plaster Trowel<br>
-                                PlasticHandle Steel
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="box">
-                    <div class="home-content-4">
-                        <h3>Latest Products</h3>
-                        <div class="home-content-4-content">
-                            <div class="product-list">
+                    <div class="category-list-2">
+                        <div class="category-list-content">
+                            <?php
 
-                                <?php
+                            $selectTechnicianCategoryQuery1 = "SELECT * FROM `technician_category` WHERE 1";
+                            $resultTechnicianCategory = $conn->query($selectTechnicianCategoryQuery1);
 
-                                $selectItemQuery1 = "SELECT * FROM `item` WHERE 1";
-                                $resultItem = $conn->query($selectItemQuery1);
+                            if ($resultTechnicianCategory->num_rows > 0) {
+                                while ($technicianCategoryData = $resultTechnicianCategory->fetch_assoc()) {
 
-                                $i = 0;
+                                    $technicianCategoryName = $technicianCategoryData['name'];
+                                    $technicianCategoryId = $technicianCategoryData['technician_category_id'];
+                                    $technicianCategoryImage = $technicianCategoryData['image_url'];
 
-                                if ($resultItem->num_rows > 0) {
-                                    while ($itemData = $resultItem->fetch_assoc()) {
-
-
-                                        if ($i == 5) {
-                                            break;
-                                        }
-
-                                        $item_id = $itemData['item_id'];
-                                        $item_category = $itemData['item_category'];
-                                        $name = $itemData['name'];
-                                        $price = $itemData['price'];
-                                        $stock_quantity = $itemData['stock_quantity'];
-                                        $creation_date = $itemData['creation_date'];
-                                        $expiration_date = $itemData['expiration_date'];
-                                        $brand = $itemData['brand'];
-                                        $discount = $itemData['discount'];
-                                        $warranty = $itemData['warranty'];
-                                        $weight = $itemData['weight'];
-                                        $manufacturer = $itemData['manufacturer'];
-                                        $description = $itemData['description'];
-
-                                        $selectItemImageQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id'";
-                                        $resultItemImage = $conn->query($selectItemImageQuery1);
-
-                                        if ($resultItemImage->num_rows > 0) {
-                                            $itemImageData = $resultItemImage->fetch_assoc();
-
-                                            $i += 1;
-                                            $image_url = $itemImageData['image_url'];
-
-                                            echo '
-        
-                                                <a href="product.php?item_id=' . $item_id . '" class="product-card">
-                                                    <div class="product-image">
-                                                        <img src="./assets/images/product/' . $image_url . '" alt="">
-                                                    </div>
-                                                    <div class="product-details">
-                                                        <p>' . $description . '</p>
-                                                        <h4>LKR.' . $price . '</h4>
-                                                        <div class="product-stars">
-                                                            <ul>
-                                                                <li>
-                                                                    <i class="bi bi-star-fill"></i>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="bi bi-star-fill"></i>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="bi bi-star-fill"></i>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="bi bi-star-fill"></i>
-                                                                </li>
-                                                                <li>
-                                                                    <i class="bi bi-star-fill"></i>
-                                                                </li>
-                                                            </ul>
-                                                            <span>(200)</span>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                
-                                                ';
-                                        }
-                                    }
+                                    echo '
+            
+                                        <a href="technicians.php?category_id=' . $technicianCategoryId . '" class="category-card">
+                                            <div class="category-image">
+                                                <img src="./assets/images/technician_category/' . $technicianCategoryImage . '" alt="">
+                                            </div>
+                                            <h4>' . $technicianCategoryName . '</h4>
+                                        </a>
+                                
+                                        ';
                                 }
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="category-arrow category-arrow-right">
+                        <div class="category-arrow-content category-arrow-right-content-2">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </div>
+                    </div>
+                </div>
 
 
-
-                                ?>
-
-                            </div>
+            </div>
+            <div class="home-image">
+                <img src="./assets/images/ui/header/3.jpg" alt="">
+                <div class="home-image-content">
+                    <div class="home-image-text">
+                        <h2>Hassle-Free Technician Booking for Home & Garden</h2>
+                        <p>Simplify your life with our easy technician booking platform. From home repairs to garden maintenance, find skilled technicians for all your troubleshooting needs. Check out our website for a seamless booking experience!</p>
+                        <div class="home-image-button">
+                            <a href="./technicians.php">Book Technician</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="box">
+                <div class="header-title">
+                    <h4>Last Product</h4>
+                </div>
+                <div class="product-list">
+
+                    <?php
+
+                    $selectItemQuery1 = "SELECT * FROM `item` WHERE 1";
+                    $resultItem = $conn->query($selectItemQuery1);
+
+                    $i = 0;
+
+                    if ($resultItem->num_rows > 0) {
+                        while ($itemData = $resultItem->fetch_assoc()) {
+
+
+                            if ($i == 10) {
+                                break;
+                            }
+
+                            $item_id = $itemData['item_id'];
+                            $item_category = $itemData['item_category'];
+                            $name = $itemData['name'];
+                            $price = $itemData['price'];
+                            $stock_quantity = $itemData['stock_quantity'];
+                            $creation_date = $itemData['creation_date'];
+                            $expiration_date = $itemData['expiration_date'];
+                            $brand = $itemData['brand'];
+                            $discount = $itemData['discount'];
+                            $warranty = $itemData['warranty'];
+                            $weight = $itemData['weight'];
+                            $manufacturer = $itemData['manufacturer'];
+                            $description = $itemData['description'];
+
+                            $selectItemImageQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id'";
+                            $resultItemImage = $conn->query($selectItemImageQuery1);
+
+                            if ($resultItemImage->num_rows > 0) {
+                                $itemImageData = $resultItemImage->fetch_assoc();
+
+                                $i += 1;
+                                $image_url = $itemImageData['image_url'];
+
+                                echo '
+
+                <a href="product.php?item_id=' . $item_id . '" class="product-card">
+                    <div class="product-image">
+                        <img src="./assets/images/product/' . $image_url . '" alt="">
+                    </div>
+                    <div class="product-details">
+                        <p>' . $name . '</p>
+                        <h4>LKR.' . $price . '</h4>
+                        <div class="product-stars">
+                            <ul>
+                                <li>
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li>
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li>
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li>
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                                <li>
+                                    <i class="bi bi-star-fill"></i>
+                                </li>
+                            </ul>
+                            <span>(200)</span>
+                        </div>
+                    </div>
+                </a>
+                
+                ';
+                            }
+                        }
+                    }
+
+
+
+                    ?>
+
+                </div>
+            </div>
         </section>
+
 
         <?php
         include "../template/user-footer.php";
@@ -288,6 +447,26 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     </div>
     <script src="./assets/js/user-script.js"></script>
     <script src="./assets/js/user-home.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.slick-carousel').slick({
+                autoplay: true,
+                autoplaySpeed: 2000,
+                dots: true,
+                arrows: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1
+            });
+        });
+    </script>
+
+    <script>
+
+    </script>
 </body>
 
 </html>

@@ -3,38 +3,6 @@ include "../config/database.php";
 
 session_start();
 
-$booking_id = "";
-$photo_url = "";
-$status = "";
-$booked_date = "";
-$booked_time = "";
-$accept_date = "";
-$accept_time = "";
-$start_date = "";
-$start_time = "";
-$finished_date = "";
-$finished_time = "";
-$house_no = "";
-$state = "";
-$city = "";
-$payment_status = "";
-$payment_method = "";
-$cost = "";
-$description = "";
-$latitude = "";
-$longitude = "";
-
-$user_id = $_SESSION['id'];
-$order_id = "";
-
-if (isset($_GET['order_id'])) {
-    if (!empty($_GET['order_id'])) {
-        $order_id = $_GET['order_id'];
-    }
-}
-
-
-
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
         // header('location: index.php');
@@ -52,9 +20,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 } else {
     header('location: ./login.php');
 }
-
-
-
 
 $order_id = "";
 $date_of_pickup = "";
@@ -75,8 +40,10 @@ $payment_method = "";
 $payment_status = "";
 $customer_user_id = "";
 $delivery_boy_id = "";
+$delivery_id = "";
 
-$order_id = $_GET['order_id'];
+$user_id = $_SESSION['id'];
+$order_id = "";
 
 if (isset($_GET['order_id'])) {
     if (!empty($_GET['order_id'])) {
@@ -104,6 +71,7 @@ if ($resultOrder->num_rows > 0) {
         if ($resultDelivery->num_rows > 0) {
             $rowDelivery = $resultDelivery->fetch_assoc();
 
+            $delivery_id = $rowDelivery['delivery_id'];
             $delivery_boy_id = $rowDelivery['delivery_boy_id'];
             $date_of_pickup = $rowDelivery['date_of_pickup'];
             $time_of_pickup = $rowDelivery['time_of_pickup'];
@@ -150,6 +118,17 @@ if ($resultOrder->num_rows > 0) {
 }
 
 $total_amount += 200;
+
+if (isset($_POST['delivery_boy'])) {
+    header("location: ./feedback.php?order_id={$order_id}&delivery_id={$delivery_id}");
+}
+
+if (isset($_POST['item'])) {
+    header("location: ./feedback.php?order_id={$order_id}&item_id={$item_id}");
+}
+
+
+
 
 ?>
 
@@ -260,21 +239,7 @@ $total_amount += 200;
                             <form class="right-button margin-top-30" method="POST">
                                 <input type="button" class="btn" value="Contact" onclick="window.location.href='message.php?receiver_id=<?php echo $customer_user_id ?>delivery_id=<?php echo $delivery_id ?>'">
                                 <input type="button" class="btn" value="Location" onclick="window.location.href=''">
-                                <?php
-
-                                if ($status == "accept") {
-                                    echo '<input type="submit" value="Picked up" name="pickedup" class="btn" >';
-                                } else if ($status == "pickedup") {
-                                    echo '<input type="submit" value="Finished" name="finished" class="btn" >';
-                                } else if ($status == "delivered") {
-                                    if ($payment_method == "card") {
-                                        if ($payment_status == "pending") {
-                                            echo '<input type="submit" value="Paid" name="paid" class="btn" >';
-                                        }
-                                    }
-                                }
-
-                                ?>
+                                
                             </form>
                         </div> -->
                     </div>
@@ -308,6 +273,7 @@ $total_amount += 200;
                                             if ($resultDelivery->num_rows > 0) {
                                                 $rowDelivery = $resultDelivery->fetch_assoc();
 
+                                                $delivery_id = $rowDelivery['delivery_id'];
                                                 $delivery_boy_id = $rowDelivery['delivery_boy_id'];
                                                 $date_of_pickup = $rowDelivery['date_of_pickup'];
                                                 $time_of_pickup = $rowDelivery['time_of_pickup'];
@@ -362,6 +328,16 @@ $total_amount += 200;
 
                                                                 $total_amount_item = $price * $quantity;
 
+                                                                $itemFeedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                                                $resultFeedback = $conn->query($itemFeedback);
+
+                                                                $feedback = false;
+
+                                                                if ($resultFeedback->num_rows > 0) {
+                                                                    $rowFeedback = $resultFeedback->fetch_assoc();
+                                                                    $feedback = true;
+                                                                }
+
                                                                 echo '
                                                                     <div class="user-cart-product">
                                                                         <div class="cart-product-1">
@@ -374,17 +350,24 @@ $total_amount += 200;
                                                                                 </div>
                                                                                 <div class="cart-product-1-2-2">
                                                                                     <div class="cart-q">
-                                                                                    <p>Quantity: <input class="quantity" type="text" value="' . $quantity . '" disabled></p>
+                                                                                        <p>Quantity: <input class="quantity" type="text" value="' . $quantity . '" disabled></p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="cart-product-2">
                                                                             <div class="cart-product-1-2-1">
-                                                                                <p class="total-amount-item">Warranty: ' . $warranty . ' Year</p>
-                                                                            </div>
-                                                                            <div class="cart-product-1-2-2">
                                                                                 <p class="total-amount-item">Total Amount: LKR.' . $total_amount_item . '</p>
+                                                                            </div>
+                                                                            <div class="cart-product-1-2-2">';
+
+                                                                if ($status == "delivered") {
+                                                                    if (!$feedback) {
+                                                                        echo '<a href="./feedback.php?order_id=' . $order_id . '&item_id=' . $item_id . '" class="" style="text-align: right; cursor:pointer;"><i class="ri-feedback-line"></i></a>';
+                                                                    }
+                                                                }
+
+                                                                echo '
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -404,6 +387,35 @@ $total_amount += 200;
                             </div>
                         </div>
                     </div>
+                    <form class="input-content" method="post">
+                        <div class="right-button margin-top-30">
+                            <?php
+
+                            // echo $status;
+
+                            if ($status == "accept") {
+                                // echo '<input type="submit" value="Picked up" name="pickedup" class="btn" >';
+                            } else if ($status == "delivered") {
+                                if ($payment_method == "card") {
+                                    if ($payment_status == "pending") {
+                                        echo '<input type="submit" value="Paid" name="paid" class="btn" >';
+                                    }
+                                }
+
+                                $delivery_boy_feedback = "SELECT * FROM `delivery_boy_feedback` WHERE `delivery_id` = $delivery_id";
+                                $resultFeedback = $conn->query($delivery_boy_feedback);
+
+                                if ($resultFeedback->num_rows > 0) {
+                                    $rowFeedback = $resultFeedback->fetch_assoc();
+                                    
+                                }else{
+                                    echo '<input type="submit" value="Delivery Boy Feedback" name="delivery_boy" class="btn">';
+                                }
+                            }
+
+                            ?>
+                        </div>
+                    </form>
                 </div>
         </section>
         <?php

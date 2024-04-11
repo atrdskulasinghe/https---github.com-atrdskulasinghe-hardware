@@ -182,7 +182,7 @@ if (isset($_POST['login'])) {
                                 <label for="remember">Remember me</label>
                             </div>
                             <div class="forget-content-2">
-                                <a href="">Forget password</a>
+                                <a href="./forget-password.php">Forget password</a>
                             </div>
                         </div>
                         <div class="login-button">

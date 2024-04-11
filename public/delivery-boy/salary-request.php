@@ -26,7 +26,7 @@ $currentDate = date("Y-m-d");
 $currentTime = date("H:i:s");
 
 $user_id = 2;
-if(isset($_SESSION['id'])){
+if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
 }
 
@@ -97,22 +97,24 @@ if (isset($_POST['request'])) {
         }
 
         if (empty($bank_nameError) && empty($branchError) && empty($holder_nameError) && empty($account_noError) && empty($request_amountError)) {
-            $updateBankDetailsQuery = "UPDATE `bank_details` SET 
-                `bank_name`='$bank_name',
-                `branch`='$branch',
-                `holder_name`='$holder_name',
-                `account_no`='$account_no'
+
+            $now_balance = (float)$balance - (float)$request_amount;
+
+            $updateCurrentBalanceQuery = "UPDATE `delivery_boy` SET 
+                `balance`= '$now_balance'
                 WHERE `user_id` = $user_id";
 
-            if ($conn->query($updateBankDetailsQuery) === TRUE) {
+            if ($conn->query($updateCurrentBalanceQuery) === TRUE) {
 
-                $now_balance = (float)$balance - (float)$request_amount;
+                $updateBankDetailsQuery = "UPDATE `bank_details` SET 
+                        `bank_name`='$bank_name',
+                        `branch`='$branch',
+                        `holder_name`='$holder_name',
+                        `account_no`='$account_no'
+                        WHERE `user_id` = $user_id";
 
-                $updateCurrentBalanceQuery = "UPDATE `delivery_boy` SET 
-                `balance`='$now_balance'
-                WHERE `user_id` = $user_id";
+                if ($conn->query($updateBankDetailsQuery) === TRUE) {
 
-                if ($conn->query($updateCurrentBalanceQuery) === TRUE) {
 
                     $paymentQuery = "INSERT INTO `payment`(`user_id`, `date`, `time`, `amount`, `status`) VALUES 
                     ('$user_id','$currentDate','$currentTime','$request_amount','pending')";
@@ -164,7 +166,7 @@ if (isset($_POST['request'])) {
         }
 
         if (empty($bank_nameError) && empty($branchError) && empty($holder_nameError) && empty($account_noError) && empty($request_amountError)) {
-            
+
             $updateBankDetailsQuery = "INSERT INTO `bank_details`(`user_id`, `bank_name`, `branch`, `holder_name`, `account_no`) VALUES 
             ('$user_id','$bank_name','$branch','$holder_name','$account_no')";
 
@@ -223,12 +225,9 @@ if (isset($_POST['request'])) {
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -245,18 +244,18 @@ if (isset($_POST['request'])) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./calender.php">
                                 <p><img src="../assets/images/ui/Calendar.png" alt="">Calendar</p>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./wallet.php">
                                 <p><img src="../assets/images/ui/Wallet.png" alt="">My Wallet</p>
                             </a>
                         </div>
-                        
+
                         <!-- menu link 1 -->
                         <div class="menu-link-button active">
                             <a href="./salary-request.php">

@@ -2,6 +2,9 @@
 include "../config/database.php";
 session_start();
 
+include "../config/email.php";
+
+
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
         header('location: index.php');
@@ -17,7 +20,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         header('location: ./technical-team/index.php');
     }
 }
-
 
 if (!isset($_SESSION['password'])) {
     header('location: signup-s.php');
@@ -98,9 +100,7 @@ if (isset($_POST['finish'])) {
         $_SESSION['vehicle_type'] = $vehicle_type;
         $_SESSION['vehicle_number'] = $vehicle_number;
         $_SESSION['vehicle_model'] = $vehicle_model;
-
-        //
-
+        
         $targetDirectory = "./assets/images/delivery-boy/";
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -112,6 +112,18 @@ if (isset($_POST['finish'])) {
             $row = $result->fetch_assoc();
             $lastUserId = $row['user_id'] + 1;
         }
+
+        function generateActivationCode($length = 6)
+        {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $activationCode = '';
+            for ($i = 0; $i < $length; $i++) {
+                $activationCode .= $characters[rand(0, strlen($characters) - 1)];
+            }
+            return $activationCode;
+        }
+
+        $activationCode = generateActivationCode();
 
         $profileUrl = $lastUserId . '_profile.jpg';
 
@@ -130,20 +142,31 @@ if (isset($_POST['finish'])) {
                 $newFileName = $lastUserId . "_profile.jpg";
                 $targetFile = $targetDirectory . $newFileName;
 
-                echo "Ok";
-
                 // nic image save
                 if (!empty($_FILES["nic_image"]["name"]) && $_FILES["nic_image"]["error"] == UPLOAD_ERR_OK) {
                     $newFileName = $lastUserId . "_nic.jpg";
                     $targetFile = $targetDirectory . $newFileName;
                     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
-                        session_destroy();
-                        header('location: login.php');
+
+                        $mail->setFrom('tharinduruchiranga252@gmail.com', 'Hardware');
+                        $mail->addAddress($email);
+
+                        $mail->isHTML(true);
+                        $mail->Subject = 'Activation Code for Your Account.';
+                        $mail->Body = 'Dear User,<br><br>'
+                            . 'Please click this button and activate your account.<br>'
+                            . '<a href="http://localhost/hardware/public/activate.php?id=' . $lastUserId . '&code=' . $activationCode . '" style="display:inline-block;background-color:#007bff;color:#ffffff;font-size:16px;padding:10px 20px;text-decoration:none;border-radius:5px;">Activate Account</a><br><br>'
+                            . 'Thank you!<br>';
+
+                        if ($mail->send()) {
+                            session_destroy();
+                            header('location: ./login.php');
+                        };
+
                     }
                 }
 
-                session_destroy();
-                header('location: login.php');
+                
             }
         }
     }

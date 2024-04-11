@@ -176,7 +176,6 @@ if (isset($_GET['category_id'])) {
 
                                 if ($resultTechnician->num_rows > 0) {
                                     while ($technicianData = $resultTechnician->fetch_assoc()) {
-
                                         $technician_id = $technicianData['technician_id'];
                                         $user_id = $technicianData['user_id'];
                                         $category = $technicianData['category'];
@@ -188,223 +187,33 @@ if (isset($_GET['category_id'])) {
                                         $status = $technicianData['status'];
                                         $balance = $technicianData['balance'];
 
-                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
-                                        $resultUser = $conn->query($selectUserQuery);
+                                        if ($status == "approved") {
 
-                                        if ($resultUser->num_rows > 0) {
-                                            $userData = $resultUser->fetch_assoc();
 
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
 
-                                            $birthDateObj = new DateTime($dob);
-                                            $currentDateObj = new DateTime();
+                                            $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
+                                            $resultUser = $conn->query($selectUserQuery);
 
-                                            $age = $currentDateObj->diff($birthDateObj);
+                                            if ($resultUser->num_rows > 0) {
+                                                $userData = $resultUser->fetch_assoc();
 
-                                            $age = $age->y;
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
 
-                                            echo '
-                                            <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
-                                                <div class="technician-image">
-                                                    <img src="./assets/images/technician/' . $profile_url . '" alt="">
-                                                </div>
-                                                <div class="technician-details">
-                                                    <h3 class="technician-name">' . $first_name . ' ' . $last_name . '</h3>
-                                                    <div class="technician-details-content">
-                                                        <div class="technician-details-content-1">
-                                                            <ul>
-                                                                <li>City</li>
-                                                                <li>Age</li>
-                                                                <li>Cost per hours</li>
-                                                                <li>Cost per day</li>
-                                                                <li>Years of experience</li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="technician-details-content-2">
-                                                            <ul>
-                                                                <li>' . $city . '</li>
-                                                                <li>' . $age . '</li>
-                                                                <li>Rs.' . $cost_per_hour . '</li>
-                                                                <li>Rs.' . $cost_per_day . '</li>
-                                                                <li>' . $work_experience . ' year</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="technician-stars">
-                                                        <ul>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                        </ul>
-                                                        <span>(200)</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            ';
-                                        }
-                                    }
-                                }
-                            } else if ($minCost !== "" && $maxCost !== "") {
-                                $minCost = $conn->real_escape_string($minCost);
-                                $maxCost = $conn->real_escape_string($maxCost);
+                                                $birthDateObj = new DateTime($dob);
+                                                $currentDateObj = new DateTime();
 
-                                $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE `cost_per_day` BETWEEN '$minCost' AND '$maxCost'";
-                                $resultTechnician = $conn->query($selectTechnicianQuery1);
+                                                $age = $currentDateObj->diff($birthDateObj);
 
-                                if ($resultTechnician->num_rows > 0) {
-                                    while ($technicianData = $resultTechnician->fetch_assoc()) {
-                                        $technician_id = $technicianData['technician_id'];
-                                        $user_id = $technicianData['user_id'];
-                                        $category = $technicianData['category'];
-                                        $nic_number = $technicianData['nic_number'];
-                                        $nic_photo_url = $technicianData['nic_photo_url'];
-                                        $work_experience = $technicianData['work_experience'];
-                                        $cost_per_day = $technicianData['cost_per_day'];
-                                        $cost_per_hour = $technicianData['cost_per_hour'];
-                                        $status = $technicianData['status'];
-                                        $balance = $technicianData['balance'];
-
-                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
-                                        $resultUser = $conn->query($selectUserQuery);
-
-                                        if ($resultUser->num_rows > 0) {
-                                            $userData = $resultUser->fetch_assoc();
-
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
-
-                                            $birthDateObj = new DateTime($dob);
-                                            $currentDateObj = new DateTime();
-
-                                            $age = $currentDateObj->diff($birthDateObj);
-
-                                            $age = $age->y;
-
-                                            echo '
-                                            <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
-                                                <div class="technician-image">
-                                                    <img src="./assets/images/technician/' . $profile_url . '" alt="">
-                                                </div>
-                                                <div class="technician-details">
-                                                    <h3 class="technician-name">' . $first_name . ' ' . $last_name . '</h3>
-                                                    <div class="technician-details-content">
-                                                        <div class="technician-details-content-1">
-                                                            <ul>
-                                                                <li>City</li>
-                                                                <li>Age</li>
-                                                                <li>Cost per hours</li>
-                                                                <li>Cost per day</li>
-                                                                <li>Years of experience</li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="technician-details-content-2">
-                                                            <ul>
-                                                                <li>' . $city . '</li>
-                                                                <li>' . $age . '</li>
-                                                                <li>Rs.' . $cost_per_hour . '</li>
-                                                                <li>Rs.' . $cost_per_day . '</li>
-                                                                <li>' . $work_experience . ' year</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="technician-stars">
-                                                        <ul>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
-                                                            </li>
-                                                        </ul>
-                                                        <span>(200)</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            ';
-                                        }
-                                    }
-                                }
-                            } else if ($age1 !== "") {
-
-                                $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE 1";
-                                $resultTechnician = $conn->query($selectTechnicianQuery1);
-
-                                if ($resultTechnician->num_rows > 0) {
-                                    while ($technicianData = $resultTechnician->fetch_assoc()) {
-                                        $technician_id = $technicianData['technician_id'];
-                                        $user_id = $technicianData['user_id'];
-                                        $category = $technicianData['category'];
-                                        $nic_number = $technicianData['nic_number'];
-                                        $nic_photo_url = $technicianData['nic_photo_url'];
-                                        $work_experience = $technicianData['work_experience'];
-                                        $cost_per_day = $technicianData['cost_per_day'];
-                                        $cost_per_hour = $technicianData['cost_per_hour'];
-                                        $status = $technicianData['status'];
-                                        $balance = $technicianData['balance'];
-
-                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
-                                        $resultUser = $conn->query($selectUserQuery);
-
-                                        if ($resultUser->num_rows > 0) {
-                                            $userData = $resultUser->fetch_assoc();
-
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
-
-                                            $birthDateObj = new DateTime($dob);
-                                            $currentDateObj = new DateTime();
-
-                                            $age = $currentDateObj->diff($birthDateObj);
-
-                                            $age = $age->y;
-
-                                            if ($age == $age1) {
+                                                $age = $age->y;
 
                                                 echo '
                                             <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
@@ -426,7 +235,7 @@ if (isset($_GET['category_id'])) {
                                                         <div class="technician-details-content-2">
                                                             <ul>
                                                                 <li>' . $city . '</li>
-                                                                <li>' . $age1 . '</li>
+                                                                <li>' . $age . '</li>
                                                                 <li>Rs.' . $cost_per_hour . '</li>
                                                                 <li>Rs.' . $cost_per_day . '</li>
                                                                 <li>' . $work_experience . ' year</li>
@@ -460,9 +269,11 @@ if (isset($_GET['category_id'])) {
                                         }
                                     }
                                 }
-                            } else if ($experience !== "") {
+                            } else if ($minCost !== "" && $maxCost !== "") {
+                                $minCost = $conn->real_escape_string($minCost);
+                                $maxCost = $conn->real_escape_string($maxCost);
 
-                                $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE `work_experience` = '$experience'";
+                                $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE `cost_per_day` BETWEEN '$minCost' AND '$maxCost'";
                                 $resultTechnician = $conn->query($selectTechnicianQuery1);
 
                                 if ($resultTechnician->num_rows > 0) {
@@ -478,31 +289,35 @@ if (isset($_GET['category_id'])) {
                                         $status = $technicianData['status'];
                                         $balance = $technicianData['balance'];
 
-                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
-                                        $resultUser = $conn->query($selectUserQuery);
+                                        if ($status == "approved") {
 
-                                        if ($resultUser->num_rows > 0) {
-                                            $userData = $resultUser->fetch_assoc();
 
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
 
-                                            $birthDateObj = new DateTime($dob);
-                                            $currentDateObj = new DateTime();
+                                            $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
+                                            $resultUser = $conn->query($selectUserQuery);
 
-                                            $age = $currentDateObj->diff($birthDateObj);
+                                            if ($resultUser->num_rows > 0) {
+                                                $userData = $resultUser->fetch_assoc();
 
-                                            $age = $age->y;
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
 
-                                            echo '
+                                                $birthDateObj = new DateTime($dob);
+                                                $currentDateObj = new DateTime();
+
+                                                $age = $currentDateObj->diff($birthDateObj);
+
+                                                $age = $age->y;
+
+                                                echo '
                                             <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
                                                 <div class="technician-image">
                                                     <img src="./assets/images/technician/' . $profile_url . '" alt="">
@@ -552,6 +367,210 @@ if (isset($_GET['category_id'])) {
                                                 </div>
                                             </a>
                                             ';
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if ($age1 !== "") {
+
+                                $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE 1";
+                                $resultTechnician = $conn->query($selectTechnicianQuery1);
+
+                                if ($resultTechnician->num_rows > 0) {
+                                    while ($technicianData = $resultTechnician->fetch_assoc()) {
+                                        $technician_id = $technicianData['technician_id'];
+                                        $user_id = $technicianData['user_id'];
+                                        $category = $technicianData['category'];
+                                        $nic_number = $technicianData['nic_number'];
+                                        $nic_photo_url = $technicianData['nic_photo_url'];
+                                        $work_experience = $technicianData['work_experience'];
+                                        $cost_per_day = $technicianData['cost_per_day'];
+                                        $cost_per_hour = $technicianData['cost_per_hour'];
+                                        $status = $technicianData['status'];
+                                        $balance = $technicianData['balance'];
+
+                                        if ($status == "approved") {
+
+                                            $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
+                                            $resultUser = $conn->query($selectUserQuery);
+
+                                            if ($resultUser->num_rows > 0) {
+                                                $userData = $resultUser->fetch_assoc();
+
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
+
+                                                $birthDateObj = new DateTime($dob);
+                                                $currentDateObj = new DateTime();
+
+                                                $age = $currentDateObj->diff($birthDateObj);
+
+                                                $age = $age->y;
+
+                                                if ($age == $age1) {
+
+
+
+                                                    echo '
+                                            <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
+                                                <div class="technician-image">
+                                                    <img src="./assets/images/technician/' . $profile_url . '" alt="">
+                                                </div>
+                                                <div class="technician-details">
+                                                    <h3 class="technician-name">' . $first_name . ' ' . $last_name . '</h3>
+                                                    <div class="technician-details-content">
+                                                        <div class="technician-details-content-1">
+                                                            <ul>
+                                                                <li>City</li>
+                                                                <li>Age</li>
+                                                                <li>Cost per hours</li>
+                                                                <li>Cost per day</li>
+                                                                <li>Years of experience</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="technician-details-content-2">
+                                                            <ul>
+                                                                <li>' . $city . '</li>
+                                                                <li>' . $age . '</li>
+                                                                <li>Rs.' . $cost_per_hour . '</li>
+                                                                <li>Rs.' . $cost_per_day . '</li>
+                                                                <li>' . $work_experience . ' year</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="technician-stars">
+                                                        <ul>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                        </ul>
+                                                        <span>(200)</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            ';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if ($experience !== "") {
+
+                                $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE `work_experience` = '$experience'";
+                                $resultTechnician = $conn->query($selectTechnicianQuery1);
+
+                                if ($resultTechnician->num_rows > 0) {
+                                    while ($technicianData = $resultTechnician->fetch_assoc()) {
+                                        $technician_id = $technicianData['technician_id'];
+                                        $user_id = $technicianData['user_id'];
+                                        $category = $technicianData['category'];
+                                        $nic_number = $technicianData['nic_number'];
+                                        $nic_photo_url = $technicianData['nic_photo_url'];
+                                        $work_experience = $technicianData['work_experience'];
+                                        $cost_per_day = $technicianData['cost_per_day'];
+                                        $cost_per_hour = $technicianData['cost_per_hour'];
+                                        $status = $technicianData['status'];
+                                        $balance = $technicianData['balance'];
+
+                                        if ($status == "approved") {
+
+
+
+                                            $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
+                                            $resultUser = $conn->query($selectUserQuery);
+
+                                            if ($resultUser->num_rows > 0) {
+                                                $userData = $resultUser->fetch_assoc();
+
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
+
+                                                $birthDateObj = new DateTime($dob);
+                                                $currentDateObj = new DateTime();
+
+                                                $age = $currentDateObj->diff($birthDateObj);
+
+                                                $age = $age->y;
+
+                                                echo '
+                                            <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
+                                                <div class="technician-image">
+                                                    <img src="./assets/images/technician/' . $profile_url . '" alt="">
+                                                </div>
+                                                <div class="technician-details">
+                                                    <h3 class="technician-name">' . $first_name . ' ' . $last_name . '</h3>
+                                                    <div class="technician-details-content">
+                                                        <div class="technician-details-content-1">
+                                                            <ul>
+                                                                <li>City</li>
+                                                                <li>Age</li>
+                                                                <li>Cost per hours</li>
+                                                                <li>Cost per day</li>
+                                                                <li>Years of experience</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="technician-details-content-2">
+                                                            <ul>
+                                                                <li>' . $city . '</li>
+                                                                <li>' . $age . '</li>
+                                                                <li>Rs.' . $cost_per_hour . '</li>
+                                                                <li>Rs.' . $cost_per_day . '</li>
+                                                                <li>' . $work_experience . ' year</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="technician-stars">
+                                                        <ul>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bi bi-star-fill"></i>
+                                                            </li>
+                                                        </ul>
+                                                        <span>(200)</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            ';
+                                            }
                                         }
                                     }
                                 }
@@ -573,31 +592,35 @@ if (isset($_GET['category_id'])) {
                                         $status = $technicianData['status'];
                                         $balance = $technicianData['balance'];
 
-                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
-                                        $resultUser = $conn->query($selectUserQuery);
+                                        if ($status == "approved") {
 
-                                        if ($resultUser->num_rows > 0) {
-                                            $userData = $resultUser->fetch_assoc();
 
-                                            $first_name = $userData['first_name'];
-                                            $last_name = $userData['last_name'];
-                                            $email = $userData['email'];
-                                            $phone_number = $userData['phone_number'];
-                                            $dob = $userData['dob'];
-                                            $house_no = $userData['house_no'];
-                                            $state = $userData['state'];
-                                            $city = $userData['city'];
-                                            $account_type = $userData['account_type'];
-                                            $profile_url = $userData['profile_url'];
 
-                                            $birthDateObj = new DateTime($dob);
-                                            $currentDateObj = new DateTime();
+                                            $selectUserQuery = "SELECT * FROM `user` WHERE `user_id`='$user_id'";
+                                            $resultUser = $conn->query($selectUserQuery);
 
-                                            $age = $currentDateObj->diff($birthDateObj);
+                                            if ($resultUser->num_rows > 0) {
+                                                $userData = $resultUser->fetch_assoc();
 
-                                            $age = $age->y;
+                                                $first_name = $userData['first_name'];
+                                                $last_name = $userData['last_name'];
+                                                $email = $userData['email'];
+                                                $phone_number = $userData['phone_number'];
+                                                $dob = $userData['dob'];
+                                                $house_no = $userData['house_no'];
+                                                $state = $userData['state'];
+                                                $city = $userData['city'];
+                                                $account_type = $userData['account_type'];
+                                                $profile_url = $userData['profile_url'];
 
-                                            echo '
+                                                $birthDateObj = new DateTime($dob);
+                                                $currentDateObj = new DateTime();
+
+                                                $age = $currentDateObj->diff($birthDateObj);
+
+                                                $age = $age->y;
+
+                                                echo '
                                             <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
                                                 <div class="technician-image">
                                                     <img src="./assets/images/technician/' . $profile_url . '" alt="">
@@ -647,6 +670,7 @@ if (isset($_GET['category_id'])) {
                                                 </div>
                                             </a>
                                             ';
+                                            }
                                         }
                                     }
                                 }

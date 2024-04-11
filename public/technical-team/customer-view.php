@@ -25,7 +25,7 @@ include "../../template/user-data.php";
 
 $user_id = "";
 
-if(isset($_GET['user'])){
+if (isset($_GET['user'])) {
     $user_id = $_GET['user'];
 } else {
     header('location: customers.php');
@@ -166,14 +166,11 @@ $conn->close();
         ?>
         <!-- <div class="content"> -->
         <aside class="active aside">
-                <!-- menu -->
-                <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <!-- menu -->
+            <div class="menu">
+                <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -286,7 +283,7 @@ $conn->close();
                     </div>
                 </div>
             </div>
-            </aside>
+        </aside>
         <section class="active section">
             <div class="content">
                 <form class="profile" method="POST" enctype="multipart/form-data">

@@ -21,7 +21,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     }
 }
 
-$user_id = $_SESSION['id'];
+if (isset($_SESSION['id'])){
+    $user_id = $_SESSION['id'];
+}
 
 $item_id = "";
 $item_category = "";
@@ -112,6 +114,9 @@ if ($resultItemImage->num_rows > 0) {
 
 if (isset($_POST['add-to-cart'])) {
 
+    if (!isset($_SESSION['id'])){
+        header('location: ./login.php');
+    }
 
     $quantity = $_POST['quantity'];
 
@@ -137,6 +142,11 @@ if (isset($_POST['add-to-cart'])) {
             // error
         }
     } else {
+
+        if (!isset($_SESSION['id'])){
+            header('location: ./login.php');
+        }
+
         $cartSql = "INSERT INTO `cart`(`user_id`, `item_id`, `quantity`) 
         VALUES ('$user_id','$item_id','$quantity')";
 
@@ -738,7 +748,7 @@ $newQuantity = 1;
                                             <img src="./assets/images/product/' . $image_url . '" alt="">
                                         </div>
                                         <div class="product-details">
-                                            <p>' . $description . '</p>
+                                            <p>' . $name . '</p>
                                             <h4>LKR.' . $price . '</h4>
                                             <div class="product-stars">
                                                 <ul>

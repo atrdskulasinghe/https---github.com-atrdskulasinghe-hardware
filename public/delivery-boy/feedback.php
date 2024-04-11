@@ -53,12 +53,9 @@ include "../../template/user-data.php";
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -74,11 +71,11 @@ include "../../template/user-data.php";
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./calender.php">
                                 <p><img src="../assets/images/ui/Calendar.png" alt="">Calendar</p>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./wallet.php">

@@ -39,7 +39,8 @@ if (isset($_GET['product_name'])) {
                 </div>
                 <!-- navigation logo -->
                 <div class="nav-1-content-1">
-                    <h1>LOGO</h1>
+                    <!-- <h1>LOGO</h1> -->
+                    <img src="./assets/images/ui/hardware-logo.png" alt="" style="height:30px">
                 </div>
                 <!-- navigation search bar -->
                 <div class="nav-1-content-2">

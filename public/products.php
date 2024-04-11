@@ -89,8 +89,8 @@ if (isset($_GET['category_id'])) {
         include "../template/user-nav.php";
 
         ?>
-                <?php
-            include "../template/user-menu.php";
+        <?php
+        include "../template/user-menu.php";
         ?>
         <section>
             <div class="box">
@@ -220,7 +220,7 @@ if (isset($_GET['category_id'])) {
                                             <img src="./assets/images/product/' . $image_url . '" alt="">
                                         </div>
                                         <div class="product-details">
-                                            <p>' . $description . '</p>
+                                            <p>' . $name . '</p>
                                             <h4>LKR.' . $price . '</h4>
                                             <div class="product-stars">
                                                 <ul>
@@ -291,7 +291,7 @@ if (isset($_GET['category_id'])) {
                                             <img src="./assets/images/product/' . $image_url . '" alt="">
                                         </div>
                                         <div class="product-details">
-                                            <p>' . $description . '</p>
+                                            <p>' . $name . '</p>
                                             <h4>LKR.' . $price . '</h4>
                                             <div class="product-stars">
                                                 <ul>
@@ -357,7 +357,7 @@ if (isset($_GET['category_id'])) {
                                             <img src="./assets/images/product/' . $image_url . '" alt="">
                                         </div>
                                         <div class="product-details">
-                                            <p>' . $description . '</p>
+                                            <p>' . $name . '</p>
                                             <h4>LKR.' . $price . '</h4>
                                             <div class="product-stars">
                                                 <ul>
@@ -423,7 +423,7 @@ if (isset($_GET['category_id'])) {
                                             <img src="./assets/images/product/' . $image_url . '" alt="">
                                         </div>
                                         <div class="product-details">
-                                            <p>' . $description . '</p>
+                                            <p>' . $name . '</p>
                                             <h4>LKR.' . $price . '</h4>
                                             <div class="product-stars">
                                                 <ul>
@@ -490,7 +490,7 @@ if (isset($_GET['category_id'])) {
                                             <img src="./assets/images/product/' . $image_url . '" alt="">
                                         </div>
                                         <div class="product-details">
-                                            <p>' . $description . '</p>
+                                            <p>' . $name . '</p>
                                             <h4>LKR.' . $price . '</h4>
                                             <div class="product-stars">
                                                 <ul>
@@ -520,8 +520,6 @@ if (isset($_GET['category_id'])) {
                                     }
                                 }
                             }
-
-
 
                             ?>
 

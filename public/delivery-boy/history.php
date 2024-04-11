@@ -56,12 +56,9 @@ if(isset($_SESSION['id'])){
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -77,11 +74,11 @@ if(isset($_SESSION['id'])){
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./calender.php">
                                 <p><img src="../assets/images/ui/Calendar.png" alt="">Calendar</p>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./wallet.php">
@@ -174,9 +171,11 @@ if(isset($_SESSION['id'])){
                                         $house_no = $row['house_no'];
                                         $state = $row['state'];
                                         $city = $row['city'];
-                                        $location_url = $row['location_url'];
+                                        
                                         $delivery_cost = $row['delivery_cost'];
                                         $description = $row['description'];
+                                        $latitude = $row['latitude'];
+                                        $longitude = $row['longitude'];
 
 
                                         if ($delivery_boy_idDB == $delivery_boy_id) {

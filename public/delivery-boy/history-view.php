@@ -23,7 +23,7 @@ include "../../config/database.php";
 include "../../template/user-data.php";
 
 $user_id = 2;
-if(isset($_SESSION['id'])){
+if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
 }
 
@@ -87,9 +87,11 @@ if ($result->num_rows > 0) {
         $house_no = $row['house_no'];
         $state = $row['state'];
         $city = $row['city'];
-        $location_url = $row['location_url'];
+
         $delivery_cost = $row['delivery_cost'];
         $description = $row['description'];
+        $latitude = $row['latitude'];
+        $longitude = $row['longitude'];
 
         if ($delivery_boy_idDB == $delivery_boy_id) {
 
@@ -244,12 +246,9 @@ if (isset($_POST['paid'])) {
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -265,11 +264,11 @@ if (isset($_POST['paid'])) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./calender.php">
                                 <p><img src="../assets/images/ui/Calendar.png" alt="">Calendar</p>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./wallet.php">
@@ -391,7 +390,7 @@ if (isset($_POST['paid'])) {
                     <div class="input-content">
                         <form class="right-button margin-top-30" method="POST">
                             <input type="button" class="btn" value="Contact" onclick="window.location.href='message.php?receiver_id=<?php echo $customer_user_id ?>delivery_id=<?php echo $delivery_id ?>'">
-                            <input type="button" class="btn" value="Location" onclick="window.location.href=''">
+                            <input type="button" class="btn" value="Location" onclick="redirectToMap(<?php echo $latitude; ?>, <?php echo $longitude; ?>)">
                             <?php
 
                             if ($status == "accept") {
@@ -399,7 +398,7 @@ if (isset($_POST['paid'])) {
                             } else if ($status == "pickedup") {
                                 echo '<input type="submit" value="Finished" name="finished" class="btn" >';
                             } else if ($status == "delivered") {
-                                if ($payment_method == "card") {
+                                if ($payment_method == "cash") {
                                     if ($payment_status == "pending") {
                                         echo '<input type="submit" value="Paid" name="paid" class="btn" >';
                                     }
@@ -417,6 +416,13 @@ if (isset($_POST['paid'])) {
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
+    <script>
+        function redirectToMap(latitude, longitude) {
+
+            var url = "https://www.google.com/maps?q=" + latitude + "," + longitude;
+            window.open(url, "_blank");
+        }
+    </script>
 </body>
 
 </html>

@@ -3,6 +3,24 @@ include "../config/database.php";
 
 session_start();
 
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        // header('location: index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ./cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        header('location: ./technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ./delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        header('location: ./admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ./technical-team/index.php');
+    }
+} else {
+    header('location: ./login.php');
+}
+
 $booking_id = "";
 $photo_url = "";
 $status = "";
@@ -29,7 +47,11 @@ $user_id = $_SESSION['id'];
 if (isset($_GET['booking_id'])) {
     if (!empty($_GET['booking_id'])) {
         $booking_id = $_GET['booking_id'];
+    } else {
+        header('location: ./book-history.php');
     }
+} else {
+    header('location: ./book-history.php');
 }
 
 $selectTechnicianQuery1 = "SELECT * FROM `booking` WHERE `booking_id`= '$booking_id'";
@@ -38,6 +60,7 @@ $resultTechnician = $conn->query($selectTechnicianQuery1);
 if ($resultTechnician->num_rows > 0) {
     while ($row = $resultTechnician->fetch_assoc()) {
         $booking_id = $row['booking_id'];
+        $technician_id = $row['technician_id'];
         $photo_url = $row['photo_url'];
         $status = $row['status'];
         $booked_date = $row['booked_date'];
@@ -58,27 +81,14 @@ if ($resultTechnician->num_rows > 0) {
         $latitude = $row['latitude'];
         $longitude = $row['longitude'];
     }
-}
-
-
-
-if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
-    if ($_SESSION['account_type'] == "customer") {
-        // header('location: index.php');
-    } else if ($_SESSION['account_type'] == "cashier") {
-        header('location: ./cashier/index.php');
-    } else if ($_SESSION['account_type'] == "technician") {
-        header('location: ./technician/index.php');
-    } else if ($_SESSION['account_type'] == "delivery_boy") {
-        header('location: ./delivery-boy/index.php');
-    } else if ($_SESSION['account_type'] == "admin") {
-        header('location: ./admin/index.php');
-    } else if ($_SESSION['account_type'] == "technical_team") {
-        header('location: ./technical-team/index.php');
-    }
 } else {
-    header('location: ./login.php');
+    header('location: ./book-history.php');
 }
+
+if (isset($_POST['technician-feedback'])) {
+    header("location: ./feedback.php?booking_id={$booking_id}");
+}
+
 ?>
 
 <!-- <?php echo $status . 'Hello'; ?> -->
@@ -219,23 +229,31 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                             </div>
                         </div>
 
-
                         <form class="input-content" method="post">
                             <div class="right-button margin-top-30">
-                                <!-- <input type="button" class="btn" onclick="contactUser(' . $user_id . ', ' . $booking_id . ')" value="Contact"> -->
-                                <!-- <input type="button" class="btn" value="Location" onclick="window.location.href=''"> -->
+                                <?php
 
-                                <!-- <?php
+                                if ($status == "pending") {
+                                    echo '<input type="submit" value="Cancel" name="cancel" class="btn" >';
+                                } else if ($status == "start") {
+                                    echo '<button type="button" class="btn" onclick="contactUser(' . $technician_id . ', ' . $booking_id . ')">Contact</button>';
+                                } else if ($status == "finish") {
 
+                                    $technician_feedback = "SELECT * FROM `technician_feedback` WHERE `booking_id` = $booking_id";
+                                    $resultFeedback = $conn->query($technician_feedback);
 
-                                        if ($status == "accept") {
-                                            echo '<input type="submit" value="Start" name="start" class="btn" >';
-                                        } else if ($status == "start") {
-                                            echo '<input type="submit" value="Finish" name="finish" class="btn" >';
-                                        } else if ($status == "finish") {
-                                        }
+                                    if ($resultFeedback->num_rows > 0) {
+                                        $rowFeedback = $resultFeedback->fetch_assoc();
+                                    } else {
+                                        echo '<input type="submit" value="Technician Feedback" name="technician-feedback" class="btn" >';
+                                    }
 
-                                        ?> -->
+                                    if ($payment_method == "card") {
+                                        echo '<input type="submit" value="Pay Now" name="pay" class="btn" >';
+                                    }
+                                }
+                                ?>
+
                             </div>
                         </form>
                     </div>
@@ -247,6 +265,11 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         ?>
     </div>
     <script src="./assets/js/user-script.js"></script>
+    <script>
+        function contactUser(technician_id, booking_id) {
+            window.location.href = 'message.php?receiver_id=' + technician_id + '&delivery_id=' + booking_id;
+        }
+    </script>
 </body>
 
 </html>

@@ -2,6 +2,8 @@
 include "../config/database.php";
 session_start();
 
+include "../config/email.php";
+
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
         header('location: index.php');
@@ -125,10 +127,23 @@ if (isset($_POST['finish'])) {
             $lastUserId = $row['user_id'] + 1;
         }
 
+        function generateActivationCode($length = 6)
+        {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $activationCode = '';
+            for ($i = 0; $i < $length; $i++) {
+                $activationCode .= $characters[rand(0, strlen($characters) - 1)];
+            }
+            return $activationCode;
+        }
+
+        $activationCode = generateActivationCode();
+
+
         $profileUrl = $lastUserId . '_profile.jpg';
 
         $sql = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `phone_number`, `dob`, `house_no`, `state`, `city`, `account_type`, `profile_url`, `password`,`security_question`,`question_answer`,`status`,`activation_code`,`latitude`,`longitude`) 
-                    VALUES ('$first_name','$last_name','$email','$phone_number','$dob','$house_no','$state','$city','technician','$profileUrl','$hashedPassword','$security_question','$answer','pending','100','$latitude','$longitude')";
+                    VALUES ('$first_name','$last_name','$email','$phone_number','$dob','$house_no','$state','$city','technician','$profileUrl','$hashedPassword','$security_question','$answer','pending','$activationCode','$latitude','$longitude')";
 
         $nic_photo_url = $lastUserId . '_nic.jpg';
 
@@ -149,8 +164,24 @@ if (isset($_POST['finish'])) {
                     $newFileName = $lastUserId . "_nic.jpg";
                     $targetFile = $targetDirectory . $newFileName;
                     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
-                        session_destroy();
-            header('location: login.php');
+                        
+
+                        $mail->setFrom('tharinduruchiranga252@gmail.com', 'Hardware');
+                        $mail->addAddress($email);
+
+                        $mail->isHTML(true);
+                        $mail->Subject = 'Activation Code for Your Account.';
+                        $mail->Body = 'Dear User,<br><br>'
+                            . 'Please click this button and activate your account.<br>'
+                            . '<a href="http://localhost/hardware/public/activate.php?id=' . $lastUserId . '&code=' . $activationCode . '" style="display:inline-block;background-color:#007bff;color:#ffffff;font-size:16px;padding:10px 20px;text-decoration:none;border-radius:5px;">Activate Account</a><br><br>'
+                            . 'Thank you!<br>';
+
+                        if ($mail->send()) {
+                            session_destroy();
+                            header('location: ./login.php');
+                        }
+
+
                     }
                 }
             }

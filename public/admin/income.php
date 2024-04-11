@@ -50,12 +50,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
             <aside class="active aside">
                 <!-- menu -->
                 <div class="menu">
-                    <div class="menu-header">
-                        <h1>Logo</h1>
-                        <div class="menu-close">
-                            <i class="ri-close-line " id="menu-header-icon"></i>
-                        </div>
-                    </div>
+                <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                     <div class="menu-content">
                         <div class="menu-links">
                             <!-- menu link 1 -->

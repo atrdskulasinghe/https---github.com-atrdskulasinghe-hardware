@@ -52,12 +52,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+                <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -212,7 +209,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         <section class="active section">
             <div class="content">
 
-            <div class="technician">
+                <div class="technician">
                     <form class="search-2" method="GET" action="./technicians.php">
                         <div class="search-content-1">
                             <select name="type" id="">
@@ -272,22 +269,22 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
                                             $vehical = "";
-    
+
                                             $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
-    
+
                                             $status = "approved";
-    
+
                                             $category = "";
                                             $nic_number = "";
                                             $nic_photo_url = "";
                                             $work_experience = "";
                                             $cost_per_day = "";
                                             $cost_per_hour = "";
-    
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
-    
+
                                                     $category = $userData1['category'];
                                                     $nic_number = $userData1['nic_number'];
                                                     $nic_photo_url = $userData1['nic_photo_url'];
@@ -297,8 +294,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                                     $status = $userData1['status'];
                                                 }
                                             }
-    
-    
+
+
                                             if ($status == "approved") {
                                                 $error = true;
                                                 echo '
@@ -388,22 +385,22 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
                                             $vehical = "";
-    
+
                                             $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
-    
+
                                             $status = "approved";
-    
+
                                             $category = "";
                                             $nic_number = "";
                                             $nic_photo_url = "";
                                             $work_experience = "";
                                             $cost_per_day = "";
                                             $cost_per_hour = "";
-    
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
-    
+
                                                     $category = $userData1['category'];
                                                     $nic_number = $userData1['nic_number'];
                                                     $nic_photo_url = $userData1['nic_photo_url'];
@@ -413,8 +410,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                                     $status = $userData1['status'];
                                                 }
                                             }
-    
-    
+
+
                                             if ($status == "approved") {
                                                 $error = true;
                                                 echo '
@@ -492,22 +489,22 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                             $profile_url = $userData['profile_url'];
                                             $password = $userData['password'];
                                             $vehical = "";
-    
+
                                             $selectDBQuery = "SELECT * FROM `technician` WHERE `user_id` = '$user_id'";
                                             $result1 = $conn->query($selectDBQuery);
-    
+
                                             $status = "approved";
-    
+
                                             $category = "";
                                             $nic_number = "";
                                             $nic_photo_url = "";
                                             $work_experience = "";
                                             $cost_per_day = "";
                                             $cost_per_hour = "";
-    
+
                                             if ($result1 && $result1->num_rows > 0) {
                                                 while ($userData1 = $result1->fetch_assoc()) {
-    
+
                                                     $category = $userData1['category'];
                                                     $nic_number = $userData1['nic_number'];
                                                     $nic_photo_url = $userData1['nic_photo_url'];
@@ -517,8 +514,8 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                                     $status = $userData1['status'];
                                                 }
                                             }
-    
-    
+
+
                                             if ($status == "approved") {
                                                 $error = true;
                                                 echo '

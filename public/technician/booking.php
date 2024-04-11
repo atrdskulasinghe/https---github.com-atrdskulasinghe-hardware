@@ -23,7 +23,7 @@ include "../../config/database.php";
 include "../../template/user-data.php";
 
 $user_id = 6;
-if(isset($_SESSION['id'])){
+if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
 }
 
@@ -55,7 +55,21 @@ if ($result->num_rows > 0) {
     <link rel="stylesheet" href="../assets/css/button.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
 </head>
+<style>
+    .history-details-image {
+        width: 100% !important;
+        height: 200px !important;
+        margin: auto;
+        margin-bottom: 20px;
+    }
 
+    .history-details-image img {
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        object-fit: cover;
+    }
+</style>
 <body>
     <div class="container">
         <!-- navigation -->
@@ -66,12 +80,9 @@ if ($result->num_rows > 0) {
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -152,7 +163,7 @@ if ($result->num_rows > 0) {
 
                     if ($result && $result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
-                            
+
                             $booking_id = $row['booking_id'];
                             $technician_idDB = $row['technician_id'];
                             $customer_id = $row['customer_id'];
@@ -164,7 +175,7 @@ if ($result->num_rows > 0) {
                             $start_date = $row['start_date'];
                             $start_time = $row['start_time'];
                             $photo_url = $row['photo_url'];
-                            $location_url = $row['location_url'];
+                            // $location_url = $row['location_url'];
                             $house_no = $row['house_no'];
                             $state = $row['state'];
                             $city = $row['city'];
@@ -172,34 +183,43 @@ if ($result->num_rows > 0) {
                             $payment_method = $row['payment_method'];
                             $cost = $row['cost'];
                             $description = $row['description'];
+                            $latitude = $row['latitude'];
+                            $longitude = $row['longitude'];
 
-                            $selectUserQueryCustomer = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
-                            $resultCustomer = $conn->query($selectUserQueryCustomer);
 
-                            if ($resultCustomer->num_rows > 0) {
-                                $rowCustomer = $resultCustomer->fetch_assoc();
+                            // $selectUserQueryCustomer = "SELECT * FROM `user` WHERE `customer_id` = $customer_id";
+                            // $resultCustomer = $conn->query($selectUserQueryCustomer);
 
-                                $customerUserId = $rowCustomer['user_id'];
+                            // if ($resultCustomer->num_rows > 0) {
+                            //     $rowCustomer = $resultCustomer->fetch_assoc();
 
-                                $selectUserQueryUser = "SELECT * FROM `user` WHERE `user_id` = $customerUserId";
-                                $resultUser = $conn->query($selectUserQueryUser);
+                            //     $customerUserId = $rowCustomer['user_id'];
 
-                                if ($resultUser->num_rows > 0) {
-                                    $rowUser = $resultUser->fetch_assoc();
+                            $selectUserQueryUser = "SELECT * FROM `user` WHERE `user_id` = $customer_id";
+                            $resultUser = $conn->query($selectUserQueryUser);
 
-                                    $customer_name = $rowUser['first_name'] . " " . $rowUser['last_name'];
-                                    $phone_number = $rowUser['phone_number'];
-                                    $email = $rowUser['email'];
-                                    $profile_url = $rowUser['profile_url'];
+                            if ($resultUser->num_rows > 0) {
+                                $rowUser = $resultUser->fetch_assoc();
 
-                                    if ($technician_idDB == $technician_id) {
-                                        if ($status == "pending") {
-                                            $error = true;
-                                            echo '
+                                $customer_name = $rowUser['first_name'] . " " . $rowUser['last_name'];
+                                $phone_number = $rowUser['phone_number'];
+                                $email = $rowUser['email'];
+                                $profile_url = $rowUser['profile_url'];
+
+                                if ($technician_idDB == $technician_id) {
+                                    if ($status == "pending") {
+                                        $error = true;
+                                        echo '
                             <div class="request-content">
                                 <div class="request-content-1">
-                                    <iframe src="' . $location_url . '" frameborder="0"></iframe>
+                                <iframe id="map"
+                                        frameborder="0" style="border:0"
+                                        src="https://www.openstreetmap.org/export/embed.html?bbox=' . ($longitude - 0.01) . '%2C' . ($latitude - 0.01) . '%2C' . ($longitude + 0.01) . '%2C' . ($latitude + 0.01) . '&amp;layer=mapnik&amp;marker=' . $latitude . '%2C' . $longitude . '">
+                                </iframe>
                                     <p>' . $description . '</p>
+                                    <div class="history-details-image">
+                        <img src="../assets/images/booking/'.$photo_url.'" alt="">
+                    </div>
                                 </div>
                                 <div class="request-content-2">
                                     <div class="request-profile">
@@ -250,12 +270,12 @@ if ($result->num_rows > 0) {
                                 </div>
                             </div>
                         ';
-                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    // }
 
                     if ($error == false) {
                         echo "Booking not found";

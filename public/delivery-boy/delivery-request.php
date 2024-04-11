@@ -24,7 +24,7 @@ include "../../config/database.php";
 include "../../template/user-data.php";
 
 $user_id = 2;
-if(isset($_SESSION['id'])){
+if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
 }
 
@@ -56,12 +56,9 @@ if(isset($_SESSION['id'])){
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-                <div class="menu-header">
-                    <h1>Logo</h1>
-                    <div class="menu-close">
-                        <i class="ri-close-line " id="menu-header-icon"></i>
-                    </div>
-                </div>
+            <?php
+                include "../../template/dashboard-menu.php";
+                ?>
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
@@ -77,11 +74,11 @@ if(isset($_SESSION['id'])){
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./calender.php">
                                 <p><img src="../assets/images/ui/Calendar.png" alt="">Calendar</p>
                             </a>
-                        </div>
+                        </div> -->
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./wallet.php">
@@ -143,9 +140,13 @@ if(isset($_SESSION['id'])){
                     if ($result->num_rows > 0) {
 
 
+
+
                         $row = $result->fetch_assoc();
 
                         $delivery_boy_id = $row['delivery_boy_id'];
+
+
 
                         $selectUserQuery = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $delivery_boy_id";
                         $result = $conn->query($selectUserQuery);
@@ -165,9 +166,11 @@ if(isset($_SESSION['id'])){
                                 $house_no = $row['house_no'];
                                 $state = $row['state'];
                                 $city = $row['city'];
-                                $location_url = $row['location_url'];
+
                                 $delivery_cost = $row['delivery_cost'];
                                 $description = $row['description'];
+                                $latitude = $row['latitude'];
+                                $longitude = $row['longitude'];
 
                                 if ($status == "pending") {
 
@@ -178,18 +181,14 @@ if(isset($_SESSION['id'])){
 
                                         $rowOrder = $resultOrder->fetch_assoc();
 
-                                        $customer_id = $rowOrder['customer_id'];
+                                        $customer_user_id = $rowOrder['customer_id'];
                                         $order_date = $rowOrder['date'];
                                         $order_time = $rowOrder['time'];
+                                        $order_status = $rowOrder['order_status'];
 
-                                        $selectUserQuery = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
-                                        $resultCustomer = $conn->query($selectUserQuery);
+                                        if ($order_status != "pending") {
 
-                                        if ($resultCustomer->num_rows > 0) {
 
-                                            $rowCustomer = $resultCustomer->fetch_assoc();
-
-                                            $customer_user_id = $rowCustomer['user_id'];
 
                                             $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $customer_user_id";
                                             $resultUser = $conn->query($selectUserQuery);
@@ -210,7 +209,10 @@ if(isset($_SESSION['id'])){
                                                 echo '
                                         <div class="request-content">
                                             <div class="request-content-1">
-                                                <iframe src="' . $location_url . '" frameborder="0"></iframe>
+                                            <iframe id="map"
+                                                    frameborder="0" style="border:0"
+                                                    src="https://www.openstreetmap.org/export/embed.html?bbox=' . ($longitude - 0.01) . '%2C' . ($latitude - 0.01) . '%2C' . ($longitude + 0.01) . '%2C' . ($latitude + 0.01) . '&amp;layer=mapnik&amp;marker=' . $latitude . '%2C' . $longitude . '">
+                                            </iframe>
                                                 <p>' . $description . '</p>
                                             </div>
                                             <div class="request-content-2">
@@ -270,6 +272,7 @@ if(isset($_SESSION['id'])){
                             }
                         }
                     }
+                    // }
 
                     if ($error == false) {
                         echo "<p>Devlivery request not found</p>";
