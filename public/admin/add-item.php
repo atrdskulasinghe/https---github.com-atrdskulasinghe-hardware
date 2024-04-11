@@ -333,6 +333,12 @@ if (isset($_POST['save'])) {
                                 </div>
                             </div>
                         </div>
+                        <!-- menu link 1 -->
+                        <div class="menu-link-button ">
+                            <a href="./orders.php">
+                                <p><img src="../assets/images/ui/add item.png" alt="">Orders</p>
+                            </a>
+                        </div>
                         <!-- menu link 2 -->
                         <div class="menu-link-button-2 active">
                             <div class="menu-link-button">

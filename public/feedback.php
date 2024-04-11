@@ -32,11 +32,22 @@ if (isset($_GET['order_id'])) {
 
     if (isset($_GET['item_id'])) {
         $item_id = $_GET['item_id'];
+
         $itemFeedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
         $resultFeedback = $conn->query($itemFeedback);
+
         if ($resultFeedback->num_rows > 0) {
             $rowFeedback = $resultFeedback->fetch_assoc();
-            header('location: order-history.php');
+
+            $orderFeedback = "SELECT * FROM `item_feedback` WHERE `order_id` = $order_id";
+            $resultFeedback = $conn->query($orderFeedback);
+
+            if ($resultFeedback->num_rows > 0) {
+                $rowFeedbackOrder = $resultFeedback->fetch_assoc();
+                header('location: order-history.php');
+            } else {
+                $feedback = true;
+            }
         }
     } else if (isset($_GET['delivery_id'])) {
 
@@ -72,8 +83,8 @@ if (isset($_POST['save'])) {
     if (!empty($order_id)) {
 
         if (!empty($item_id)) {
-            $sql = "INSERT INTO `item_feedback`( `item_id`, `customer_id`, `description`, `number_of_stars`, `date`, `time`) 
-            VALUES ('$item_id','$user_id','$comment','$stars','$currentDate','$currentTime')";
+            $sql = "INSERT INTO `item_feedback`( `item_id`, `order_id`, `customer_id`, `description`, `number_of_stars`, `date`, `time`) 
+            VALUES ('$item_id','$order_id','$user_id','$comment','$stars','$currentDate','$currentTime')";
 
             if ($conn->query($sql) === TRUE) {
                 header('location: order-history.php');
@@ -95,7 +106,7 @@ if (isset($_POST['save'])) {
             $row = $resultTechnician->fetch_assoc();
             $technician_id = $row['technician_id'];
 
-            if($row['technician_id'] !== $user_id){
+            if ($row['technician_id'] !== $user_id) {
                 header('location: book-history.php');
             }
         }

@@ -334,8 +334,18 @@ if (isset($_POST['item'])) {
                                                                 $feedback = false;
 
                                                                 if ($resultFeedback->num_rows > 0) {
+
                                                                     $rowFeedback = $resultFeedback->fetch_assoc();
-                                                                    $feedback = true;
+
+                                                                    $orderFeedback = "SELECT * FROM `item_feedback` WHERE `order_id` = $order_id";
+                                                                    $resultFeedback = $conn->query($orderFeedback);
+
+                                                                    if ($resultFeedback->num_rows > 0) {
+                                                                        $rowFeedbackOrder = $resultFeedback->fetch_assoc();
+                                                                        $feedback = false;
+                                                                    } else {
+                                                                        $feedback = true;
+                                                                    }
                                                                 }
 
                                                                 echo '
@@ -362,16 +372,16 @@ if (isset($_POST['item'])) {
                                                                             <div class="cart-product-1-2-2">';
 
                                                                 if ($status == "delivered") {
-                                                                    if (!$feedback) {
-                                                                        echo '<a href="./feedback.php?order_id=' . $order_id . '&item_id=' . $item_id . '" class="" style="text-align: right; cursor:pointer;"><i class="ri-feedback-line"></i></a>';
+                                                                    if ($feedback) {
+                                                                        echo '<a href="./feedback.php?order_id=' . $order_id . '&item_id=' . $item_id . '" class="" style="text-align: right; cursor:pointer; color:blue;"><i class="ri-feedback-line"></i></a>';
                                                                     }
                                                                 }
 
                                                                 echo '
-                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                ';
+                                                                </div>
+                                                            ';
                                                             }
                                                         }
                                                     }
@@ -379,6 +389,7 @@ if (isset($_POST['item'])) {
                                             }
                                         }
                                     }
+
                                     ?>
                                 </div>
                                 <!-- </div> -->
@@ -407,8 +418,7 @@ if (isset($_POST['item'])) {
 
                                 if ($resultFeedback->num_rows > 0) {
                                     $rowFeedback = $resultFeedback->fetch_assoc();
-                                    
-                                }else{
+                                } else {
                                     echo '<input type="submit" value="Delivery Boy Feedback" name="delivery_boy" class="btn">';
                                 }
                             }

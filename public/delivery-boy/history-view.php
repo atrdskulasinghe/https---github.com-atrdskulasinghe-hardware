@@ -246,7 +246,7 @@ if (isset($_POST['paid'])) {
         <aside class="active aside">
             <!-- menu -->
             <div class="menu">
-            <?php
+                <?php
                 include "../../template/dashboard-menu.php";
                 ?>
                 <div class="menu-content">
