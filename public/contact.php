@@ -18,6 +18,55 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         header('location: ./technical-team/index.php');
     }
 }
+
+$success = false;
+
+if (isset($_GET['success'])) {
+    $success = true;
+}
+
+$name = "";
+$email = "";
+$subject = "";
+$message = "";
+$nameError = "";
+$emailError = "";
+$subjectError = "";
+$messageError = "";
+
+if (isset($_POST['send'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
+
+    if (empty($name)) {
+        $nameError = "Please enter your name";
+    }
+
+    if (empty($email)) {
+        $emailError = "Please enter your email";
+    }
+
+    if (empty($subject)) {
+        $subjectError = "Please enter your subject";
+    }
+
+    if (empty($message)) {
+        $messageError = "Please enter your message";
+    }
+
+    if (empty($nameError) && empty($emailError) && empty($subjectError) && empty($messageError)) {
+
+        $sql = "INSERT INTO `contact` (`name`, `email`, `subject`, `message`) 
+        VALUES ('$name', '$email', '$subject', '$message')";
+
+        if ($conn->query($sql) === TRUE) {
+            header('location: ./contact.php?success=true');
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -42,47 +91,56 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 
 <body>
     <div class="container">
-    <?php
-            include "../template/user-nav.php";
+        <?php
+        include "../template/user-nav.php";
         ?>
         <?php
-            include "../template/user-menu.php";
+        include "../template/user-menu.php";
         ?>
         <section>
             <div class="box">
                 <div class="contact">
-                    <div class="contact-content-1">
+                    <form class="contact-content-1" method="POST">
 
                         <div class="input-content">
+
+                            <?php if ($success) {
+                                echo '<div style="width: calc(100% - 20px); height: 40px; background-color: green; margin-bottom: 20px; padding: 0 10px; border-radius:5px; display:flex; align-items: center;">
+                            <p style="color: white; text-transform: capitalize;">Message send Succesfull !</p>
+                        </div>
+                            ';
+                            }
+                            ?>
+
                             <div class="input-two-content">
                                 <div class="input-two-content-1">
                                     <p>Your Name</p>
-                                    <input type="text">
-                                    <p class="input-error">please enter your first name</p>
+                                    <input type="text" name="name">
+                                    <p class="input-error"><?php echo $nameError; ?></p>
                                 </div>
                                 <div class="input-two-content-2">
                                     <p>Your email</p>
-                                    <input type="text">
-                                    <p class="input-error">please enter your first name</p>
+                                    <input type="text" name="email">
+                                    <p class="input-error"><?php echo $emailError; ?></p>
                                 </div>
                             </div>
                             <div class="input-one-content">
                                 <p>Subject</p>
-                                <input type="text">
-                                <p class="input-error">please enter your first name</p>
+                                <input type="text" name="subject">
+                                <p class="input-error"><?php echo $subjectError; ?></p>
                             </div>
                             <div class="input-one-content">
                                 <p>Message</p>
-                                <textarea name="" id="" cols="30" rows="10"></textarea>
-                                <p class="input-error">please enter your first name</p>
+                                <textarea name="message" id="" cols="30" rows="10"></textarea>
+                                <p class="input-error"><?php echo $messageError; ?></p>
                             </div>
 
 
                             <div class="right-button">
-                                <input type="submit">
+                                <input type="submit" name="send">
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <div class="contact-content-2">
                         <div class="location-content-info">
                             <div class="location-content">

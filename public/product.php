@@ -21,7 +21,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     }
 }
 
-if (isset($_SESSION['id'])){
+if (isset($_SESSION['id'])) {
     $user_id = $_SESSION['id'];
 }
 
@@ -114,7 +114,7 @@ if ($resultItemImage->num_rows > 0) {
 
 if (isset($_POST['add-to-cart'])) {
 
-    if (!isset($_SESSION['id'])){
+    if (!isset($_SESSION['id'])) {
         header('location: ./login.php');
     }
 
@@ -143,7 +143,7 @@ if (isset($_POST['add-to-cart'])) {
         }
     } else {
 
-        if (!isset($_SESSION['id'])){
+        if (!isset($_SESSION['id'])) {
             header('location: ./login.php');
         }
 
@@ -358,30 +358,202 @@ $newQuantity = 1;
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <?php
+
+                                $starsC1 = 0;
+                                $starsC2 = 0;
+                                $starsC3 = 0;
+                                $starsC4 = 0;
+                                $starsC5 = 0;
+                                $allStarCount = 0;
+
+                                $feedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                $resultFeedback = $conn->query($feedback);
+
+                                if ($resultFeedback->num_rows > 0) {
+                                    while ($rowFeedback = $resultFeedback->fetch_assoc()) {
+                                        if ($rowFeedback['number_of_stars'] == 1) {
+                                            $starsC1 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 2) {
+                                            $starsC2 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 3) {
+                                            $starsC3 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 4) {
+                                            $starsC4 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 5) {
+                                            $starsC5 += 1;
+                                        }
+
+                                        $allStarCount += 1;
+                                    }
+                                }
+
+                                $percentageStar1 = "";
+                                $percentageStar2 = "";
+                                $percentageStar3 = "";
+                                $percentageStar4 = "";
+                                $percentageStar5 = "";
+                                $averageRating = 0;
+                                $averageRating100 = 0;
+
+                                if ($allStarCount > 0) {
+                                    $percentageStar1 = ($starsC1 / $allStarCount) * 100;
+                                    $percentageStar2 = ($starsC2 / $allStarCount) * 100;
+                                    $percentageStar3 = ($starsC3 / $allStarCount) * 100;
+                                    $percentageStar4 = ($starsC4 / $allStarCount) * 100;
+                                    $percentageStar5 = ($starsC5 / $allStarCount) * 100;
+
+                                    $totalStars = ($starsC1 * 1) + ($starsC2 * 2) + ($starsC3 * 3) + ($starsC4 * 4) + ($starsC5 * 5);
+                                    $averageRating = $totalStars / $allStarCount;
+                                    $averageRating100 = ($averageRating * 20);
+                                }
+
+
+
+                                ?>
+
                                 <div class="review">
                                     <h4>Review</h4>
                                     <div class="review-content">
                                         <div class="review-content-1">
-                                            <h1>5.0/<span>5</span></h1>
+                                            <h1><?php echo $averageRating ?>.0/<span>5</span></h1>
                                             <ul>
-                                                <li class="active">
-                                                    <i class="ri-star-fill"></i>
-                                                </li>
-                                                <li class="active">
-                                                    <i class="ri-star-fill"></i>
-                                                </li>
-                                                <li class="active">
-                                                    <i class="ri-star-fill"></i>
-                                                </li>
-                                                <li class="active">
-                                                    <i class="ri-star-fill"></i>
-                                                </li>
-                                                <li class="active">
-                                                    <i class="ri-star-fill"></i>
-                                                </li>
+                                                <?php
+
+                                                if ($averageRating100 <= 20 && $averageRating100 > 0) {
+                                                    echo '
+    
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        
+                                                        ';
+                                                } else if ($averageRating100 <= 40 && $averageRating100 > 20) {
+                                                    echo '
+    
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        
+                                                        ';
+                                                } else if ($averageRating100 <= 60 && $averageRating100 > 40) {
+                                                    echo '
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        
+                                                        ';
+                                                } else if ($averageRating100 <= 80 && $averageRating100 > 60) {
+                                                    echo '
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    
+                                                    ';
+                                                } else if ($averageRating100 <= 100 && $averageRating100 > 80) {
+                                                    echo '
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
+                                                            </li>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
+                                                            </li>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
+                                                            </li>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
+                                                            </li>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
+                                                            </li>
+                                                            
+                                                            ';
+                                                } else {
+                                                    echo '
+    
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        
+                                                        ';
+                                                }
+                                                ?>
+
                                             </ul>
-                                            <p>3 Ratings</p>
+                                            <p><?php echo $allStarCount; ?> Ratings</p>
                                         </div>
+
                                         <div class="review-content-2">
                                             <div class="review-content-2-content">
                                                 <div class="review-content-2-content-1">
@@ -405,13 +577,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: 100%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar1 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p>
-                                                        50
-                                                    </p>
+                                                    <p><?php echo $starsC1 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -433,13 +603,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: 100%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar2 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p>
-                                                        50
-                                                    </p>
+                                                    <p><?php echo $starsC2 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -458,13 +626,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: 100%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar3 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p>
-                                                        50
-                                                    </p>
+                                                    <p><?php echo $starsC3 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -480,13 +646,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: 100%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar4 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p>
-                                                        50
-                                                    </p>
+                                                    <p><?php echo $starsC4 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -499,203 +663,90 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: 100%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar5 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p>
-                                                        50
-                                                    </p>
+                                                    <p><?php echo $starsC5 ?></p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="user-review">
                                         <h4>Product Reviews</h4>
+
+                                        <?php
+                                        $feedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                        $resultFeedback = $conn->query($feedback);
+
+                                        if ($resultFeedback->num_rows > 0) {
+                                            while ($rowFeedback = $resultFeedback->fetch_assoc()) {
+
+                                                echo '
+                                        
                                         <div class="user-review-details">
-                                            <div class="user-review-header">
-                                                <div class="user-review-header-content-1">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="user-review-header-content-2">
-                                                    <p>1 year ago</p>
-                                                </div>
+                                        <div class="user-review-header">
+                                            <div class="user-review-header-content-1">
+                                                <ul>
+                                                ';
+
+                                                if ($rowFeedback['number_of_stars'] == 1) {
+                                                    for ($i = 0; $i < 1; $i++) {
+                                                        echo '<li class="active">
+                                                        <i class="bi bi-star-fill"></i>
+                                                    </li>';
+                                                    }
+                                                } else if ($rowFeedback['number_of_stars'] == 2) {
+                                                    for ($i = 0; $i < 2; $i++) {
+                                                        echo '<li class="active">
+                                                        <i class="bi bi-star-fill"></i>
+                                                    </li>';
+                                                    }
+                                                } else if ($rowFeedback['number_of_stars'] == 3) {
+                                                    for ($i = 0; $i < 3; $i++) {
+                                                        echo '<li class="active">
+                                                        <i class="bi bi-star-fill"></i>
+                                                    </li>';
+                                                    }
+                                                } else if ($rowFeedback['number_of_stars'] == 4) {
+                                                    for ($i = 0; $i < 4; $i++) {
+                                                        echo '<li class="active">
+                                                        <i class="bi bi-star-fill"></i>
+                                                    </li>';
+                                                    }
+                                                } else if ($rowFeedback['number_of_stars'] == 5) {
+                                                    for ($i = 0; $i < 5; $i++) {
+                                                        echo '<li class="active">
+                                                        <i class="bi bi-star-fill"></i>
+                                                    </li>';
+                                                    }
+                                                }
+
+                                                $descriptionF = $rowFeedback['description'];
+                                                $dateF = $rowFeedback['date'];
+
+
+                                                echo '
+                                                </ul>
                                             </div>
-                                            <div class="user-review-content">
-                                                <p>
-                                                    • Writing the review after 3 months of use and the mouse is working
-                                                    well. • Can use it as a basic home or office usage mouse, but I am
-                                                    not
-                                                    sure how good it will perform as a "Gaming" mouse • However, WORTH
-                                                    FOR
-                                                    THE PRICE PAID FOR and the RGB light is very attractive too •
-                                                    Recommended seller, if you are looking for a basic mouse. • Packing
-                                                    was
-                                                    reasonable & shipped on time • Please see Pros and Cons on the last
-                                                    image as the review section has a character limitation and will not
-                                                    hold
-                                                    all the content
-                                                </p>
+                                            
+                                            <div class="user-review-header-content-2">
+                                                <p>' . $dateF . '</p>
                                             </div>
-                                            <form action="" method="GET" class="user-review-like">
-                                                <p><button type="submit"><i class="ri-heart-fill"></i></button> <span>10</span></p>
-                                            </form>
-                                            <hr>
                                         </div>
-                                        <div class="user-review-details">
-                                            <div class="user-review-header">
-                                                <div class="user-review-header-content-1">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="user-review-header-content-2">
-                                                    <p>1 year ago</p>
-                                                </div>
-                                            </div>
-                                            <div class="user-review-content">
-                                                <p>
-                                                    • Writing the review after 3 months of use and the mouse is working
-                                                    well. • Can use it as a basic home or office usage mouse, but I am
-                                                    not
-                                                    sure how good it will perform as a "Gaming" mouse • However, WORTH
-                                                    FOR
-                                                    THE PRICE PAID FOR and the RGB light is very attractive too •
-                                                    Recommended seller, if you are looking for a basic mouse. • Packing
-                                                    was
-                                                    reasonable & shipped on time • Please see Pros and Cons on the last
-                                                    image as the review section has a character limitation and will not
-                                                    hold
-                                                    all the content
-                                                </p>
-                                            </div>
-                                            <form action="" method="GET" class="user-review-like">
-                                                <p><button type="submit"><i class="ri-heart-fill"></i></button> <span>10</span></p>
-                                            </form>
-                                            <hr>
+                                        <div class="user-review-content">
+                                            <p>
+                                                ' . $descriptionF . '
+                                            </p>
                                         </div>
-                                        <div class="user-review-details">
-                                            <div class="user-review-header">
-                                                <div class="user-review-header-content-1">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="user-review-header-content-2">
-                                                    <p>1 year ago</p>
-                                                </div>
-                                            </div>
-                                            <div class="user-review-content">
-                                                <p>
-                                                    • Writing the review after 3 months of use and the mouse is working
-                                                    well. • Can use it as a basic home or office usage mouse, but I am
-                                                    not
-                                                    sure how good it will perform as a "Gaming" mouse • However, WORTH
-                                                    FOR
-                                                    THE PRICE PAID FOR and the RGB light is very attractive too •
-                                                    Recommended seller, if you are looking for a basic mouse. • Packing
-                                                    was
-                                                    reasonable & shipped on time • Please see Pros and Cons on the last
-                                                    image as the review section has a character limitation and will not
-                                                    hold
-                                                    all the content
-                                                </p>
-                                            </div>
-                                            <form action="" method="GET" class="user-review-like">
-                                                <p><button type="submit"><i class="ri-heart-fill"></i></button> <span>10</span></p>
-                                            </form>
-                                            <hr>
-                                        </div>
-                                        <div class="user-review-details">
-                                            <div class="user-review-header">
-                                                <div class="user-review-header-content-1">
-                                                    <ul>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                        <li class="active">
-                                                            <i class="bi bi-star-fill"></i>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="user-review-header-content-2">
-                                                    <p>1 year ago</p>
-                                                </div>
-                                            </div>
-                                            <div class="user-review-content">
-                                                <p>
-                                                    • Writing the review after 3 months of use and the mouse is working
-                                                    well. • Can use it as a basic home or office usage mouse, but I am
-                                                    not
-                                                    sure how good it will perform as a "Gaming" mouse • However, WORTH
-                                                    FOR
-                                                    THE PRICE PAID FOR and the RGB light is very attractive too •
-                                                    Recommended seller, if you are looking for a basic mouse. • Packing
-                                                    was
-                                                    reasonable & shipped on time • Please see Pros and Cons on the last
-                                                    image as the review section has a character limitation and will not
-                                                    hold
-                                                    all the content
-                                                </p>
-                                            </div>
-                                            <form action="" method="GET" class="user-review-like">
-                                                <p><button type="submit"><i class="ri-heart-fill"></i></button> <span>10</span></p>
-                                            </form>
-                                            <hr>
-                                        </div>
+                                        
+                                        <hr>
+                                    </div>
+                                        
+                                        ';
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
@@ -710,14 +761,13 @@ $newQuantity = 1;
 
                                     if ($resultItem->num_rows > 0) {
                                         while ($itemData = $resultItem->fetch_assoc()) {
-
-
+                                            $i++;
 
                                             if ($i == 5) {
                                                 break;
                                             }
 
-                                            // $item_id = $itemData['item_id'];
+                                            $item_id = $itemData['item_id'];
                                             $item_category = $itemData['item_category'];
                                             $name = $itemData['name'];
                                             $price = $itemData['price'];
@@ -737,43 +787,54 @@ $newQuantity = 1;
                                             if ($resultItemImage->num_rows > 0) {
                                                 $itemImageData = $resultItemImage->fetch_assoc();
 
+                                                // $i += 1;
+
+                                                $feedbackCount = 0;
 
                                                 $image_url = $itemImageData['image_url'];
-                                                $i += 1;
+
+                                                $feedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                                $resultFeedback = $conn->query($feedback);
+
+                                                if ($resultFeedback->num_rows > 0) {
+                                                    while ($rowFeedback = $resultFeedback->fetch_assoc()) {
+                                                        $feedbackCount += 1;
+                                                    }
+                                                }
 
                                                 echo '
-        
-                                    <a href="product.php?item_id=' . $item_id . '" class="product-card">
-                                        <div class="product-image">
-                                            <img src="./assets/images/product/' . $image_url . '" alt="">
-                                        </div>
-                                        <div class="product-details">
-                                            <p>' . $name . '</p>
-                                            <h4>LKR.' . $price . '</h4>
-                                            <div class="product-stars">
-                                                <ul>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                    <li>
-                                                        <i class="bi bi-star-fill"></i>
-                                                    </li>
-                                                </ul>
-                                                <span>(200)</span>
+                                        
+                                        <a href="product.php?item_id=' . $item_id . '" class="product-card">
+                                            <div class="product-image">
+                                                <img src="./assets/images/product/' . $image_url . '" alt="">
                                             </div>
-                                        </div>
-                                    </a>
-                                    
-                                    ';
+                                            <div class="product-details">
+                                                <p>' . $name . '</p>
+                                                <h4>LKR.' . $price . '</h4>
+                                                <div class="product-stars">
+                                                    <ul>
+                                                        <li>
+                                                            <i class="bi bi-star-fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="bi bi-star-fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="bi bi-star-fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="bi bi-star-fill"></i>
+                                                        </li>
+                                                        <li>
+                                                            <i class="bi bi-star-fill"></i>
+                                                        </li>
+                                                    </ul>
+                                                    <span>(' . $feedbackCount . ')</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        
+                                        ';
                                             }
                                         }
                                     }
@@ -808,7 +869,7 @@ $newQuantity = 1;
 
         inc.addEventListener("click", () => {
 
-            if (quantity.value < <?php echo $stock_quantity?>) {
+            if (quantity.value < <?php echo $stock_quantity ?>) {
                 quantity.value = parseInt(quantity.value) + 1;
             }
         });

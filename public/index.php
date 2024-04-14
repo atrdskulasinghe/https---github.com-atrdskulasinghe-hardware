@@ -234,8 +234,9 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                             $selectItemQuery1 = "SELECT * FROM `item` WHERE `item_id` = '$item_id'";
                             $resultItem = mysqli_query($conn, $selectItemQuery1);
 
-                            if (mysqli_num_rows($resultItem) > 0) {
-                                while ($itemData = mysqli_fetch_assoc($resultItem)) {
+                            if ($resultItem->num_rows > 0) {
+                                while ($itemData = $resultItem->fetch_assoc()) {
+
                                     $item_id = $itemData['item_id'];
                                     $item_category = $itemData['item_category'];
                                     $name = $itemData['name'];
@@ -251,32 +252,215 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                     $description = $itemData['description'];
 
                                     $selectItemImageQuery1 = "SELECT * FROM `item_image` WHERE `item_id` = '$item_id'";
-                                    $resultItemImage = mysqli_query($conn, $selectItemImageQuery1);
+                                    $resultItemImage = $conn->query($selectItemImageQuery1);
 
-                                    if (mysqli_num_rows($resultItemImage) > 0) {
-                                        $itemImageData = mysqli_fetch_assoc($resultItemImage);
+                                    if ($resultItemImage->num_rows > 0) {
+                                        $itemImageData = $resultItemImage->fetch_assoc();
+
+                                        // $i += 1;
+
+                                        $feedbackCount = 0;
+
+                                        $starsC1 = 0;
+                                        $starsC2 = 0;
+                                        $starsC3 = 0;
+                                        $starsC4 = 0;
+                                        $starsC5 = 0;
+                                        $allStarCount = 0;
+                                        $percentageStar1 = "";
+                                        $percentageStar2 = "";
+                                        $percentageStar3 = "";
+                                        $percentageStar4 = "";
+                                        $percentageStar5 = "";
+                                        $averageRating = 0;
+                                        $averageRating100 = 0;
+
+
                                         $image_url = $itemImageData['image_url'];
 
+                                        $feedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                        $resultFeedback = $conn->query($feedback);
+
+                                        if ($resultFeedback->num_rows > 0) {
+                                            while ($rowFeedback = $resultFeedback->fetch_assoc()) {
+                                                $feedbackCount += 1;
+
+                                                if ($rowFeedback['number_of_stars'] == 1) {
+                                                    $starsC1 += 1;
+                                                }
+
+                                                if ($rowFeedback['number_of_stars'] == 2) {
+                                                    $starsC2 += 1;
+                                                }
+
+                                                if ($rowFeedback['number_of_stars'] == 3) {
+                                                    $starsC3 += 1;
+                                                }
+
+                                                if ($rowFeedback['number_of_stars'] == 4) {
+                                                    $starsC4 += 1;
+                                                }
+
+                                                if ($rowFeedback['number_of_stars'] == 5) {
+                                                    $starsC5 += 1;
+                                                }
+
+                                                $allStarCount += 1;
+                                            }
+
+
+                                            if ($allStarCount > 0) {
+                                                $percentageStar1 = ($starsC1 / $allStarCount) * 100;
+                                                $percentageStar2 = ($starsC2 / $allStarCount) * 100;
+                                                $percentageStar3 = ($starsC3 / $allStarCount) * 100;
+                                                $percentageStar4 = ($starsC4 / $allStarCount) * 100;
+                                                $percentageStar5 = ($starsC5 / $allStarCount) * 100;
+
+                                                $totalStars = ($starsC1 * 1) + ($starsC2 * 2) + ($starsC3 * 3) + ($starsC4 * 4) + ($starsC5 * 5);
+                                                $averageRating = $totalStars / $allStarCount;
+                                                $averageRating100 = ($averageRating * 20);
+                                            }
+                                        }
+
+                                        
+
                                         echo '
-                    <a href="product.php?item_id=' . $item_id . '" class="product-card">
-                        <div class="product-image">
-                            <img src="./assets/images/product/' . $image_url . '" alt="">
-                        </div>
-                        <div class="product-details">
-                            <p>' . $name . '</p>
-                            <h4>LKR.' . $price . '</h4>
-                            <div class="product-stars">
-                                <ul>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                    <li><i class="bi bi-star-fill"></i></li>
-                                </ul>
-                                <span>(200)</span>
-                            </div>
-                        </div>
-                    </a>';
+                                
+                                <a href="product.php?item_id=' . $item_id . '" class="product-card">
+                                    <div class="product-image">
+                                        <img src="./assets/images/product/' . $image_url . '" alt="">
+                                    </div>
+                                    <div class="product-details">
+                                        <p>' . $name . '</p>
+                                        <h4>LKR.' . $price . '</h4>
+                                        <div class="product-stars">
+                                            <ul>
+                                            ';
+                                        if ($averageRating100 <= 20 && $averageRating100 > 0) {
+                                            echo '
+    
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    
+                                                    ';
+                                        } else if ($averageRating100 <= 40 && $averageRating100 > 20) {
+                                            echo '
+    
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    
+                                                    ';
+                                        } else if ($averageRating100 <= 60 && $averageRating100 > 40) {
+                                            echo '
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="active">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    
+                                                    ';
+                                        } else if ($averageRating100 <= 80 && $averageRating100 > 60) {
+                                            echo '
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                
+                                                ';
+                                        } else if ($averageRating100 <= 100 && $averageRating100 > 80) {
+                                            echo '
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        <li class="active">
+                                                            <i class="ri-star-fill"></i>
+                                                        </li>
+                                                        
+                                                        ';
+                                        } else {
+                                            echo '
+    
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    <li class="">
+                                                        <i class="ri-star-fill"></i>
+                                                    </li>
+                                                    
+                                                    ';
+                                        }
+                                        echo '
+                                            </ul>
+                                            <span>(' . $feedbackCount . ')</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                ';
                                     }
                                 }
                             }
@@ -367,11 +551,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                     if ($resultItem->num_rows > 0) {
                         while ($itemData = $resultItem->fetch_assoc()) {
 
-
-                            if ($i == 10) {
-                                break;
-                            }
-
                             $item_id = $itemData['item_id'];
                             $item_category = $itemData['item_category'];
                             $name = $itemData['name'];
@@ -392,42 +571,210 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                             if ($resultItemImage->num_rows > 0) {
                                 $itemImageData = $resultItemImage->fetch_assoc();
 
-                                $i += 1;
+                                // $i += 1;
+
+                                $feedbackCount = 0;
+
+                                $starsC1 = 0;
+                                $starsC2 = 0;
+                                $starsC3 = 0;
+                                $starsC4 = 0;
+                                $starsC5 = 0;
+                                $allStarCount = 0;
+                                $percentageStar1 = "";
+                                $percentageStar2 = "";
+                                $percentageStar3 = "";
+                                $percentageStar4 = "";
+                                $percentageStar5 = "";
+                                $averageRating = 0;
+                                $averageRating100 = 0;
+
+
                                 $image_url = $itemImageData['image_url'];
 
-                                echo '
+                                $feedback = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                $resultFeedback = $conn->query($feedback);
 
-                <a href="product.php?item_id=' . $item_id . '" class="product-card">
-                    <div class="product-image">
-                        <img src="./assets/images/product/' . $image_url . '" alt="">
-                    </div>
-                    <div class="product-details">
-                        <p>' . $name . '</p>
-                        <h4>LKR.' . $price . '</h4>
-                        <div class="product-stars">
-                            <ul>
-                                <li>
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li>
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li>
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li>
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                                <li>
-                                    <i class="bi bi-star-fill"></i>
-                                </li>
-                            </ul>
-                            <span>(200)</span>
-                        </div>
-                    </div>
-                </a>
-                
-                ';
+                                if ($resultFeedback->num_rows > 0) {
+                                    while ($rowFeedback = $resultFeedback->fetch_assoc()) {
+                                        $feedbackCount += 1;
+
+                                        if ($rowFeedback['number_of_stars'] == 1) {
+                                            $starsC1 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 2) {
+                                            $starsC2 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 3) {
+                                            $starsC3 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 4) {
+                                            $starsC4 += 1;
+                                        }
+
+                                        if ($rowFeedback['number_of_stars'] == 5) {
+                                            $starsC5 += 1;
+                                        }
+
+                                        $allStarCount += 1;
+                                    }
+
+
+                                    if ($allStarCount > 0) {
+                                        $percentageStar1 = ($starsC1 / $allStarCount) * 100;
+                                        $percentageStar2 = ($starsC2 / $allStarCount) * 100;
+                                        $percentageStar3 = ($starsC3 / $allStarCount) * 100;
+                                        $percentageStar4 = ($starsC4 / $allStarCount) * 100;
+                                        $percentageStar5 = ($starsC5 / $allStarCount) * 100;
+
+                                        $totalStars = ($starsC1 * 1) + ($starsC2 * 2) + ($starsC3 * 3) + ($starsC4 * 4) + ($starsC5 * 5);
+                                        $averageRating = $totalStars / $allStarCount;
+                                        $averageRating100 = ($averageRating * 20);
+                                    }
+                                }
+
+                                
+
+                                echo '
+                        
+                        <a href="product.php?item_id=' . $item_id . '" class="product-card">
+                            <div class="product-image">
+                                <img src="./assets/images/product/' . $image_url . '" alt="">
+                            </div>
+                            <div class="product-details">
+                                <p>' . $name . '</p>
+                                <h4>LKR.' . $price . '</h4>
+                                <div class="product-stars">
+                                    <ul>
+                                    ';
+                                if ($averageRating100 <= 20 && $averageRating100 > 0) {
+                                    echo '
+
+                                            <li class="active">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            
+                                            ';
+                                } else if ($averageRating100 <= 40 && $averageRating100 > 20) {
+                                    echo '
+
+                                            <li class="active">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="active">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            
+                                            ';
+                                } else if ($averageRating100 <= 60 && $averageRating100 > 40) {
+                                    echo '
+                                            <li class="active">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="active">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="active">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            
+                                            ';
+                                } else if ($averageRating100 <= 80 && $averageRating100 > 60) {
+                                    echo '
+                                        <li class="active">
+                                            <i class="ri-star-fill"></i>
+                                        </li>
+                                        <li class="active">
+                                            <i class="ri-star-fill"></i>
+                                        </li>
+                                        <li class="active">
+                                            <i class="ri-star-fill"></i>
+                                        </li>
+                                        <li class="active">
+                                            <i class="ri-star-fill"></i>
+                                        </li>
+                                        <li class="">
+                                            <i class="ri-star-fill"></i>
+                                        </li>
+                                        
+                                        ';
+                                } else if ($averageRating100 <= 100 && $averageRating100 > 80) {
+                                    echo '
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                <li class="active">
+                                                    <i class="ri-star-fill"></i>
+                                                </li>
+                                                
+                                                ';
+                                } else {
+                                    echo '
+
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            <li class="">
+                                                <i class="ri-star-fill"></i>
+                                            </li>
+                                            
+                                            ';
+                                }
+                                echo '
+                                    </ul>
+                                    <span>(' . $feedbackCount . ')</span>
+                                </div>
+                            </div>
+                        </a>
+                        ';
                             }
                         }
                     }

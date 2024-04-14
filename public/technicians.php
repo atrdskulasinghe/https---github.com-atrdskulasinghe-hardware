@@ -620,6 +620,81 @@ if (isset($_GET['category_id'])) {
 
                                                 $age = $age->y;
 
+                                                // feedback
+
+                                                $starsC1 = 0;
+                                                $starsC2 = 0;
+                                                $starsC3 = 0;
+                                                $starsC4 = 0;
+                                                $starsC5 = 0;
+                                                $allStarCount = 0;
+
+                                                $feedbackT1 = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
+                                                $resultFeedbackT1 = $conn->query($feedbackT1);
+
+                                                if ($resultFeedbackT1->num_rows > 0) {
+                                                    while ($rowFeedbackT1 = $resultFeedbackT1->fetch_assoc()) {
+                                                        $booking_id = $rowFeedbackT1['booking_id'];
+
+                                                        $feedbackB1 = "SELECT * FROM `technician_feedback` WHERE `booking_id` = $booking_id";
+                                                        $resultFeedback1 = $conn->query($feedbackB1);
+
+                                                        if ($resultFeedback1->num_rows > 0) {
+
+                                                            $rowFeedback1 = $resultFeedback1->fetch_assoc();
+
+                                                            $descriptionF = $rowFeedback1['description'];
+                                                            $dateF = $rowFeedback1['date'];
+
+                                                            if ($rowFeedback1['number_of_stars'] == 1) {
+                                                                $starsC1 += 1;
+                                                            }
+
+                                                            if ($rowFeedback1['number_of_stars'] == 2) {
+                                                                $starsC2 += 1;
+                                                            }
+
+                                                            if ($rowFeedback1['number_of_stars'] == 3) {
+                                                                $starsC3 += 1;
+                                                            }
+
+                                                            if ($rowFeedback1['number_of_stars'] == 4) {
+                                                                $starsC4 += 1;
+                                                            }
+
+                                                            if ($rowFeedback1['number_of_stars'] == 5) {
+                                                                $starsC5 += 1;
+                                                            }
+
+                                                            $allStarCount += 1;
+                                                        }
+                                                    }
+
+
+
+                                                    $percentageStar1 = "";
+                                                    $percentageStar2 = "";
+                                                    $percentageStar3 = "";
+                                                    $percentageStar4 = "";
+                                                    $percentageStar5 = "";
+                                                    $averageRating = 0;
+
+                                                    if ($allStarCount > 0) {
+                                                        $percentageStar1 = ($starsC1 / $allStarCount) * 100;
+                                                        $percentageStar2 = ($starsC2 / $allStarCount) * 100;
+                                                        $percentageStar3 = ($starsC3 / $allStarCount) * 100;
+                                                        $percentageStar4 = ($starsC4 / $allStarCount) * 100;
+                                                        $percentageStar5 = ($starsC5 / $allStarCount) * 100;
+
+                                                        $totalStars = ($starsC1 * 1) + ($starsC2 * 2) + ($starsC3 * 3) + ($starsC4 * 4) + ($starsC5 * 5);
+                                                        $averageRating = $totalStars / $allStarCount;
+                                                        $averageRating100 = ($averageRating * 20);
+                                                    }
+                                                }
+
+
+
+
                                                 echo '
                                             <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">
                                                 <div class="technician-image">
@@ -649,23 +724,131 @@ if (isset($_GET['category_id'])) {
                                                     </div>
                                                     <div class="technician-stars">
                                                         <ul>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
+                                                        ';
+
+
+                                                if ($averageRating100 <= 20 && $averageRating100 > 0) {
+                                                    echo '
+                
+                                                                <li class="active">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                
+                                                                ';
+                                                } else if ($averageRating100 <= 40 && $averageRating100 > 20) {
+                                                    echo '
+                
+                                                                <li class="active">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="active">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                
+                                                                ';
+                                                } else if ($averageRating100 <= 60 && $averageRating100 > 40) {
+                                                    echo '
+                                                                <li class="active">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="active">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="active">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                
+                                                                ';
+                                                } else if ($averageRating100 <= 80 && $averageRating100 > 60) {
+                                                    echo '
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
                                                             </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
                                                             </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
                                                             </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
+                                                            <li class="active">
+                                                                <i class="ri-star-fill"></i>
                                                             </li>
-                                                            <li>
-                                                                <i class="bi bi-star-fill"></i>
+                                                            <li class="">
+                                                                <i class="ri-star-fill"></i>
                                                             </li>
+                                                            
+                                                            ';
+                                                } else if ($averageRating100 <= 100 && $averageRating100 > 80) {
+                                                    echo '
+                                                                    <li class="active">
+                                                                        <i class="ri-star-fill"></i>
+                                                                    </li>
+                                                                    <li class="active">
+                                                                        <i class="ri-star-fill"></i>
+                                                                    </li>
+                                                                    <li class="active">
+                                                                        <i class="ri-star-fill"></i>
+                                                                    </li>
+                                                                    <li class="active">
+                                                                        <i class="ri-star-fill"></i>
+                                                                    </li>
+                                                                    <li class="active">
+                                                                        <i class="ri-star-fill"></i>
+                                                                    </li>
+                                                                    
+                                                                    ';
+                                                } else {
+                                                    echo '
+                
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                <li class="">
+                                                                    <i class="ri-star-fill"></i>
+                                                                </li>
+                                                                
+                                                                ';
+                                                }
+
+                                                echo '
                                                         </ul>
-                                                        <span>(200)</span>
+                                                        <span>(' . $allStarCount . ')</span>
                                                     </div>
                                                 </div>
                                             </a>

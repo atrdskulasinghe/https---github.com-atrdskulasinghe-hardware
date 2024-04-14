@@ -8,3 +8,11 @@
     color: var(--text-color);
     font-size: var(--large-font-size);
 }
+
+.review-header-content-1 ul li i{ 
+    color: #707070;
+}
+
+.review-header-content-1 ul li.active i{ 
+    color: rgb(255, 187, 0) !important;
+}

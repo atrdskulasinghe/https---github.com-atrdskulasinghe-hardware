@@ -400,6 +400,14 @@ if (isset($_POST['save'])) {
             document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
             document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
         });
+
+
+
+
+
+
+
+        
     </script>
 
 </body>

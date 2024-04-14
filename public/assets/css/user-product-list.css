@@ -68,6 +68,10 @@
 
 .product-stars ul li {
     display: inline-block;
+    color: #707070;
+}
+
+.product-stars ul li.active{
     color: rgb(255, 187, 0);
 }
 

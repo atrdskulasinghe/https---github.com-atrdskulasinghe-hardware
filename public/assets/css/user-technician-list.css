@@ -109,6 +109,11 @@
 
 .technician-stars ul li {
     display: inline-block;
+    color: #707070;
+    /* color: rgb(255, 187, 0); */
+}
+
+.technician-stars ul li.active{
     color: rgb(255, 187, 0);
 }
 
