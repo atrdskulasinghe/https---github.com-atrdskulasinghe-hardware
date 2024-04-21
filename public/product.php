@@ -414,7 +414,7 @@ $newQuantity = 1;
                                     $percentageStar5 = ($starsC5 / $allStarCount) * 100;
 
                                     $totalStars = ($starsC1 * 1) + ($starsC2 * 2) + ($starsC3 * 3) + ($starsC4 * 4) + ($starsC5 * 5);
-                                    $averageRating = $totalStars / $allStarCount;
+                                    $averageRating = number_format($totalStars / $allStarCount, 1);
                                     $averageRating100 = ($averageRating * 20);
                                 }
 
@@ -426,7 +426,7 @@ $newQuantity = 1;
                                     <h4>Review</h4>
                                     <div class="review-content">
                                         <div class="review-content-1">
-                                            <h1><?php echo $averageRating ?>.0/<span>5</span></h1>
+                                            <h1><?php echo $averageRating ?>/<span>5</span></h1>
                                             <ul>
                                                 <?php
 

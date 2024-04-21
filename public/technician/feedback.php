@@ -212,7 +212,6 @@ if ($resultTechnician->num_rows > 0) {
                         $averageRating100 = ($averageRating * 20);
                     }
                 }
-
                 ?>
 
                 <div class="review">
@@ -374,7 +373,7 @@ if ($resultTechnician->num_rows > 0) {
                                             </ul>
                                         </div>
                                         <div class="review-line-background">
-                                            <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
+                                            <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
                                             <p><?php echo $starsC1; ?></p>
@@ -401,7 +400,7 @@ if ($resultTechnician->num_rows > 0) {
                                             </ul>
                                         </div>
                                         <div class="review-line-background">
-                                            <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
+                                            <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
                                             <p><?php echo $starsC2; ?></p>
@@ -455,7 +454,7 @@ if ($resultTechnician->num_rows > 0) {
                                             </ul>
                                         </div>
                                         <div class="review-line-background">
-                                            <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
+                                            <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
                                             <p><?php echo $starsC4; ?></p>
@@ -482,7 +481,7 @@ if ($resultTechnician->num_rows > 0) {
                                             </ul>
                                         </div>
                                         <div class="review-line-background">
-                                            <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
+                                            <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
                                             <p><?php echo $starsC5; ?></p>

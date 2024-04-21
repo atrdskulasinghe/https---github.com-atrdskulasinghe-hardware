@@ -139,6 +139,63 @@ if ($resultTechnician->num_rows > 0) {
                 </div>
             </div>
         </aside>
+
+        <?php
+
+        $startDate = date('Y-m-d', strtotime('-7 days'));
+        $endDate = date('Y-m-d');
+
+        $startDateMonth = date('Y-m-d', strtotime('-30 days'));
+        $endDateMonth = date('Y-m-d');
+
+        $todayIcome = 0;
+        $thisWeekIcome = 0;
+        $monthIcome = 0;
+        $totalIncome = 0;
+
+        $booking = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
+        $resultBooking = $conn->query($booking);
+
+        if ($resultBooking->num_rows > 0) {
+            while ($rowBooking = $resultBooking->fetch_assoc()) {
+
+
+                $technician_id = $rowBooking['technician_id'];
+                $customer_id = $rowBooking['customer_id'];
+                $status = $rowBooking['status'];
+                $booked_date = $rowBooking['booked_date'];
+                $booked_time = $rowBooking['booked_time'];
+                $accept_date = $rowBooking['accept_date'];
+                $accept_time = $rowBooking['accept_time'];
+                $start_date = $rowBooking['start_date'];
+                $start_time = $rowBooking['start_time'];
+                $finished_date = $rowBooking['finished_date'];
+                $finished_time = $rowBooking['finished_time'];
+                $photo_url = $rowBooking['photo_url'];
+                $payment_status = $rowBooking['payment_status'];
+                $payment_method = $rowBooking['payment_method'];
+                $cost = $rowBooking['cost'];
+                $description = $rowBooking['description'];
+
+                $currentDate = date("Y-m-d");
+
+                if ($currentDate == $finished_date) {
+                    $todayIcome += $cost;
+                }
+
+                if ($finished_date >= $startDate && $finished_date <= $endDate) {
+                    $thisWeekIcome += $cost;
+                }
+
+                if ($finished_date >= $startDateMonth && $finished_date <= $endDateMonth) {
+                    $monthIcome += $cost;
+                }
+
+                $totalIncome += $cost;
+            }
+        }
+
+        ?>
         <section class="active section">
             <div class="wallet">
                 <div class="content">
@@ -150,11 +207,11 @@ if ($resultTechnician->num_rows > 0) {
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
-                                        <h3>LRK.2568</h3>
+                                        <h3>LRK.<?php echo $todayIcome; ?></h3>
                                     </div>
-                                    <div class="wallet-card-content-2">
+                                    <!-- <div class="wallet-card-content-2">
                                         <p>48% From Last 24 Hours</p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -165,11 +222,11 @@ if ($resultTechnician->num_rows > 0) {
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
-                                        <h3>LRK.2568</h3>
+                                        <h3>LRK.<?php echo $thisWeekIcome; ?></h3>
                                     </div>
-                                    <div class="wallet-card-content-2">
+                                    <!-- <div class="wallet-card-content-2">
                                         <p>48% From Last 24 Hours</p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -180,11 +237,11 @@ if ($resultTechnician->num_rows > 0) {
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
-                                        <h3>LRK.20568</h3>
+                                        <h3>LRK.<?php echo $monthIcome; ?></h3>
                                     </div>
-                                    <div class="wallet-card-content-2">
+                                    <!-- <div class="wallet-card-content-2">
                                         <p>33% From Last 30 Day</p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -196,22 +253,67 @@ if ($resultTechnician->num_rows > 0) {
                         </div>
                         <div class="wallet-history-header">
                             <div class="wallet-history-header-content-1">
-                                <h4>July 2017</h4>
+                                <h4><?php echo date('W F Y'); ?></h4>
                                 <p>Total Earning</p>
                             </div>
                             <div class="wallet-history-header-content-2">
-                                <h2>LKR. 20000</h2>
+                                <h2>LKR. <?php echo $totalIncome; ?></h2>
                             </div>
                         </div>
                         <div class="wallet-table">
                             <table>
                                 <tr>
-                                    <td>Name</td>
+                                    <td>Booking id</td>
                                     <td>Date</td>
                                     <td>Time</td>
                                     <td>Earnings</td>
-                                    <td>Status</td>
+                                    <!-- <td>Status</td> -->
                                 </tr>
+                                <?php
+
+
+                                $booking1 = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
+                                $resultBooking1 = $conn->query($booking1);
+
+                                if ($resultBooking1->num_rows > 0) {
+                                    
+                                    while ($rowBooking = $resultBooking1->fetch_assoc()) {
+                                        
+                                        $booking_id = $rowBooking['booking_id'];
+                                        $technician_id = $rowBooking['technician_id'];
+                                        $customer_id = $rowBooking['customer_id'];
+                                        $status = $rowBooking['status'];
+                                        $booked_date = $rowBooking['booked_date'];
+                                        $booked_time = $rowBooking['booked_time'];
+                                        $accept_date = $rowBooking['accept_date'];
+                                        $accept_time = $rowBooking['accept_time'];
+                                        $start_date = $rowBooking['start_date'];
+                                        $start_time = $rowBooking['start_time'];
+                                        $finished_date = $rowBooking['finished_date'];
+                                        $finished_time = $rowBooking['finished_time'];
+                                        $photo_url = $rowBooking['photo_url'];
+                                        $payment_status = $rowBooking['payment_status'];
+                                        $payment_method = $rowBooking['payment_method'];
+                                        $cost = $rowBooking['cost'];
+                                        $description = $rowBooking['description'];
+
+
+                                        if ($status == 'finish') {
+
+                                            echo '
+                                                <tr>
+                                                    <td>' . $booking_id . '</td>
+                                                    <td>' . $finished_date . '</td>
+                                                    <td>' . $finished_time . '</td>
+                                                    <td>' . $cost . '</td>
+                                                </tr>
+                                        ';
+                                        }
+                                    }
+                                }
+
+
+                                ?>
                             </table>
                         </div>
                     </div>
@@ -285,7 +387,6 @@ if ($resultTechnician->num_rows > 0) {
                             $averageRating100 = ($averageRating * 20);
                         }
                     }
-
                     ?>
 
                     <div class="review">
@@ -447,7 +548,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
+                                                <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
                                                 <p><?php echo $starsC1; ?></p>
@@ -474,7 +575,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
+                                                <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
                                                 <p><?php echo $starsC2; ?></p>
@@ -528,7 +629,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
+                                                <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
                                                 <p><?php echo $starsC4; ?></p>
@@ -555,7 +656,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
+                                                <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
                                                 <p><?php echo $starsC5; ?></p>
@@ -749,7 +850,6 @@ if ($resultTechnician->num_rows > 0) {
                             </div>
                         </div>
                     </div>
-                    <!-- </div> -->
                 </div>
             </div>
         </section>
