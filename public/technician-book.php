@@ -240,7 +240,6 @@ if (isset($_POST['book'])) {
                                 </div>
                             </div>
 
-
                             <div class="input-one-content">
                                 <p>description</p>
                                 <textarea name="description" id="" cols="30" rows="10"></textarea>

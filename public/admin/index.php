@@ -149,6 +149,18 @@ if ($resultBooking->num_rows > 0) {
     <link rel="stylesheet" href="../assets/css/dashboard-nav.css">
     <link rel="stylesheet" href="../assets/css/dashboard-wallet.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            width: calc(100%);
+            margin: 40px auto;
+        }
+    </style>
+
+
+
 </head>
 
 <body>
@@ -326,8 +338,10 @@ if ($resultBooking->num_rows > 0) {
             </div>
         </aside>
         <section class="active section">
+
             <div class="wallet">
                 <div class="content">
+
                     <div class="wallet-header">
                         <div class="wallet-header-card">
                             <div class="wallet-card-header">
@@ -375,6 +389,86 @@ if ($resultBooking->num_rows > 0) {
                             </div>
                         </div>
                     </div>
+
+                    <?php
+                    $monthlyIncome = array_fill(0, 12, 0);
+
+                    // Process booking data
+                    $bookingQuery = "SELECT * FROM `booking` WHERE `status` = 'finish'";
+                    $resultBooking = $conn->query($bookingQuery);
+                    if ($resultBooking->num_rows > 0) {
+                        while ($rowBooking = $resultBooking->fetch_assoc()) {
+                            $finished_month = date('n', strtotime($rowBooking['finished_date']));
+                            $cost = $rowBooking['cost'];
+                            $monthlyIncome[$finished_month - 1] += $cost * 0.1;
+                        }
+                    }
+
+                    $orderDetailsQuery = "SELECT * FROM `order_details`";
+                    $resultOrderDetails = $conn->query($orderDetailsQuery);
+                    if ($resultOrderDetails->num_rows > 0) {
+                        while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
+                            $order_id = $rowOrderDetails['order_id'];
+                            $quantity = $rowOrderDetails['quantity'];
+                            $item_id = $rowOrderDetails['item_id'];
+
+                            $itemQuery = "SELECT `price` FROM `item` WHERE `item_id` = $item_id";
+                            $resultItem = $conn->query($itemQuery);
+                            if ($resultItem->num_rows > 0) {
+                                $rowItem = $resultItem->fetch_assoc();
+                                $price = $rowItem['price'];
+                                $totalPrice = $price * $quantity;
+                                $orderQuery = "SELECT `date` FROM `orders` WHERE `order_id` = $order_id";
+                                $resultOrder = $conn->query($orderQuery);
+                                if ($resultOrder->num_rows > 0) {
+                                    $rowOrder = $resultOrder->fetch_assoc();
+                                    $order_month = date('n', strtotime($rowOrder['date']));
+                                    $monthlyIncome[$order_month - 1] += $totalPrice;
+                                }
+                            }
+                        }
+                    }
+
+                    $chartDataJSON = json_encode($monthlyIncome);
+                    ?>
+
+
+                    <canvas id="incomeChart"></canvas>
+
+                    <script>
+                        // Parse PHP array to JavaScript
+                        const chartData = <?php echo $chartDataJSON; ?>;
+
+                        const monthlyIncomeData = {
+                            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                            datasets: [{
+                                label: 'Monthly Income',
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                                data: chartData,
+                            }]
+                        };
+
+                        const ctx = document.getElementById('incomeChart').getContext('2d');
+                        const incomeChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: monthlyIncomeData,
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
+
+
+
+
                     <!-- <div class="wallet-review"> -->
                     <div class="wallet-history">
                         <div class="wallet-history-header-text">
@@ -446,6 +540,8 @@ if ($resultBooking->num_rows > 0) {
                         </div>
                     </div>
 
+
+
                     <div class="wallet-history">
                         <div class="wallet-history-header-text">
                             <h2>Technician Earning Report</h2>
@@ -470,6 +566,8 @@ if ($resultBooking->num_rows > 0) {
                                 <?php
 
 
+
+
                                 $order_details = "SELECT * FROM `order_details` WHERE 1";
                                 $resultOrderDetails = $conn->query($order_details);
 
@@ -485,6 +583,7 @@ if ($resultBooking->num_rows > 0) {
                                         $resultItem = $conn->query($item);
 
                                         if ($resultItem->num_rows > 0) {
+
                                             $rowItem = $resultItem->fetch_assoc();
 
                                             $price = $rowItem['price'];
@@ -493,20 +592,21 @@ if ($resultBooking->num_rows > 0) {
                                             $resultOrder = $conn->query($order);
 
                                             if ($resultOrder->num_rows > 0) {
+
                                                 $rowOrder = $resultOrder->fetch_assoc();
 
                                                 $order_status = $rowOrder['order_status'];
                                                 $date = $rowOrder['date'];
+                                                $time = $rowOrder['time'];
 
-
-                                                if ($order_status == 'finish') {
+                                                if ($order_status != 'pending') {
 
                                                     echo '
                                                     <tr>
-                                                        <td>' . $booking_id . '</td>
-                                                        <td>' . $finished_date . '</td>
-                                                        <td>' . $finished_time . '</td>
-                                                        <td>' . $cost . '</td>
+                                                        <td>' . $order_id . '</td>
+                                                        <td>' . $date . '</td>
+                                                        <td>' . $time . '</td>
+                                                        <td>' . $price * $quantity . '</td>
                                                     </tr>
                                             ';
                                                 }
@@ -522,6 +622,7 @@ if ($resultBooking->num_rows > 0) {
                     </div>
                 </div>
             </div>
+
         </section>
         <!-- </div> -->
     </div>
