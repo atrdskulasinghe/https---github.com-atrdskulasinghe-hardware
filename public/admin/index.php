@@ -59,7 +59,7 @@ if ($resultOrderDetails->num_rows > 0) {
 
                 $order_status = $rowOrder['order_status'];
                 $date = $rowOrder['date'];
-                
+
 
                 if ($order_status != 'pending') {
                     // $itemIncome = ($price * $quantity) + $itemIncome;
@@ -78,15 +78,19 @@ if ($resultOrderDetails->num_rows > 0) {
                         $monthItemIcome += $price * $quantity;
                     }
 
-                    $totalItemIncome +=$price * $quantity;
+                    $totalItemIncome += $price * $quantity;
                 }
             }
         }
     }
 }
 
-echo $monthItemIcome;
+// echo $monthItemIcome;
 
+$todayBookingIcome = 0;
+$thisWeekBookingIcome = 0;
+$monthBookingIcome = 0;
+$totalBookingIncome = 0;
 
 $booking = "SELECT * FROM `booking` WHERE 1";
 $resultBooking = $conn->query($booking);
@@ -94,16 +98,42 @@ $resultBooking = $conn->query($booking);
 if ($resultBooking->num_rows > 0) {
     while ($rowBooking = $resultBooking->fetch_assoc()) {
 
-        $technician_id = $rowOrder['technician_id'];
-        $finished_date = $rowOrder['finished_date'];
-        $cost = $rowOrder['cost'];
-        $status = $rowOrder['status'];
-        
-        if(){
-            
+        $technician_id = $rowBooking['technician_id'];
+        $customer_id = $rowBooking['customer_id'];
+        $status = $rowBooking['status'];
+        $booked_date = $rowBooking['booked_date'];
+        $booked_time = $rowBooking['booked_time'];
+        $accept_date = $rowBooking['accept_date'];
+        $accept_time = $rowBooking['accept_time'];
+        $start_date = $rowBooking['start_date'];
+        $start_time = $rowBooking['start_time'];
+        $finished_date = $rowBooking['finished_date'];
+        $finished_time = $rowBooking['finished_time'];
+        $photo_url = $rowBooking['photo_url'];
+        $payment_status = $rowBooking['payment_status'];
+        $payment_method = $rowBooking['payment_method'];
+        $cost = $rowBooking['cost'];
+        $description = $rowBooking['description'];
+
+        $currentDate = date("Y-m-d");
+
+        if ($currentDate == $finished_date) {
+            $todayBookingIcome += $cost * 0.1;
         }
+
+        if ($finished_date >= $startDate && $finished_date <= $endDate) {
+            $thisWeekBookingIcome += $cost * 0.1;
+        }
+
+        if ($finished_date >= $startDateMonth && $finished_date <= $endDateMonth) {
+            $monthBookingIcome += $cost * 0.1;
+        }
+
+        $totalBookingIncome += $cost * 0.1;
     }
 }
+
+// echo $totalBookingIncome;
 
 ?>
 
@@ -306,7 +336,7 @@ if ($resultBooking->num_rows > 0) {
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
-                                        <h3>LRK.<?php echo $todayIcome; ?></h3>
+                                        <h3>LRK.<?php echo $todayItemIcome + $todayBookingIcome; ?></h3>
                                     </div>
                                     <!-- <div class="wallet-card-content-2">
                                         <p>48% From Last 24 Hours</p>
@@ -321,7 +351,7 @@ if ($resultBooking->num_rows > 0) {
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
-                                        <h3>LRK.<?php echo $thisWeekIcome; ?></h3>
+                                        <h3>LRK.<?php echo $thisWeekItemIcome + $thisWeekBookingIcome;; ?></h3>
                                     </div>
                                     <!-- <div class="wallet-card-content-2">
                                         <p>48% From Last 24 Hours</p>
@@ -336,7 +366,7 @@ if ($resultBooking->num_rows > 0) {
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
-                                        <h3>LRK.<?php echo $monthIcome; ?></h3>
+                                        <h3>LRK.<?php echo $monthItemIcome + $monthBookingIcome;; ?></h3>
                                     </div>
                                     <!-- <div class="wallet-card-content-2">
                                         <p>33% From Last 30 Day</p>
@@ -348,7 +378,7 @@ if ($resultBooking->num_rows > 0) {
                     <!-- <div class="wallet-review"> -->
                     <div class="wallet-history">
                         <div class="wallet-history-header-text">
-                            <h2>Earning Report</h2>
+                            <h2>Selling Report</h2>
                         </div>
                         <div class="wallet-history-header">
                             <div class="wallet-history-header-content-1">
@@ -356,7 +386,7 @@ if ($resultBooking->num_rows > 0) {
                                 <p>Total Earning</p>
                             </div>
                             <div class="wallet-history-header-content-2">
-                                <h2>LKR. <?php echo $totalIncome; ?></h2>
+                                <h2>LKR. <?php echo $totalItemIncome ?></h2>
                             </div>
                         </div>
                         <div class="wallet-table">
@@ -370,45 +400,121 @@ if ($resultBooking->num_rows > 0) {
                                 </tr>
                                 <?php
 
-                                // $booking1 = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
-                                // $resultBooking1 = $conn->query($booking1);
+                                $booking1 = "SELECT * FROM `booking` WHERE 1";
+                                $resultBooking1 = $conn->query($booking1);
 
-                                // if ($resultBooking1->num_rows > 0) {
+                                if ($resultBooking1->num_rows > 0) {
 
-                                //     while ($rowBooking = $resultBooking1->fetch_assoc()) {
+                                    while ($rowBooking = $resultBooking1->fetch_assoc()) {
 
-                                //         $booking_id = $rowBooking['booking_id'];
-                                //         $technician_id = $rowBooking['technician_id'];
-                                //         $customer_id = $rowBooking['customer_id'];
-                                //         $status = $rowBooking['status'];
-                                //         $booked_date = $rowBooking['booked_date'];
-                                //         $booked_time = $rowBooking['booked_time'];
-                                //         $accept_date = $rowBooking['accept_date'];
-                                //         $accept_time = $rowBooking['accept_time'];
-                                //         $start_date = $rowBooking['start_date'];
-                                //         $start_time = $rowBooking['start_time'];
-                                //         $finished_date = $rowBooking['finished_date'];
-                                //         $finished_time = $rowBooking['finished_time'];
-                                //         $photo_url = $rowBooking['photo_url'];
-                                //         $payment_status = $rowBooking['payment_status'];
-                                //         $payment_method = $rowBooking['payment_method'];
-                                //         $cost = $rowBooking['cost'];
-                                //         $description = $rowBooking['description'];
+                                        $booking_id = $rowBooking['booking_id'];
+                                        $technician_id = $rowBooking['technician_id'];
+                                        $customer_id = $rowBooking['customer_id'];
+                                        $status = $rowBooking['status'];
+                                        $booked_date = $rowBooking['booked_date'];
+                                        $booked_time = $rowBooking['booked_time'];
+                                        $accept_date = $rowBooking['accept_date'];
+                                        $accept_time = $rowBooking['accept_time'];
+                                        $start_date = $rowBooking['start_date'];
+                                        $start_time = $rowBooking['start_time'];
+                                        $finished_date = $rowBooking['finished_date'];
+                                        $finished_time = $rowBooking['finished_time'];
+                                        $photo_url = $rowBooking['photo_url'];
+                                        $payment_status = $rowBooking['payment_status'];
+                                        $payment_method = $rowBooking['payment_method'];
+                                        $cost = $rowBooking['cost'];
+                                        $description = $rowBooking['description'];
 
 
-                                //         if ($status == 'finish') {
+                                        if ($status == 'finish') {
 
-                                //             echo '
-                                //                 <tr>
-                                //                     <td>' . $booking_id . '</td>
-                                //                     <td>' . $finished_date . '</td>
-                                //                     <td>' . $finished_time . '</td>
-                                //                     <td>' . $cost . '</td>
-                                //                 </tr>
-                                //         ';
-                                //         }
-                                //     }
-                                // }
+                                            echo '
+                                                <tr>
+                                                    <td>' . $booking_id . '</td>
+                                                    <td>' . $finished_date . '</td>
+                                                    <td>' . $finished_time . '</td>
+                                                    <td>' . $cost . '</td>
+                                                </tr>
+                                        ';
+                                        }
+                                    }
+                                }
+
+
+                                ?>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="wallet-history">
+                        <div class="wallet-history-header-text">
+                            <h2>Technician Earning Report</h2>
+                        </div>
+                        <div class="wallet-history-header">
+                            <div class="wallet-history-header-content-1">
+                                <h4><?php echo date('W F Y'); ?></h4>
+                                <p>Total Earning</p>
+                            </div>
+                            <div class="wallet-history-header-content-2">
+                                <h2>LKR. <?php echo $totalBookingIncome; ?></h2>
+                            </div>
+                        </div>
+                        <div class="wallet-table">
+                            <table>
+                                <tr>
+                                    <td>Booking id</td>
+                                    <td>Date</td>
+                                    <td>Time</td>
+                                    <td>Earnings</td>
+                                </tr>
+                                <?php
+
+
+                                $order_details = "SELECT * FROM `order_details` WHERE 1";
+                                $resultOrderDetails = $conn->query($order_details);
+
+                                if ($resultOrderDetails->num_rows > 0) {
+                                    while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
+
+                                        $order_id = $rowOrderDetails['order_id'];
+                                        $item_id = $rowOrderDetails['item_id'];
+                                        $order_type = $rowOrderDetails['order_type'];
+                                        $quantity = $rowOrderDetails['quantity'];
+
+                                        $item = "SELECT * FROM `item` WHERE `item_id` = $item_id";
+                                        $resultItem = $conn->query($item);
+
+                                        if ($resultItem->num_rows > 0) {
+                                            $rowItem = $resultItem->fetch_assoc();
+
+                                            $price = $rowItem['price'];
+
+                                            $order = "SELECT * FROM `orders` WHERE `order_id` = $order_id";
+                                            $resultOrder = $conn->query($order);
+
+                                            if ($resultOrder->num_rows > 0) {
+                                                $rowOrder = $resultOrder->fetch_assoc();
+
+                                                $order_status = $rowOrder['order_status'];
+                                                $date = $rowOrder['date'];
+
+
+                                                if ($order_status == 'finish') {
+
+                                                    echo '
+                                                    <tr>
+                                                        <td>' . $booking_id . '</td>
+                                                        <td>' . $finished_date . '</td>
+                                                        <td>' . $finished_time . '</td>
+                                                        <td>' . $cost . '</td>
+                                                    </tr>
+                                            ';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
 
                                 ?>
                             </table>
