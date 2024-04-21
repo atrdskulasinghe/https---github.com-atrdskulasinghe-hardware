@@ -60,6 +60,113 @@ if ($resultTechnician->num_rows > 0) {
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+    <style>
+        .calendar-content {
+            width: calc(100% - 40px);
+            padding: 10px 2px;
+            margin: auto;
+            overflow: auto;
+        }
+
+
+
+        .calendar {
+            width: calc(100% - 40px);
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background-color: rgb(247, 247, 247)1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+        }
+
+        @media(max-width:768px) {
+            .calendar-content {
+                width: calc(100%);
+                padding: 0;
+            }
+
+            .calendar {
+                width: calc(100%);
+                padding: 0;
+
+            }
+        }
+
+
+        .calendar table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar th,
+        .calendar td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .calendar th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .calendar td {
+            /* */
+            position: relative;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar-header h2 {
+            margin: 0;
+        }
+
+        .calendar-nav button {
+            background: none;
+            border: none;
+            /* cursor: pointer; */
+            font-size: 16px;
+        }
+
+
+        .event-dot {
+            display: block;
+            width: 5px;
+            height: 5px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .selected-date {
+            background-color: rgb(0, 145, 255);
+            color: #fff;
+        }
+
+        .past-date {
+            background-color: rgb(177, 177, 177);
+            color: white;
+        }
+
+        .calendar-nav {
+            width: 40px;
+            height: 30px;
+            border-radius: 5px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            /* cursor: pointer; */
+        }
+    </style>
 </head>
 
 <body>
@@ -78,7 +185,7 @@ if ($resultTechnician->num_rows > 0) {
                 <div class="menu-content">
                     <div class="menu-links">
                         <!-- menu link 1 -->
-                        <div class="menu-link-button active">
+                        <div class="menu-link-button ">
                             <a href="./index.php">
                                 <p><img src="../assets/images/ui/dashboard.png" alt="">Dashboard</p>
                             </a>
@@ -91,7 +198,7 @@ if ($resultTechnician->num_rows > 0) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <div class="menu-link-button active">
                             <a href="./calender.php">
                                 <p><img src="../assets/images/ui/Calendar.png" alt="">Calendar</p>
                             </a>
@@ -163,7 +270,6 @@ if ($resultTechnician->num_rows > 0) {
         if ($resultBooking->num_rows > 0) {
             while ($rowBooking = $resultBooking->fetch_assoc()) {
 
-
                 $technician_id = $rowBooking['technician_id'];
                 $customer_id = $rowBooking['customer_id'];
                 $status = $rowBooking['status'];
@@ -201,7 +307,8 @@ if ($resultTechnician->num_rows > 0) {
 
         ?>
         <section class="active section">
-        <form class="booking-content" method="POST" enctype="multipart/form-data">
+            <div class="content">
+                <form class="booking-content" method="POST" enctype="multipart/form-data">
                     <div class="calendar-content">
                         <div class="calendar">
                             <div class="calendar-header">
@@ -228,14 +335,159 @@ if ($resultTechnician->num_rows > 0) {
                         </div>
 
                     </div>
-                    <p class="input-error margin-top-10"><?php echo $date_error ?></p>
+                    <!-- <p class="input-error margin-top-10"><?php echo $date_error ?></p> -->
 
-
-                    
                 </form>
+            </div>
         </section>
         <!-- </div> -->
     </div>
+
+    <?php
+    $selectTechnicianQuery1 = "SELECT * FROM `booking` WHERE `technician_id`= '$technician_id'";
+    $resultTechnician1 = $conn->query($selectTechnicianQuery1);
+
+    $eventData = [];
+
+    if ($resultTechnician1->num_rows > 0) {
+        while ($row = $resultTechnician1->fetch_assoc()) {
+            $date = date("Y/m/d", strtotime($row['booked_date']));
+            $time = date("h.ia", strtotime($row['booked_time']));
+            $event = $row['status'];
+
+            if ($row['status'] !== "reject") {
+                $eventData[] = [$date, $time, $event];
+            }
+        }
+    }
+?>
+
+
+    <!-- // <script>
+        //     var eventData = <?php echo json_encode($eventData); ?>;
+        // 
+    </script> -->
+
+
+    <script>
+        // var eventData = [
+        //     ["2024/02/01", "10.20pm", "Batch party"],
+        //     ["2024/02/05", "9.00am", "Meeting"],
+        //     ["2024/02/10", "2.30pm", "Team outing"],
+        //     ["2024/02/14", "11.45am", "Client presentation"],
+        //     ["2024/02/18", "3.00pm", "Training session"],
+        //     ["2024/02/22", "8.30am", "Project deadline"],
+        //     ["2024/02/25", "6.00pm", "Company event"],
+        //     ["2024/04/28", "1.15pm", "Lunch with colleagues"],
+        // ];
+
+        var eventData = <?php echo json_encode($eventData); ?>;
+
+        // Function to generate calendar
+        // Function to generate calendar
+        function generateCalendar(year, month) {
+            var calendarBody = document.getElementById('calendar-body');
+            var calendarHeader = document.getElementById('calendar-month-year');
+            calendarBody.innerHTML = ''; // Clear existing calendar
+
+            var date = new Date(year, month, 1);
+            var startingDay = date.getDay();
+            var endDate = new Date(year, month + 1, 0).getDate(); 
+
+            calendarHeader.textContent = monthNames[month] + ' ' + year;
+
+            var currentRow = calendarBody.insertRow();
+            var cellIndex = 0;
+            var selectedCell = null; 
+
+            for (var i = 0; i < startingDay; i++) {
+                currentRow.insertCell();
+                cellIndex++;
+            }
+
+            for (var day = 1; day <= endDate; day++) {
+                var cell = currentRow.insertCell();
+                cell.textContent = day;
+
+                var dateStr = year + '/' + padNumber(month + 1) + '/' + padNumber(day);
+                var eventInfo = getEventInfo(dateStr);
+
+                if (eventInfo !== null) {
+                    var dot = document.createElement('span');
+                    dot.className = 'event-dot';
+                    // cell.appendChild(dot);
+                    // console.log(cell)
+                    cell.style.cursor = "pointer";
+                    cell.classList.add('selected-date');
+                } else {
+                    // cell.style.cursor = "pointer";
+                }
+
+                cellIndex++;
+                if (cellIndex % 7 === 0 && day < endDate) { 
+                    currentRow = calendarBody.insertRow();
+                    cellIndex = 0;
+                }
+
+                cell.addEventListener('click', function() {
+                    var dateStr = year + '/' + padNumber(month + 1) + '/' + padNumber(this.textContent);
+                    var eventInfo = getEventInfo(dateStr);
+                    
+                    if (eventInfo !== null && eventInfo.length >= 2) {
+                        // alert('Event: ' + eventInfo[2] + '\nTime: ' + eventInfo[1]);
+                        window.location.href= "history-view.php?book_id=1";
+                        
+                    } else {
+                        if (selectedCell !== null) {
+                            // selectedCell.classList.remove('selected-date');
+                        }
+                        // this.classList.add('selected-date');
+                        selectedCell = this;
+                    }
+                });
+            }
+        }
+
+        function padNumber(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function getEventInfo(date) {
+            for (var i = 0; i < eventData.length; i++) {
+                if (eventData[i][0] === date) {
+                    return eventData[i];
+                }
+            }
+            return null;
+        }
+
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        var currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+        var currentMonth = currentDate.getMonth();
+
+        generateCalendar(currentYear, currentMonth);
+
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar(currentYear, currentMonth);
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar(currentYear, currentMonth);
+        }
+    </script>
 
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
