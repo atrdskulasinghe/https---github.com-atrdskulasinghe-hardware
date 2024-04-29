@@ -147,7 +147,8 @@ if ($resultBooking->num_rows > 0) {
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/dashboard-menu.css">
     <link rel="stylesheet" href="../assets/css/dashboard-nav.css">
-    <link rel="stylesheet" href="../assets/css/dashboard-wallet.css">
+    <link rel="stylesheet" href="../assets/css/dashboard-delivery-request.css">
+    <link rel="stylesheet" href="../assets/css/button.css">
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
 
 
@@ -291,294 +292,162 @@ if ($resultBooking->num_rows > 0) {
         </aside>
         <section class="active section">
 
-            <div class="wallet">
-                <div class="content">
-
-                    <div class="wallet-header">
-                        <div class="wallet-header-card">
-                            <div class="wallet-card-header">
-                                <h4>Earned today</h4>
-                            </div>
-                            <div class="wallet-card-content">
-                                <div>
-                                    <div class="wallet-card-content-1">
-                                        <h3>LRK.<?php echo $todayItemIcome + $todayBookingIcome; ?></h3>
-                                    </div>
-                                    <!-- <div class="wallet-card-content-2">
-                                        <p>48% From Last 24 Hours</p>
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wallet-header-card">
-                            <div class="wallet-card-header">
-                                <h4>Earned this week</h4>
-                            </div>
-                            <div class="wallet-card-content">
-                                <div>
-                                    <div class="wallet-card-content-1">
-                                        <h3>LRK.<?php echo $thisWeekItemIcome + $thisWeekBookingIcome;; ?></h3>
-                                    </div>
-                                    <!-- <div class="wallet-card-content-2">
-                                        <p>48% From Last 24 Hours</p>
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wallet-header-card">
-                            <div class="wallet-card-header">
-                                <h4>Earned this month</h4>
-                            </div>
-                            <div class="wallet-card-content">
-                                <div>
-                                    <div class="wallet-card-content-1">
-                                        <h3>LRK.<?php echo $monthItemIcome + $monthBookingIcome;; ?></h3>
-                                    </div>
-                                    <!-- <div class="wallet-card-content-2">
-                                        <p>33% From Last 30 Day</p>
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+        <div class="content">
+                <div class="request">
                     <?php
-                    $monthlyIncome = array_fill(0, 12, 0);
 
-                    // Process booking data
-                    $bookingQuery = "SELECT * FROM `booking` WHERE `status` = 'finish'";
-                    $resultBooking = $conn->query($bookingQuery);
-                    if ($resultBooking->num_rows > 0) {
-                        while ($rowBooking = $resultBooking->fetch_assoc()) {
-                            $finished_month = date('n', strtotime($rowBooking['finished_date']));
-                            $cost = $rowBooking['cost'];
-                            $monthlyIncome[$finished_month - 1] += $cost * 0.1;
-                        }
-                    }
+                    $error = false;
 
-                    $orderDetailsQuery = "SELECT * FROM `order_details`";
-                    $resultOrderDetails = $conn->query($orderDetailsQuery);
-                    if ($resultOrderDetails->num_rows > 0) {
-                        while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
-                            $order_id = $rowOrderDetails['order_id'];
-                            $quantity = $rowOrderDetails['quantity'];
-                            $item_id = $rowOrderDetails['item_id'];
+                    // $selectUserQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = $user_id";
+                    // $result = $conn->query($selectUserQuery);
 
-                            $itemQuery = "SELECT `price` FROM `item` WHERE `item_id` = $item_id";
-                            $resultItem = $conn->query($itemQuery);
-                            if ($resultItem->num_rows > 0) {
-                                $rowItem = $resultItem->fetch_assoc();
-                                $price = $rowItem['price'];
-                                $totalPrice = $price * $quantity;
-                                $orderQuery = "SELECT `date` FROM `orders` WHERE `order_id` = $order_id";
-                                $resultOrder = $conn->query($orderQuery);
+                    // if ($result->num_rows > 0) {
+
+                    // $row = $result->fetch_assoc();
+
+
+                    $selectUserQuery = "SELECT * FROM `delivery` WHERE 1";
+                    $result = $conn->query($selectUserQuery);
+
+                    if ($result->num_rows > 0) {
+
+
+
+                        while ($row = $result->fetch_assoc()) {
+
+
+                            $delivery_id = $row['delivery_id'];
+                            $order_id = $row['order_id'];
+                            $date_of_pickup = $row['date_of_pickup'];
+                            $time_of_pickup = $row['time_of_pickup'];
+                            $date_of_delivered = $row['date_of_delivered'];
+                            $time_of_delivered = $row['time_of_delivered'];
+                            $status = $row['status'];
+                            $house_no = $row['house_no'];
+                            $state = $row['state'];
+                            $city = $row['city'];
+
+                            $delivery_cost = $row['delivery_cost'];
+                            $description = $row['description'];
+                            $latitude = $row['latitude'];
+                            $longitude = $row['longitude'];
+
+                            if ($status == "pending") {
+
+                                $selectUserQuery = "SELECT * FROM `orders` WHERE `order_id` = $order_id";
+                                $resultOrder = $conn->query($selectUserQuery);
+
                                 if ($resultOrder->num_rows > 0) {
+
                                     $rowOrder = $resultOrder->fetch_assoc();
-                                    $order_month = date('n', strtotime($rowOrder['date']));
-                                    $monthlyIncome[$order_month - 1] += $totalPrice;
-                                }
-                            }
-                        }
-                    }
 
-                    $chartDataJSON = json_encode($monthlyIncome);
-                    ?>
+                                    $customer_user_id = $rowOrder['customer_id'];
+                                    $order_date = $rowOrder['date'];
+                                    $order_time = $rowOrder['time'];
+                                    $order_status = $rowOrder['order_status'];
 
+                                    if ($order_status == "pending") {
 
-                    <canvas id="incomeChart"></canvas>
+                                        $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $customer_user_id";
+                                        $resultUser = $conn->query($selectUserQuery);
 
-                    <script>
-                        // Parse PHP array to JavaScript
-                        const chartData = <?php echo $chartDataJSON; ?>;
+                                        if ($resultUser->num_rows > 0) {
 
-                        const monthlyIncomeData = {
-                            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                            datasets: [{
-                                label: 'Monthly Income',
-                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1,
-                                data: chartData,
-                            }]
-                        };
+                                            $rowUser = $resultUser->fetch_assoc();
 
-                        const ctx = document.getElementById('incomeChart').getContext('2d');
-                        const incomeChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: monthlyIncomeData,
-                            options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true
-                                        }
-                                    }]
-                                }
-                            }
-                        });
-                    </script>
+                                            $first_name = $rowUser['first_name'];
+                                            $last_name = $rowUser['last_name'];
+                                            $email = $rowUser['email'];
+                                            $phone_number = $rowUser['phone_number'];
+                                            $profile_url = $rowUser['profile_url'];
 
+                                            $error = true;
 
+                                            // $selectUserQuery = "SELECT * FROM `order_details` WHERE `order_id` = $order_id";
+                                            // $resultItem = $conn->query($selectUserQuery);
 
+                                            // if ($resultItem->num_rows > 0) {
 
-                    <!-- <div class="wallet-review"> -->
-                    <div class="wallet-history">
-                        <div class="wallet-history-header-text">
-                            <h2>Selling Report</h2>
-                        </div>
-                        <div class="wallet-history-header">
-                            <div class="wallet-history-header-content-1">
-                                <h4><?php echo date('W F Y'); ?></h4>
-                                <p>Total Earning</p>
-                            </div>
-                            <div class="wallet-history-header-content-2">
-                                <h2>LKR. <?php echo $totalItemIncome ?></h2>
-                            </div>
-                        </div>
-                        <div class="wallet-table">
-                            <table>
-                                <tr>
-                                    <td>Booking id</td>
-                                    <td>Date</td>
-                                    <td>Time</td>
-                                    <td>Earnings</td>
-                                    <!-- <td>Status</td> -->
-                                </tr>
-                                <?php
-
-                                $booking1 = "SELECT * FROM `booking` WHERE 1";
-                                $resultBooking1 = $conn->query($booking1);
-
-                                if ($resultBooking1->num_rows > 0) {
-
-                                    while ($rowBooking = $resultBooking1->fetch_assoc()) {
-
-                                        $booking_id = $rowBooking['booking_id'];
-                                        $technician_id = $rowBooking['technician_id'];
-                                        $customer_id = $rowBooking['customer_id'];
-                                        $status = $rowBooking['status'];
-                                        $booked_date = $rowBooking['booked_date'];
-                                        $booked_time = $rowBooking['booked_time'];
-                                        $accept_date = $rowBooking['accept_date'];
-                                        $accept_time = $rowBooking['accept_time'];
-                                        $start_date = $rowBooking['start_date'];
-                                        $start_time = $rowBooking['start_time'];
-                                        $finished_date = $rowBooking['finished_date'];
-                                        $finished_time = $rowBooking['finished_time'];
-                                        $photo_url = $rowBooking['photo_url'];
-                                        $payment_status = $rowBooking['payment_status'];
-                                        $payment_method = $rowBooking['payment_method'];
-                                        $cost = $rowBooking['cost'];
-                                        $description = $rowBooking['description'];
-
-
-                                        if ($status == 'finish') {
-
-                                            echo '
-                                                <tr>
-                                                    <td>' . $booking_id . '</td>
-                                                    <td>' . $finished_date . '</td>
-                                                    <td>' . $finished_time . '</td>
-                                                    <td>' . $cost . '</td>
-                                                </tr>
+                                                echo '
+                                        <div class="request-content" href="">
+                                            <div class="request-content-1">
+                                            <iframe id="map"
+                                                    frameborder="0" style="border:0"
+                                                    src="https://www.openstreetmap.org/export/embed.html?bbox=' . ($longitude - 0.01) . '%2C' . ($latitude - 0.01) . '%2C' . ($longitude + 0.01) . '%2C' . ($latitude + 0.01) . '&amp;layer=mapnik&amp;marker=' . $latitude . '%2C' . $longitude . '">
+                                            </iframe>
+                                                <p>' . $description . '</p>
+                                            </div>
+                                            <div class="request-content-2">
+                                                <div class="request-profile">
+                                                    <div class="request-profile-content-1">
+                                                        <img src="../assets/images/customer/' . $profile_url . '" alt="">
+                                                    </div>
+                                                    <div class="request-profile-content-2">
+                                                        <h4>' . $first_name . ' ' . $last_name . '</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="request-details">
+                                                    <div class="request-details-content-1">
+                                                        <p>Order Id</p>
+                                                    </div>
+                                                    <div class="request-details-content-2">
+                                                        <p>' . $order_id . '</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="request-details">
+                                                    <div class="request-details-content-1">
+                                                        <p>Phone Number</p>
+                                                    </div>
+                                                    <div class="request-details-content-2">
+                                                        <p>' . $phone_number . '</p>
+                                                    </div>
+                                                </div>
+                                                <div class="request-details">
+                                                    <div class="request-details-content-1">
+                                                        <p>Address</p>
+                                                    </div>
+                                                    <div class="request-details-content-2">
+                                                        <p>' . $house_no . '<br>' . $state . '<br>' . $city . '</p>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="request-button">
+                                                    <button type="button" class="btn" onclick="view(' . $order_id . ', \'accept\')">View Details</button> 
+                                                </div>
+                                            </div>
+                                        </div>
+                    
                                         ';
-                                        }
-                                    }
-                                }
-
-
-                                ?>
-                            </table>
-                        </div>
-                    </div>
-
-
-
-                    <div class="wallet-history">
-                        <div class="wallet-history-header-text">
-                            <h2>Technician Earning Report</h2>
-                        </div>
-                        <div class="wallet-history-header">
-                            <div class="wallet-history-header-content-1">
-                                <h4><?php echo date('W F Y'); ?></h4>
-                                <p>Total Earning</p>
-                            </div>
-                            <div class="wallet-history-header-content-2">
-                                <h2>LKR. <?php echo $totalBookingIncome; ?></h2>
-                            </div>
-                        </div>
-                        <div class="wallet-table">
-                            <table>
-                                <tr>
-                                    <td>Booking id</td>
-                                    <td>Date</td>
-                                    <td>Time</td>
-                                    <td>Earnings</td>
-                                </tr>
-                                <?php
-
-
-
-
-                                $order_details = "SELECT * FROM `order_details` WHERE 1";
-                                $resultOrderDetails = $conn->query($order_details);
-
-                                if ($resultOrderDetails->num_rows > 0) {
-                                    while ($rowOrderDetails = $resultOrderDetails->fetch_assoc()) {
-
-                                        $order_id = $rowOrderDetails['order_id'];
-                                        $item_id = $rowOrderDetails['item_id'];
-                                        $order_type = $rowOrderDetails['order_type'];
-                                        $quantity = $rowOrderDetails['quantity'];
-
-                                        $item = "SELECT * FROM `item` WHERE `item_id` = $item_id";
-                                        $resultItem = $conn->query($item);
-
-                                        if ($resultItem->num_rows > 0) {
-
-                                            $rowItem = $resultItem->fetch_assoc();
-
-                                            $price = $rowItem['price'];
-
-                                            $order = "SELECT * FROM `orders` WHERE `order_id` = $order_id";
-                                            $resultOrder = $conn->query($order);
-
-                                            if ($resultOrder->num_rows > 0) {
-
-                                                $rowOrder = $resultOrder->fetch_assoc();
-
-                                                $order_status = $rowOrder['order_status'];
-                                                $date = $rowOrder['date'];
-                                                $time = $rowOrder['time'];
-
-                                                if ($order_status != 'pending') {
-
-                                                    echo '
-                                                    <tr>
-                                                        <td>' . $order_id . '</td>
-                                                        <td>' . $date . '</td>
-                                                        <td>' . $time . '</td>
-                                                        <td>' . $price * $quantity . '</td>
-                                                    </tr>
-                                            ';
-                                                }
                                             }
                                         }
                                     }
                                 }
+                            }
+                        }
+                    // }
+                    // }
+                    // }
+
+                    if ($error == false) {
+                        echo "<p>Devlivery request not found</p>";
+                    }
 
 
-                                ?>
-                            </table>
-                        </div>
-                    </div>
+                    ?>
+
                 </div>
             </div>
 
         </section>
         <!-- </div> -->
     </div>
+    <script>
 
+function view(orderId, status) {
+    window.location.href = './view-order.php?order_id=' + orderId;
+}
+</script>
     <script src="../assets/js/dashboard-menu.js"></script>
     <script src="../assets/js/script.js"></script>
 </body>

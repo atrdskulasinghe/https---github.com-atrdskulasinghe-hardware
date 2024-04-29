@@ -4,6 +4,24 @@ session_start();
 include "../config/database.php";
 include "../template/user-data.php";
 
+if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+    if ($_SESSION['account_type'] == "customer") {
+        // header('location: index.php');
+    } else if ($_SESSION['account_type'] == "cashier") {
+        header('location: ./cashier/index.php');
+    } else if ($_SESSION['account_type'] == "technician") {
+        header('location: ./technician/index.php');
+    } else if ($_SESSION['account_type'] == "delivery_boy") {
+        header('location: ./delivery-boy/index.php');
+    } else if ($_SESSION['account_type'] == "admin") {
+        header('location: ./admin/index.php');
+    } else if ($_SESSION['account_type'] == "technical_team") {
+        header('location: ./technical-team/index.php');
+    }
+} else {
+    header('location: ./login.php');
+}
+
 $booking_id = "";
 
 if (isset($_SESSION['order_id'])) {

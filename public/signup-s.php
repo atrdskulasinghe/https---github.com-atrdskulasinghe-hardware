@@ -42,6 +42,16 @@ if (isset($_POST['next']) || isset($_POST['finish'])) {
         $confirm_passwordError = "Passwords do not match";
     }
 
+    if (strlen($password) < 8) {
+        $passwordError = "Password must be at least 8 characters long";
+    } elseif (!preg_match('/[A-Z]/', $password)) {
+        $passwordError = "Password must contain at least one uppercase letter";
+    } elseif (!preg_match('/[a-z]/', $password)) {
+        $passwordError = "Password must contain at least one lowercase letter";
+    } elseif (!preg_match('/[0-9]/', $password)) {
+        $passwordError = "Password must contain at least one number";
+    }
+
     if (empty($password)) {
         $passwordError = "Please enter your phone number";
     }

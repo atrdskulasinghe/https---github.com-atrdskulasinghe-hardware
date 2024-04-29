@@ -53,6 +53,16 @@ if (isset($_POST['change'])) {
         $confirmPasswordError = "Your new password and confirm password entries do not match.";
     }
 
+    if (strlen($newPassword) < 8) {
+        $newPasswordError = "Password must be at least 8 characters long";
+    } elseif (!preg_match('/[A-Z]/', $newPassword)) {
+        $newPasswordError = "Password must contain at least one uppercase letter";
+    } elseif (!preg_match('/[a-z]/', $newPassword)) {
+        $newPasswordError = "Password must contain at least one lowercase letter";
+    } elseif (!preg_match('/[0-9]/', $newPassword)) {
+        $newPasswordError = "Password must contain at least one number";
+    }
+
     if (empty($newPassword)) {
         $newPasswordError = "Please enter your new password.";
     }

@@ -3,7 +3,7 @@
 session_start();
 
 include "../../config/database.php";
-include "../template/user-data.php";
+include "../../template/user-data.php";
 
 
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {

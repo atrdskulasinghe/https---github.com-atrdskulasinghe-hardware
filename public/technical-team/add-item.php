@@ -328,12 +328,14 @@ if (isset($_POST['save'])) {
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./customers.php">
                                 <p><img src="../assets/images/ui/customer.png" alt="">Customer</p>
                             </a>
                         </div>
+                        
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./settings.php">

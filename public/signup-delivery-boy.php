@@ -47,6 +47,10 @@ if (isset($_POST['finish'])) {
     $vehicle_number = $_POST['vehicle_number'];
     $vehicle_model = $_POST['vehicle_model'];
 
+    if (!preg_match('/^\d{9}[Vv]$/',$nic_number)) {
+        $nic_numberError =  "Invalid NIC number";
+    }
+
     if (empty($nic_number)) {
         $nic_numberError = "Please enter your nic number";
     }

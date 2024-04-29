@@ -43,6 +43,10 @@ if (isset($_POST['next'])) {
         $phone_numberError = "Please enter your phone number";
     }
 
+    if (!preg_match('/^\d{10}$/', $phone_number)) {
+        $phone_numberError = "Invalid phone number";
+    }
+
     if (empty($house_no)) {
         $house_noError = "Please enter your house no";
     }

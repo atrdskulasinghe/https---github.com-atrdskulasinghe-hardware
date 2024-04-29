@@ -47,8 +47,8 @@ if (isset($_POST['next'])) {
         $emailError = "Please enter your email";
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailError = "Invalid email address format.";
+    if (!preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
+        $emailError = "Invalid email address.";
     }
 
     $selectUserEmailQuery = "SELECT * FROM `user` WHERE `email`= '$email'";

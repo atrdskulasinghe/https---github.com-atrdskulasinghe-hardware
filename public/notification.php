@@ -57,7 +57,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 
                     <?php
 
-                    $notification1 = "SELECT * FROM `booking` WHERE `customer_id` = $user_user_id";
+                    $notification1 = "SELECT * FROM `booking` WHERE `customer_id` = $user_user_id  ORDER BY `booking_id` DESC";
                     $resultNotification1 = $conn->query($notification1);
 
                     if ($resultNotification1->num_rows > 0) {
@@ -88,7 +88,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                     echo '
                                     <a href="book-history-view.php?booking_id=' . $booking_id . '" class="notification-list">
                                             <div class="notification-details">
-                                                <h1>' . $finished_date . ' - Payment Reminder</h1>
+                                                <h1>' . $finished_date . ' - '.$finished_time.' - Payment Reminder</h1>
                                                 <p>The technician has completed the work. Please make the payment. </p>
                                                 
                                             </div>
@@ -120,13 +120,14 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                         $itemNotification3 = $resultNotification3->fetch_assoc();
 
                                         $date_of_delivered = $itemNotification3['date_of_delivered'];
+                                        $time_of_delivered = $itemNotification3['time_of_delivered'];
                                         $status1 = $itemNotification3['status'];
 
                                         if ($status1 == "delivered") {
                                             echo '
                                         <a href="order-history-view.php?order_id=' . $order_id . '" class="notification-list">
                                                 <div class="notification-details">
-                                                    <h1>' . $date_of_delivered . ' - Payment Reminder</h1>
+                                                    <h1>' . $date_of_delivered . ' - '.$time_of_delivered.' - Payment Reminder</h1>
                                                     <p>The order was placed. Make the payment.</p>
                                                     <div class="notifi-dot">
                                                         <i class="ri-circle-fill"></i>
@@ -139,20 +140,21 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                     }
                                 } else {
 
-                                    $notification4 = "SELECT * FROM `delivery` WHERE `order_id` = $order_id";
+                                    $notification4 = "SELECT * FROM `delivery` WHERE `order_id` = $order_id  ORDER BY `delivery_id` DESC";
                                     $resultNotification3 = $conn->query($notification4);
 
                                     if ($resultNotification3->num_rows > 0) {
                                         $itemNotification3 = $resultNotification3->fetch_assoc();
 
                                         $date_of_delivered = $itemNotification3['date_of_delivered'];
+                                        $time_of_delivered = $itemNotification3['time_of_delivered'];
                                         $status1 = $itemNotification3['status'];
 
                                         if ($status1 == "delivered") {
                                             echo '
                                         <a href="order-history-view.php?order_id=' . $order_id . '" class="notification-list">
                                                 <div class="notification-details">
-                                                    <h1>' . $date_of_delivered . ' - Payment Reminder</h1>
+                                                    <h1>' . $date_of_delivered. ' - '.$time_of_delivered.' - Payment Reminder</h1>
                                                     <p>The order was placed. Make the payment.</p>
                                                     
                                                 </div>

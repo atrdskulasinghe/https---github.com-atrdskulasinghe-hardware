@@ -227,6 +227,7 @@ if (isset($_POST['paid'])) {
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
                             <a href="./customers.php">

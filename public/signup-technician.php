@@ -52,6 +52,10 @@ if (isset($_POST['finish'])) {
         $nicImageError = "Please choose a NIC image file.";
     }
 
+    if (!preg_match('/^\d{9}[Vv]$/',$nic_number)) {
+        $nic_numberError =  "Invalid NIC number";
+    }
+
     if (empty($nic_number)) {
         $nic_numberError = "Please enter your nic number";
     }
@@ -157,7 +161,7 @@ if (isset($_POST['finish'])) {
                 $newFileName = $lastUserId . "_profile.jpg";
                 $targetFile = $targetDirectory . $newFileName;
 
-                echo "Ok";
+                // echo "Ok";
 
                 // nic image save
                 if (!empty($_FILES["nic_image"]["name"]) && $_FILES["nic_image"]["error"] == UPLOAD_ERR_OK) {
