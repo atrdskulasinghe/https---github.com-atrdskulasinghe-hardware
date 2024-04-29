@@ -56,7 +56,7 @@ if (isset($_POST['request'])) {
     
 
     if (empty($email_error)) {
-        $mail->setFrom('tharinduruchiranga252@gmail.com', 'Hardware');
+        $mail->setFrom('yasirusamarasekara2000@gmail.com', 'Hardware');
         $mail->addAddress($email);
 
         $mail->isHTML(true);

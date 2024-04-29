@@ -123,11 +123,11 @@ if ($result->num_rows > 0) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -263,7 +263,6 @@ if ($result->num_rows > 0) {
                                         </div>
                                     </div>
                                     <div class="request-button">
-                                        <button type="button" class="btn" onclick="contactUser(' . $user_id . ', ' . $booking_id . ')">Contact</button>
                                         <button type="button" class="btn" onclick="updateBookingStatus(' . $booking_id . ', \'accept\')">Accept</button>
                                         <button type="button" class="btn" onclick="updateBookingStatus(' . $booking_id . ', \'cancel\')">Cancel</button>
                                     </div>

@@ -95,11 +95,11 @@ include "../../template/user-data.php";
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button active">
+                        <!-- <div class="menu-link-button active">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">

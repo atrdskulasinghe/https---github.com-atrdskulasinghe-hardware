@@ -35,8 +35,8 @@ $finished_time = "";
 $house_no = "";
 $state = "";
 $city = "";
-$payment_status = "";
-$payment_method = "";
+$payment_status1 = "";
+$payment_method1 = "";
 $cost = "";
 $description = "";
 $latitude = "";
@@ -62,7 +62,7 @@ if ($resultTechnician->num_rows > 0) {
         $booking_id = $row['booking_id'];
         $technician_id = $row['technician_id'];
         $photo_url = $row['photo_url'];
-        $status = $row['status'];
+        $status1 = $row['status'];
         $booked_date = $row['booked_date'];
         $booked_time = $row['booked_time'];
         $accept_date = $row['accept_date'];
@@ -74,12 +74,13 @@ if ($resultTechnician->num_rows > 0) {
         $house_no = $row['house_no'];
         $state = $row['state'];
         $city = $row['city'];
-        $payment_status = $row['payment_status'];
-        $payment_method = $row['payment_method'];
+        $payment_status1 = $row['payment_status'];
+        $payment_method1 = $row['payment_method'];
         $cost = $row['cost'];
         $description = $row['description'];
         $latitude = $row['latitude'];
         $longitude = $row['longitude'];
+
     }
 } else {
     header('location: ./book-history.php');
@@ -89,9 +90,14 @@ if (isset($_POST['technician-feedback'])) {
     header("location: ./feedback.php?booking_id={$booking_id}");
 }
 
+if(isset($_POST['pay'])){
+    $_SESSION['booking_id'] = $booking_id;
+    header("location: ./payment.php?booking_id={$booking_id}");
+}
+
 ?>
 
-<!-- <?php echo $status . 'Hello'; ?> -->
+<!-- <?php echo $status1 . 'Hello'; ?> -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -147,7 +153,7 @@ if (isset($_POST['technician-feedback'])) {
                         <div class="history-details-1">
                             <p>Booked Date : <?php echo $booked_date ?></p>
                             <p>Booking ID: <?php echo $booking_id ?></p>
-                            <p>Status: <?php echo ucfirst($status) ?></p>
+                            <p>Status: <?php echo ucfirst($status1) ?></p>
                         </div>
 
                         <div class="history-details-2">
@@ -157,28 +163,28 @@ if (isset($_POST['technician-feedback'])) {
                                         <i class="ri-check-line"></i>
                                         <h4>Booking Confirmed</h4>
                                     </div>
-                                    <div class="line line-1 <?php if ($status == "accept" || $status == "start" ||  $status == "finish") {
+                                    <div class="line line-1 <?php if ($status1 == "accept" || $status1 == "start" ||  $status1 == "finish") {
                                                                 echo "active";
                                                             } ?>"></div>
-                                    <div class="line-circle line-circle-2  <?php if ($status == "accept" || $status == "start" ||  $status == "finish") {
+                                    <div class="line-circle line-circle-2  <?php if ($status1 == "accept" || $status1 == "start" ||  $status1 == "finish") {
                                                                                 echo "active";
                                                                             } ?>">
                                         <i class="ri-check-line"></i>
                                         <h4>Accepted</h4>
                                     </div>
-                                    <div class="line  line-2 <?php if ($status == "start" || $status == "finish") {
+                                    <div class="line  line-2 <?php if ($status1 == "start" || $status1 == "finish") {
                                                                     echo "active";
                                                                 } ?>"></div>
-                                    <div class="line-circle line-circle-3  <?php if ($status == "start" || $status == "finish") {
+                                    <div class="line-circle line-circle-3  <?php if ($status1 == "start" || $status1 == "finish") {
                                                                                 echo "active";
                                                                             } ?>">
                                         <i class="ri-check-line"></i>
                                         <h4>Started</h4>
                                     </div>
-                                    <div class="line  line-3 <?php if ($status == "finish") {
+                                    <div class="line  line-3 <?php if ($status1 == "finish") {
                                                                     echo "active";
                                                                 } ?>"></div>
-                                    <div class="line-circle line-circle-4  <?php if ($status == "finish") {
+                                    <div class="line-circle line-circle-4  <?php if ($status1 == "finish") {
                                                                                 echo "active";
                                                                             } ?>">
                                         <i class="ri-check-line "></i>
@@ -210,18 +216,18 @@ if (isset($_POST['technician-feedback'])) {
                                                 echo "-";
                                             } ?></p>
                                     <h4>Payment Status</h4>
-                                    <p><?php echo $payment_status; ?></p>
+                                    <p><?php echo $payment_status1; ?></p>
                                 </div>
                             </div>
                             <div class="history-details-3-content-3">
                                 <div>
                                     <h4>Payment Method</h4>
-                                    <p><?php echo $payment_method ?></p>
+                                    <p><?php echo $payment_method1 ?></p>
 
-                                    <p><?php if ($status == "start") {
+                                    <p><?php if ($status1 == "start") {
                                             echo '<h4>Started Date & Time</h4>';
                                             echo "<p>" . $start_date . " " . $start_time . "</p>";
-                                        } else if ($status == "finish") {
+                                        } else if ($status1 == "finish") {
                                             echo '<h4>Finished Date & Time</h4>';
                                             echo "<p>" . $finished_date . " " . $finished_time . "</p>";
                                         } ?></p>
@@ -233,11 +239,11 @@ if (isset($_POST['technician-feedback'])) {
                             <div class="right-button margin-top-30">
                                 <?php
 
-                                if ($status == "pending") {
-                                    echo '<input type="submit" value="Cancel" name="cancel" class="btn" >';
-                                } else if ($status == "start") {
-                                    echo '<button type="button" class="btn" onclick="contactUser(' . $technician_id . ', ' . $booking_id . ')">Contact</button>';
-                                } else if ($status == "finish") {
+                                if ($status1 == "pending") {
+                                    // echo '<input type="submit" value="Cancel" name="cancel" class="btn" >';
+                                } else if ($status1 == "start") {
+                                    // echo '<button type="button" class="btn" onclick="contactUser(' . $technician_id . ', ' . $booking_id . ')">Contact</button>';
+                                } else if ($status1 == "finish") {
 
                                     $technician_feedback = "SELECT * FROM `technician_feedback` WHERE `booking_id` = $booking_id";
                                     $resultFeedback = $conn->query($technician_feedback);
@@ -248,7 +254,9 @@ if (isset($_POST['technician-feedback'])) {
                                         echo '<input type="submit" value="Technician Feedback" name="technician-feedback" class="btn" >';
                                     }
 
-                                    if ($payment_method == "card") {
+                                    // echo $payment_method1;
+
+                                    if ($payment_method1 == "card" && $payment_status1 == "pending") {
                                         echo '<input type="submit" value="Pay Now" name="pay" class="btn" >';
                                     }
                                 }
@@ -267,7 +275,12 @@ if (isset($_POST['technician-feedback'])) {
     <script src="./assets/js/user-script.js"></script>
     <script>
         function contactUser(technician_id, booking_id) {
-            window.location.href = 'message.php?receiver_id=' + technician_id + '&delivery_id=' + booking_id;
+            // window.location.href = 'message.php?receiver_id=' + technician_id + '&delivery_id=' + booking_id;
+        }
+
+        function payment(booking_id) {
+            // console.log('payment.php?booking_id=' + booking_id)
+            window.location.href = 'payment.php?booking_id=' + booking_id;
         }
     </script>
 </body>

@@ -113,7 +113,6 @@ if (isset($_POST['order'])) {
         && empty($latitude_error)
     ) {
 
-
         $selectOrdersId = "SELECT `order_id` FROM `orders` ORDER BY `order_id` DESC LIMIT 1";
         $result = $conn->query($selectOrdersId);
         $lastOrderId = "1";
@@ -138,11 +137,21 @@ if (isset($_POST['order'])) {
             $_SESSION['latitude'] = $latitude;
             $_SESSION['longitude'] = $longitude;
 
-            // header('location: ./checkout.php?cart=t');
+            $_SESSION['item_id'] = $item_id;
+            $_SESSION['quantityParam'] = $quantityParam;
+
+            if (isset($_GET['cart'])) {
+                $_SESSION['cart'] = "true";
+            } else {
+                $_SESSION['one-item'] = "true";
+            }
+
+
+            header('location: ./payment.php');
         } else {
 
             $order_success = false;
-            // algo delivery boy
+
             $deliveryBoyId = 1;
 
             $selectLastDeliveryBoyIdQuery = "SELECT `delivery_boy_id` FROM `delivery` ORDER BY `delivery_id` DESC LIMIT 1";
@@ -152,7 +161,6 @@ if (isset($_POST['order'])) {
                 $lastDeliveryBoyIdData = $resultLastDeliveryBoyId->fetch_assoc();
 
                 $lastDeliveryBoyId = $lastDeliveryBoyIdData['delivery_boy_id'];
-
                 $lastDeliveryBoyId += 1;
 
                 $selectCartItemQuery1 = "SELECT * FROM `delivery_boy` WHERE `delivery_boy_id` = '$lastDeliveryBoyId'";
@@ -175,8 +183,6 @@ if (isset($_POST['order'])) {
                 }
             }
 
-            // order insert
-
             if (isset($_GET['cart'])) {
                 $currentDate = date("Y-m-d");
                 $currentTime = date("H:i:s");
@@ -193,7 +199,6 @@ if (isset($_POST['order'])) {
                 '$latitude','$longitude','200')";
 
                     if ($conn->query($deliverySql) === TRUE) {
-
 
                         if (isset($_GET['cart'])) {
                             // select cart data
@@ -293,6 +298,83 @@ if (isset($_POST['order'])) {
                             }
                         }
                     }
+                }
+            }
+
+            if (isset($_GET['instore'])) {
+                $currentDate = date("Y-m-d");
+                $currentTime = date("H:i:s");
+
+                $orderSql = "INSERT INTO `orders`(`customer_id`, `date`, `time`, `payment_method`, `payment_status`,`order_status`) 
+                VALUES ('$user_id','$currentDate','$currentTime','$payment_method','pending','pending')";
+
+                if ($conn->query($orderSql) === TRUE) {
+
+                    // delivery insert
+
+                    $deliverySql = "INSERT INTO `delivery`(`delivery_boy_id`, `order_id`,`first_name`, `last_name`, `phone_no`, `status`, `house_no`, `state`, 
+                `city`,`latitude`,`longitude`,`delivery_cost`) VALUES ('$deliveryBoyId','$lastOrderId','$first_name','$last_name','$phone_number','pending','$house_no','$state','$city',
+                '$latitude','$longitude','200')";
+
+                    if ($conn->query($deliverySql) === TRUE) {
+
+
+                        if (isset($_GET['instore'])) {
+                            // select cart data
+
+                            // $cart_id = $itemCartData['cart_id'];
+                            // $item_id = $itemCartData['item_id'];
+                            // $quantity =  $itemCartData['quantity'];
+
+                            if (isset($_SESSION['items'])) {
+
+                                foreach ($_SESSION['items'] as $item) {
+                                    $itemId = $item['item_id'];
+                                    $qty = $item['qty'];
+
+                                    $orderDetailsSql = "INSERT INTO `order_details`(`order_id`, `item_id`, `order_type`, `quantity`) 
+                                    VALUES ('$lastOrderId', '$itemId', '', '$qty')";
+
+                                    if ($conn->query($orderDetailsSql) === TRUE) {
+
+                                        $selectItemQuery1 = "SELECT * FROM `item` WHERE `item_id` = '$item_id'";
+                                        $resultItem = $conn->query($selectItemQuery1);
+
+                                        if ($resultItem->num_rows > 0) {
+                                            $itemData = $resultItem->fetch_assoc();
+                                            $stock_quantity = $itemData['stock_quantity'];
+                                            $new_stock_quantity = $stock_quantity - $quantity;
+
+                                            $sql = "UPDATE item SET stock_quantity='$new_stock_quantity' WHERE item_id='$item_id'";
+
+                                            // Execute the query
+                                            if ($conn->query($sql) === TRUE) {
+                                                $order_success = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                            }
+                        }
+                    }
+                }
+
+                if ($order_success) {
+                    $selectCartItemQuery1 = "SELECT * FROM `cart` WHERE `user_id`='$user_id'";
+                    $resultCartItem = $conn->query($selectCartItemQuery1);
+
+                    if ($resultCartItem->num_rows > 0) {
+                        $itemCartData = $resultCartItem->fetch_assoc();
+
+                        $deleteSql = "DELETE FROM `cart` WHERE `user_id` = '$user_id'";
+
+                        if ($conn->query($deleteSql) === TRUE) {
+                            header('location: ./order-history.php');
+                        }
+                    }
+                } else {
+                    header('location: cart.php');
                 }
             }
         }

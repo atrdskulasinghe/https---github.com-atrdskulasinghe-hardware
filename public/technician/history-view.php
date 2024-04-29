@@ -140,6 +140,10 @@ if (isset($_POST['finish'])) {
 
     $formatted_cost = floor($cost1 * 1000) / 1000;
 
+    if($formatted_cost < $hourly_rate){
+        $formatted_cost = $hourly_rate;
+    }
+
     $updateQuery = "UPDATE `booking` SET 
         `status` = 'finish',
         `finished_date` = '$currentDate',
@@ -279,11 +283,11 @@ if (isset($_POST['paid'])) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button active">
@@ -387,7 +391,7 @@ if (isset($_POST['paid'])) {
                     </div>
                     <form class="input-content" method="post">
                         <div class="right-button margin-top-30">
-                            <input type="button" class="btn" onclick="contactUser(' . $user_id . ', ' . $booking_id . ')" value="Contact">
+                            <!-- <input type="button" class="btn" onclick="contactUser(' . $user_id . ', ' . $booking_id . ')" value="Contact"> -->
                             <input type="button" class="btn" value="Location" onclick="redirectToMap(<?php echo $latitude; ?>, <?php echo $longitude; ?>)">
                             <?php
 

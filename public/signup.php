@@ -47,6 +47,10 @@ if (isset($_POST['next'])) {
         $emailError = "Please enter your email";
     }
 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailError = "Invalid email address format.";
+    }
+
     $selectUserEmailQuery = "SELECT * FROM `user` WHERE `email`= '$email'";
     $resultUserEmail = $conn->query($selectUserEmailQuery);
 

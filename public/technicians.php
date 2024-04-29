@@ -575,7 +575,8 @@ if (isset($_GET['category_id'])) {
                                     }
                                 }
                             } else {
-
+                                $averageRating = 0;
+                                $averageRating100 = 100;
                                 $selectTechnicianQuery1 = "SELECT * FROM `technician` WHERE 1";
                                 $resultTechnician = $conn->query($selectTechnicianQuery1);
 
@@ -677,7 +678,7 @@ if (isset($_GET['category_id'])) {
                                                     $percentageStar3 = "";
                                                     $percentageStar4 = "";
                                                     $percentageStar5 = "";
-                                                    $averageRating = 0;
+                                                    
 
                                                     if ($allStarCount > 0) {
                                                         $percentageStar1 = ($starsC1 / $allStarCount) * 100;
@@ -691,9 +692,6 @@ if (isset($_GET['category_id'])) {
                                                         $averageRating100 = ($averageRating * 20);
                                                     }
                                                 }
-
-
-
 
                                                 echo '
                                             <a href="technician.php?technician_id=' . $technician_id . '" class="technician-card">

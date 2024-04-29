@@ -346,7 +346,7 @@ $conn->close();
                         </div>
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                    <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>

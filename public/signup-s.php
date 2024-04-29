@@ -129,7 +129,7 @@ if (isset($_POST['next']) || isset($_POST['finish'])) {
                 if ($conn->query($sql) === TRUE) {
                     if ($conn->query($customerSql) === TRUE) {
 
-                        $mail->setFrom('tharinduruchiranga252@gmail.com', 'Hardware');
+                        $mail->setFrom('yasirusamarasekara2000@gmail.com', 'Hardware');
                         $mail->addAddress($email);
 
                         $mail->isHTML(true);

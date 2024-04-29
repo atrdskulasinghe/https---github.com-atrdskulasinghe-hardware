@@ -38,9 +38,9 @@
                             <li>
                                 <a href="./contact.php">contact us</a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="about.php">about us</a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

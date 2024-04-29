@@ -63,14 +63,78 @@ if (isset($_GET['product_name'])) {
                                     <i class="bi bi-bag-fill" id="cart"></i>
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href="">
                                     <i class="bi bi-chat-fill" id="message"></i>
                                 </a>
-                            </li>
+                            </li> -->
+                            <?php
+
+                            $bookingNotications = 0;
+                            $deliveryNotications = 0;
+
+                            if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
+                                if ($_SESSION['account_type'] == "customer") {
+
+                                    $notification1 = "SELECT * FROM `booking` WHERE `customer_id` = $user_user_id";
+                                    $resultNotification1 = $conn->query($notification1);
+
+                                    if ($resultNotification1->num_rows > 0) {
+                                        while ($itemNotification1 = $resultNotification1->fetch_assoc()) {
+
+                                            $status = $itemNotification1['status'];
+                                            $payment_status = $itemNotification1['payment_status'];
+
+                                            if ($status == "finish") {
+                                                if ($payment_status == "pending") {
+                                                    $bookingNotications += 1;
+                                                }
+                                            }
+                                        }
+                                    }
+
+
+
+                                    $notification2 = "SELECT * FROM `orders` WHERE `customer_id` = $user_user_id";
+                                    $resultNotification2 = $conn->query($notification2);
+
+                                    if ($resultNotification2->num_rows > 0) {
+                                        while ($itemNotification2 = $resultNotification2->fetch_assoc()) {
+
+                                            $payment_method = $itemNotification2['payment_method'];
+                                            $payment_status = $itemNotification2['payment_status'];
+                                            $order_id6 = $itemNotification2['order_id'];
+
+                                            if ($payment_method == "cash") {
+                                                if ($payment_status == "pending") {
+
+                                                    $notification3 = "SELECT * FROM `delivery` WHERE `order_id` = $order_id6";
+                                                    $resultNotification3 = $conn->query($notification3);
+
+                                                    if ($resultNotification3->num_rows > 0) {
+                                                        $itemNotification3 = $resultNotification3->fetch_assoc();
+
+                                                        $date_of_delivered = $itemNotification3['date_of_delivered'];
+                                                        $status = $itemNotification3['status'];
+
+                                                        if ($status == "delivered") {
+
+
+                                                            $deliveryNotications += 1;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            ?>
                             <li>
-                                <a href="">
+                                <a href="./notification.php" style="position: relative;">
                                     <i class="bi bi-bell-fill" id="notification"></i>
+                                    <h4 style="position: absolute; top:-10px; right:-10px; background:green; color:white; width:20px; height: 20px; display:flex; justify-content:center; align-items: center; border-radius:50%;font-family: sans-serif; font-size:14px;"><?php echo $bookingNotications + $deliveryNotications ?></h4>
                                 </a>
                             </li>
                         </ul>
@@ -129,7 +193,7 @@ if (isset($_GET['product_name'])) {
                             </li>
                         </ul>
                     </div>
-                    <div class="message-content">
+                    <!-- <div class="message-content">
                         <div class="message-header">
                             <div class="message-header-content-1">
                                 <h3>messages</h3>
@@ -149,7 +213,7 @@ if (isset($_GET['product_name'])) {
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
 
                 </div>
                 <div class="nav-1-content-4 <?php if (!isset($_SESSION['id'])) {
@@ -182,9 +246,9 @@ if (isset($_GET['product_name'])) {
                         <li>
                             <a href="contact.php">contact us</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="about.php">about us</a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="nav-2-content-2">

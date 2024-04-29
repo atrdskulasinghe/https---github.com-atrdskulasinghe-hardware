@@ -95,11 +95,11 @@ include "../../template/user-data.php";
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -139,12 +139,27 @@ include "../../template/user-data.php";
                 $percentageStar4 = "";
                 $percentageStar5 = "";
                 $averageRating = 0;
+                $averageRating100 = 100;
 
-                $feedback1 = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $user_id";
+                $delivery_boy_id= "";
+
+                $delivery_boy = "SELECT * FROM `delivery_boy` WHERE `user_id` = $user_id";
+                $resultDeliveryBoy = $conn->query($delivery_boy);
+
+                if ($resultDeliveryBoy->num_rows > 0) {
+                    $rowDeliveryBoy = $resultDeliveryBoy->fetch_assoc();
+
+                    $delivery_boy_id = $rowDeliveryBoy["delivery_boy_id"];
+                    
+                }
+
+                $feedback1 = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $delivery_boy_id";
                 $resultFeedback1 = $conn->query($feedback1);
 
                 if ($resultFeedback1->num_rows > 0) {
                     while ($rowFeedback1 = $resultFeedback1->fetch_assoc()) {
+
+                        
 
                         $delivery_id = $rowFeedback1['delivery_id'];
 
@@ -201,7 +216,7 @@ include "../../template/user-data.php";
                         <h3>Ratings & Reviews</h3>
                         <div class="review-header">
                             <div class="review-header-content-1">
-                                <h1><?php echo $averageRating; ?>.0/<span>5</span></h1>
+                                <h1><?php echo $averageRating; ?>/<span>5</span></h1>
 
                                 <div class="stars large">
                                     <ul>
@@ -358,7 +373,7 @@ include "../../template/user-data.php";
                                             <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC1; ?></p>
+                                            <p><?php echo $starsC5; ?></p>
                                         </div>
                                     </div>
                                     <div class="review-header-review-line-content">
@@ -385,7 +400,7 @@ include "../../template/user-data.php";
                                             <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC2; ?></p>
+                                            <p><?php echo $starsC4; ?></p>
                                         </div>
                                     </div>
                                     <div class="review-header-review-line-content">
@@ -439,7 +454,7 @@ include "../../template/user-data.php";
                                             <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC4; ?></p>
+                                            <p><?php echo $starsC2; ?></p>
                                         </div>
                                     </div>
                                     <div class="review-header-review-line-content">
@@ -466,7 +481,7 @@ include "../../template/user-data.php";
                                             <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC5; ?></p>
+                                            <p><?php echo $starsC1; ?></p>
                                         </div>
                                     </div>
                                 </div>
@@ -476,7 +491,7 @@ include "../../template/user-data.php";
 
                             <?php
 
-                            $feedback1 = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $user_id";
+                            $feedback1 = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $delivery_boy_id";
                             $resultFeedback11 = $conn->query($feedback1);
 
                             if ($resultFeedback11->num_rows > 0) {
@@ -487,6 +502,8 @@ include "../../template/user-data.php";
                                     $feedbackD11 = "SELECT * FROM `delivery_boy_feedback` WHERE `delivery_id` = $delivery_id";
                                     $resultFeedback111 = $conn->query($feedbackD11);
 
+                                    
+
                                     if ($resultFeedback111->num_rows > 0) {
                                         $rowFeedbackD = $resultFeedback111->fetch_assoc();
 
@@ -495,15 +512,19 @@ include "../../template/user-data.php";
                                         $number_of_stars = $rowFeedbackD['number_of_stars'];
                                         $date = $rowFeedbackD['date'];
 
-                                        $feedbackC = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
-                                        $resultFeedbackC = $conn->query($feedbackC);
+                                        
 
-                                        if ($resultFeedbackC->num_rows > 0) {
-                                            $rowFeedbackC = $resultFeedbackC->fetch_assoc();
+                                        // $feedbackC = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
+                                        // $resultFeedbackC = $conn->query($feedbackC);
+                                        
+                                        // if ($resultFeedbackC->num_rows > 0) {
 
-                                            $userCId = $rowFeedbackC['user_id'];
+                                            
+                                        //     $rowFeedbackC = $resultFeedbackC->fetch_assoc();
 
-                                            $feedbackU = "SELECT * FROM `user` WHERE `user_id` = $userCId";
+                                        //     $userCId = $rowFeedbackC['user_id'];
+
+                                            $feedbackU = "SELECT * FROM `user` WHERE `user_id` = $customer_id";
                                             $resultFeedbackU = $conn->query($feedbackU);
 
                                             if ($resultFeedbackU->num_rows > 0) {
@@ -648,7 +669,7 @@ include "../../template/user-data.php";
                                         }
                                     }
                                 }
-                            }
+                            // }
 
                             ?>
 

@@ -118,7 +118,6 @@
 
 .cart-product-1-2-1 p {
     margin-left: 10px;
-
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -174,8 +173,6 @@
     height: 20px;
     cursor: pointer;
 }
-
-
 
 .cart-order{
     width: 100%;

@@ -288,11 +288,11 @@ if (isset($_POST['paid'])) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button active">
@@ -389,7 +389,7 @@ if (isset($_POST['paid'])) {
                     </div>
                     <div class="input-content">
                         <form class="right-button margin-top-30" method="POST">
-                            <input type="button" class="btn" value="Contact" onclick="window.location.href='message.php?receiver_id=<?php echo $customer_user_id ?>delivery_id=<?php echo $delivery_id ?>'">
+                            <!-- <input type="button" class="btn" value="Contact" onclick="window.location.href='message.php?receiver_id=<?php echo $customer_user_id ?>delivery_id=<?php echo $delivery_id ?>'"> -->
                             <input type="button" class="btn" value="Location" onclick="redirectToMap(<?php echo $latitude; ?>, <?php echo $longitude; ?>)">
                             <?php
 

@@ -113,11 +113,11 @@ if ($resultDeliveryBoy->num_rows > 0) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -144,59 +144,59 @@ if ($resultDeliveryBoy->num_rows > 0) {
         </aside>
         <section class="active section">
 
-        <?php
+            <?php
 
-                            $startDate = date('Y-m-d', strtotime('-7 days'));
-                            $endDate = date('Y-m-d');
+            $startDate = date('Y-m-d', strtotime('-7 days'));
+            $endDate = date('Y-m-d');
 
-                            $startDateMonth = date('Y-m-d', strtotime('-30 days'));
-                            $endDateMonth = date('Y-m-d');
+            $startDateMonth = date('Y-m-d', strtotime('-30 days'));
+            $endDateMonth = date('Y-m-d');
 
-                            $todayIcome = 0;
-                            $thisWeekIcome = 0;
-                            $monthIcome = 0;
-                            $totalIncome = 0;
+            $todayIcome = 0;
+            $thisWeekIcome = 0;
+            $monthIcome = 0;
+            $totalIncome = 0;
 
-                            $deliveryDetails = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $deliveryBoyId";
-                            $resultDelivery = $conn->query($deliveryDetails);
+            $deliveryDetails = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $deliveryBoyId";
+            $resultDelivery = $conn->query($deliveryDetails);
 
-                            if ($resultDelivery->num_rows > 0) {
-                                while ($rowDelivery = $resultDelivery->fetch_assoc()) {
+            if ($resultDelivery->num_rows > 0) {
+                while ($rowDelivery = $resultDelivery->fetch_assoc()) {
 
-                                    $order_id = $rowDelivery['order_id'];
-                                    $date_of_pickup = $rowDelivery['date_of_pickup'];
-                                    $time_of_pickup = $rowDelivery['time_of_pickup'];
-                                    $date_of_delivered = $rowDelivery['date_of_delivered'];
-                                    $time_of_delivered = $rowDelivery['time_of_delivered'];
-                                    $first_name = $rowDelivery['first_name'];
-                                    $last_name = $rowDelivery['last_name'];
-                                    $phone_no = $rowDelivery['phone_no'];
-                                    $status = $rowDelivery['status'];
-                                    $house_no = $rowDelivery['house_no'];
-                                    $state = $rowDelivery['state'];
-                                    $city = $rowDelivery['city'];
-                                    $delivery_cost = $rowDelivery['delivery_cost'];
-                                    $description = $rowDelivery['description'];
+                    $order_id = $rowDelivery['order_id'];
+                    $date_of_pickup = $rowDelivery['date_of_pickup'];
+                    $time_of_pickup = $rowDelivery['time_of_pickup'];
+                    $date_of_delivered = $rowDelivery['date_of_delivered'];
+                    $time_of_delivered = $rowDelivery['time_of_delivered'];
+                    $first_name = $rowDelivery['first_name'];
+                    $last_name = $rowDelivery['last_name'];
+                    $phone_no = $rowDelivery['phone_no'];
+                    $status = $rowDelivery['status'];
+                    $house_no = $rowDelivery['house_no'];
+                    $state = $rowDelivery['state'];
+                    $city = $rowDelivery['city'];
+                    $delivery_cost = $rowDelivery['delivery_cost'];
+                    $description = $rowDelivery['description'];
 
-                                    $currentDate = date("Y-m-d");
+                    $currentDate = date("Y-m-d");
 
-                                    if ($currentDate == $date_of_delivered) {
-                                        $todayIcome += $delivery_cost;
-                                    }
+                    if ($currentDate == $date_of_delivered) {
+                        $todayIcome += $delivery_cost;
+                    }
 
-                                    if ($date_of_delivered >= $startDate && $date_of_delivered <= $endDate) {
-                                        $thisWeekIcome += $delivery_cost;
-                                    }
+                    if ($date_of_delivered >= $startDate && $date_of_delivered <= $endDate) {
+                        $thisWeekIcome += $delivery_cost;
+                    }
 
-                                    if ($date_of_delivered >= $startDateMonth && $date_of_delivered <= $endDateMonth) {
-                                        $monthIcome += $delivery_cost;
-                                    }
+                    if ($date_of_delivered >= $startDateMonth && $date_of_delivered <= $endDateMonth) {
+                        $monthIcome += $delivery_cost;
+                    }
+ 
+                    $totalIncome += $delivery_cost;
+                }
+            }
 
-                                    $totalIncome += $delivery_cost;
-                                }
-                            }
-
-                            ?>
+            ?>
             <div class="wallet">
                 <div class="content">
                     <div class="wallet-header">
@@ -204,7 +204,7 @@ if ($resultDeliveryBoy->num_rows > 0) {
                             <div class="wallet-card-header">
                                 <h4>Earned today</h4>
                             </div>
-                            
+
                             <div class="wallet-card-content">
                                 <div>
                                     <div class="wallet-card-content-1">
@@ -273,7 +273,6 @@ if ($resultDeliveryBoy->num_rows > 0) {
                                 </tr>
                                 <?php
 
-
                                 $deliveryDetails = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $deliveryBoyId";
                                 $resultDelivery = $conn->query($deliveryDetails);
 
@@ -328,7 +327,9 @@ if ($resultDeliveryBoy->num_rows > 0) {
                     $percentageStar3 = "";
                     $percentageStar4 = "";
                     $percentageStar5 = "";
-                    $averageRating = 0;
+                    $averageRating = 0; 
+
+                    $averageRating100 = 100;
 
                     $feedback1 = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $deliveryBoyId";
                     $resultFeedback1 = $conn->query($feedback1);
@@ -391,7 +392,7 @@ if ($resultDeliveryBoy->num_rows > 0) {
                             <h3>Ratings & Reviews</h3>
                             <div class="review-header">
                                 <div class="review-header-content-1">
-                                    <h1><?php echo $averageRating; ?>.0/<span>5</span></h1>
+                                    <h1><?php echo $averageRating; ?>/<span>5</span></h1>
 
                                     <div class="stars large">
                                         <ul>
@@ -545,10 +546,11 @@ if ($resultDeliveryBoy->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
+                                                <div class="review-line"
+                                                    style="width:<?php echo $percentageStar5; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC1; ?></p>
+                                                <p><?php echo $starsC5; ?></p>
                                             </div>
                                         </div>
                                         <div class="review-header-review-line-content">
@@ -572,10 +574,11 @@ if ($resultDeliveryBoy->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
+                                                <div class="review-line"
+                                                    style="width:<?php echo $percentageStar4; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC2; ?></p>
+                                                <p><?php echo $starsC4; ?></p>
                                             </div>
                                         </div>
                                         <div class="review-header-review-line-content">
@@ -599,7 +602,8 @@ if ($resultDeliveryBoy->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar3; ?>%;"></div>
+                                                <div class="review-line"
+                                                    style="width:<?php echo $percentageStar3; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
                                                 <p><?php echo $starsC3; ?></p>
@@ -626,10 +630,11 @@ if ($resultDeliveryBoy->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
+                                                <div class="review-line"
+                                                    style="width:<?php echo $percentageStar2; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC4; ?></p>
+                                                <p><?php echo $starsC2; ?></p>
                                             </div>
                                         </div>
                                         <div class="review-header-review-line-content">
@@ -653,10 +658,11 @@ if ($resultDeliveryBoy->num_rows > 0) {
                                                 </ul>
                                             </div>
                                             <div class="review-line-background">
-                                                <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
+                                                <div class="review-line"
+                                                    style="width:<?php echo $percentageStar1; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC5; ?></p>
+                                                <p><?php echo $starsC1; ?></p>
                                             </div>
                                         </div>
                                     </div>

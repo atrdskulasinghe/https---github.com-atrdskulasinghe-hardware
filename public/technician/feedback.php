@@ -111,11 +111,11 @@ if ($resultTechnician->num_rows > 0) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -132,7 +132,7 @@ if ($resultTechnician->num_rows > 0) {
 
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                    <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>
@@ -157,6 +157,7 @@ if ($resultTechnician->num_rows > 0) {
                 $percentageStar4 = "";
                 $percentageStar5 = "";
                 $averageRating = 0;
+                $averageRating100 = 100;
 
                 $feedbackT1 = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
                 $resultFeedbackT1 = $conn->query($feedbackT1);
@@ -376,7 +377,7 @@ if ($resultTechnician->num_rows > 0) {
                                             <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC1; ?></p>
+                                            <p><?php echo $starsC5; ?></p>
                                         </div>
                                     </div>
                                     <div class="review-header-review-line-content">
@@ -403,7 +404,7 @@ if ($resultTechnician->num_rows > 0) {
                                             <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC2; ?></p>
+                                            <p><?php echo $starsC4; ?></p>
                                         </div>
                                     </div>
                                     <div class="review-header-review-line-content">
@@ -457,7 +458,7 @@ if ($resultTechnician->num_rows > 0) {
                                             <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC4; ?></p>
+                                            <p><?php echo $starsC2; ?></p>
                                         </div>
                                     </div>
                                     <div class="review-header-review-line-content">
@@ -484,7 +485,7 @@ if ($resultTechnician->num_rows > 0) {
                                             <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
                                         </div>
                                         <div class="review-count">
-                                            <p><?php echo $starsC5; ?></p>
+                                            <p><?php echo $starsC1; ?></p>
                                         </div>
                                     </div>
                                 </div>
@@ -496,6 +497,8 @@ if ($resultTechnician->num_rows > 0) {
 
                             $feedback = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
                             $resultFeedback = $conn->query($feedback);
+
+                            
 
                             if ($resultFeedback->num_rows > 0) {
                                 while ($rowFeedback = $resultFeedback->fetch_assoc()) {
@@ -513,15 +516,15 @@ if ($resultTechnician->num_rows > 0) {
                                         $number_of_stars = $rowFeedbackD['number_of_stars'];
                                         $date = $rowFeedbackD['date'];
 
-                                        $feedbackC = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
-                                        $resultFeedbackC = $conn->query($feedbackC);
+                                        // $feedbackC = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
+                                        // $resultFeedbackC = $conn->query($feedbackC);
 
-                                        if ($resultFeedbackC->num_rows > 0) {
-                                            $rowFeedbackC = $resultFeedbackC->fetch_assoc();
+                                        // if ($resultFeedbackC->num_rows > 0) {
+                                        //     $rowFeedbackC = $resultFeedbackC->fetch_assoc();
 
-                                            $userCId = $rowFeedbackC['user_id'];
+                                        //     $userCId = $rowFeedbackC['user_id'];
 
-                                            $feedbackU = "SELECT * FROM `user` WHERE `user_id` = $userCId";
+                                            $feedbackU = "SELECT * FROM `user` WHERE `user_id` = '$customer_id'";
                                             $resultFeedbackU = $conn->query($feedbackU);
 
                                             if ($resultFeedbackU->num_rows > 0) {
@@ -666,7 +669,7 @@ if ($resultTechnician->num_rows > 0) {
                                         }
                                     }
                                 }
-                            }
+                            // }
 
                             ?>
 

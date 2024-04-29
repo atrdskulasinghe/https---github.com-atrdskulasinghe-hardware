@@ -111,11 +111,11 @@ if ($resultTechnician->num_rows > 0) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -276,9 +276,9 @@ if ($resultTechnician->num_rows > 0) {
                                 $resultBooking1 = $conn->query($booking1);
 
                                 if ($resultBooking1->num_rows > 0) {
-                                    
+
                                     while ($rowBooking = $resultBooking1->fetch_assoc()) {
-                                        
+
                                         $booking_id = $rowBooking['booking_id'];
                                         $technician_id = $rowBooking['technician_id'];
                                         $customer_id = $rowBooking['customer_id'];
@@ -332,6 +332,7 @@ if ($resultTechnician->num_rows > 0) {
                     $percentageStar4 = "";
                     $percentageStar5 = "";
                     $averageRating = 0;
+                    $averageRating100 = 100;
 
                     $feedbackT1 = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
                     $resultFeedbackT1 = $conn->query($feedbackT1);
@@ -551,7 +552,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 <div class="review-line" style="width:<?php echo $percentageStar5; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC1; ?></p>
+                                                <p><?php echo $starsC5; ?></p>
                                             </div>
                                         </div>
                                         <div class="review-header-review-line-content">
@@ -578,7 +579,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 <div class="review-line" style="width:<?php echo $percentageStar4; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC2; ?></p>
+                                                <p><?php echo $starsC4; ?></p>
                                             </div>
                                         </div>
                                         <div class="review-header-review-line-content">
@@ -632,7 +633,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 <div class="review-line" style="width:<?php echo $percentageStar2; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC4; ?></p>
+                                                <p><?php echo $starsC2; ?></p>
                                             </div>
                                         </div>
                                         <div class="review-header-review-line-content">
@@ -659,7 +660,7 @@ if ($resultTechnician->num_rows > 0) {
                                                 <div class="review-line" style="width:<?php echo $percentageStar1; ?>%;"></div>
                                             </div>
                                             <div class="review-count">
-                                                <p><?php echo $starsC5; ?></p>
+                                                <p><?php echo $starsC1; ?></p>
                                             </div>
                                         </div>
                                     </div>
@@ -671,6 +672,8 @@ if ($resultTechnician->num_rows > 0) {
 
                                 $feedback = "SELECT * FROM `booking` WHERE `technician_id` = $technician_id";
                                 $resultFeedback = $conn->query($feedback);
+
+
 
                                 if ($resultFeedback->num_rows > 0) {
                                     while ($rowFeedback = $resultFeedback->fetch_assoc()) {
@@ -688,137 +691,137 @@ if ($resultTechnician->num_rows > 0) {
                                             $number_of_stars = $rowFeedbackD['number_of_stars'];
                                             $date = $rowFeedbackD['date'];
 
-                                            $feedbackC = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
-                                            $resultFeedbackC = $conn->query($feedbackC);
+                                            // $feedbackC = "SELECT * FROM `customer` WHERE `customer_id` = $customer_id";
+                                            // $resultFeedbackC = $conn->query($feedbackC);
 
-                                            if ($resultFeedbackC->num_rows > 0) {
-                                                $rowFeedbackC = $resultFeedbackC->fetch_assoc();
+                                            // if ($resultFeedbackC->num_rows > 0) {
+                                            //     $rowFeedbackC = $resultFeedbackC->fetch_assoc();
 
-                                                $userCId = $rowFeedbackC['user_id'];
+                                            //     $userCId = $rowFeedbackC['user_id'];
 
-                                                $feedbackU = "SELECT * FROM `user` WHERE `user_id` = $userCId";
-                                                $resultFeedbackU = $conn->query($feedbackU);
+                                            $feedbackU = "SELECT * FROM `user` WHERE `user_id` = '$customer_id'";
+                                            $resultFeedbackU = $conn->query($feedbackU);
 
-                                                if ($resultFeedbackU->num_rows > 0) {
-                                                    $rowFeedbackU = $resultFeedbackU->fetch_assoc();
+                                            if ($resultFeedbackU->num_rows > 0) {
+                                                $rowFeedbackU = $resultFeedbackU->fetch_assoc();
 
-                                                    $userName = $rowFeedbackU['first_name'] . ' ' . $rowFeedbackU['last_name'];
+                                                $userName = $rowFeedbackU['first_name'] . ' ' . $rowFeedbackU['last_name'];
 
-                                                    echo '
+                                                echo '
                                                     <div class="feedback-content">
                                                 <div class="feedback-content-1">
                                                     <div class="stars">
                                                         <ul>
                                                         ';
-                                                    // for ($i = 0; $i < 5; $i++) {
-                                                    if ($number_of_stars == 1) {
-                                                        echo '<li>
+                                                // for ($i = 0; $i < 5; $i++) {
+                                                if ($number_of_stars == 1) {
+                                                    echo '<li>
                                                                                 <i class="ri-star-fill active"></i>
                                                                             </li>';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                    } else if ($number_of_stars == 2) {
-                                                        echo '<li>
+                                                } else if ($number_of_stars == 2) {
+                                                    echo '<li>
                                                                                 <i class="ri-star-fill active"></i>
                                                                             </li>';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                    } else if ($number_of_stars == 3) {
-                                                        echo '<li>
+                                                } else if ($number_of_stars == 3) {
+                                                    echo '<li>
                                                                                 <i class="ri-star-fill active"></i>
                                                                             </li>';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                    } else if ($number_of_stars == 4) {
-                                                        echo '<li>
+                                                } else if ($number_of_stars == 4) {
+                                                    echo '<li>
                                                                                 <i class="ri-star-fill active"></i>
                                                                             </li>';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill"></i>
                                                                         </li>
                                                                         ';
-                                                    } else if ($number_of_stars == 5) {
-                                                        echo '<li>
+                                                } else if ($number_of_stars == 5) {
+                                                    echo '<li>
                                                                                 <i class="ri-star-fill active"></i>
                                                                             </li>';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                        echo '<li">
+                                                    echo '<li">
                                                                             <i class="ri-star-fill active"></i>
                                                                         </li>
                                                                         ';
-                                                    }
-                                                    // }
+                                                }
+                                                // }
 
 
 
 
 
-                                                    echo '
+                                                echo '
                                                         </ul>
                                                     </div>
                                                     <p class="feedback-name">by ' . $userName . '</p>
@@ -831,17 +834,17 @@ if ($resultTechnician->num_rows > 0) {
                                             </div>
                                                 ';
 
-                                                    // <div class="feedback-images">
-                                                    //     <img src="" alt="">
-                                                    //     <img src="" alt="">
-                                                    //     <img src="" alt="">
-                                                    //     <img src="" alt="">
-                                                    // </div>
-                                                }
+                                                // <div class="feedback-images">
+                                                //     <img src="" alt="">
+                                                //     <img src="" alt="">
+                                                //     <img src="" alt="">
+                                                //     <img src="" alt="">
+                                                // </div>
                                             }
                                         }
                                     }
                                 }
+                                // }
 
                                 ?>
 
@@ -850,6 +853,10 @@ if ($resultTechnician->num_rows > 0) {
                             </div>
                         </div>
                     </div>
+
+
+
+
                 </div>
             </div>
         </section>

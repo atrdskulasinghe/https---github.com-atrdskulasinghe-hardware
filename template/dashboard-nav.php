@@ -44,15 +44,16 @@ if(isset($_SESSION['id']) && isset($_SESSION['account_type'])){
                 <p>Dashboard</p>
             </div>
             <div class="nav-content-2">
-                <a href="./message.php">
+                <!-- <a href="./message.php">
                     <i class="ri-mail-line"></i>
                 </a>
                 <a href="">
                     <i class="ri-notification-3-line"></i>
-                </a>
+                </a> -->
 
-                <a href="./settings.php">
+                <a href="./settings.php" style="display: flex; align-items:center;">
                     <img src="<?php echo $this_profile_url?>" alt="">
+                    <h1 style="margin-left:10px; font-family:sans-serif; font-size:14px; color:black;"><?php echo $user_first_name ." "; echo $user_last_name;?></h1>
                 </a>
 
             </div>

@@ -222,11 +222,11 @@ if ($resultTechnician->num_rows > 0) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -354,21 +354,14 @@ if ($resultTechnician->num_rows > 0) {
             $date = date("Y/m/d", strtotime($row['booked_date']));
             $time = date("h.ia", strtotime($row['booked_time']));
             $event = $row['status'];
+            $booking_id  = $row['booking_id'];
 
             if ($row['status'] !== "reject") {
-                $eventData[] = [$date, $time, $event];
+                $eventData[] = [$date, $time, $event,$booking_id];
             }
         }
     }
-?>
-
-
-    <!-- // <script>
-        //     var eventData = <?php echo json_encode($eventData); ?>;
-        // 
-    </script> -->
-
-
+    ?>
     <script>
         // var eventData = [
         //     ["2024/02/01", "10.20pm", "Batch party"],
@@ -383,22 +376,20 @@ if ($resultTechnician->num_rows > 0) {
 
         var eventData = <?php echo json_encode($eventData); ?>;
 
-        // Function to generate calendar
-        // Function to generate calendar
         function generateCalendar(year, month) {
             var calendarBody = document.getElementById('calendar-body');
             var calendarHeader = document.getElementById('calendar-month-year');
-            calendarBody.innerHTML = ''; // Clear existing calendar
+            calendarBody.innerHTML = '';
 
             var date = new Date(year, month, 1);
             var startingDay = date.getDay();
-            var endDate = new Date(year, month + 1, 0).getDate(); 
+            var endDate = new Date(year, month + 1, 0).getDate();
 
             calendarHeader.textContent = monthNames[month] + ' ' + year;
 
             var currentRow = calendarBody.insertRow();
             var cellIndex = 0;
-            var selectedCell = null; 
+            var selectedCell = null;
 
             for (var i = 0; i < startingDay; i++) {
                 currentRow.insertCell();
@@ -415,28 +406,27 @@ if ($resultTechnician->num_rows > 0) {
                 if (eventInfo !== null) {
                     var dot = document.createElement('span');
                     dot.className = 'event-dot';
-                    // cell.appendChild(dot);
-                    // console.log(cell)
                     cell.style.cursor = "pointer";
                     cell.classList.add('selected-date');
-                } else {
-                    // cell.style.cursor = "pointer";
                 }
 
                 cellIndex++;
-                if (cellIndex % 7 === 0 && day < endDate) { 
+                if (cellIndex % 7 === 0 && day < endDate) {
                     currentRow = calendarBody.insertRow();
                     cellIndex = 0;
                 }
 
+                
+
                 cell.addEventListener('click', function() {
                     var dateStr = year + '/' + padNumber(month + 1) + '/' + padNumber(this.textContent);
                     var eventInfo = getEventInfo(dateStr);
-                    
+
                     if (eventInfo !== null && eventInfo.length >= 2) {
                         // alert('Event: ' + eventInfo[2] + '\nTime: ' + eventInfo[1]);
-                        window.location.href= "history-view.php?book_id=1";
-                        
+                        window.location.href = "history-view.php?book_id="+ eventInfo[3];
+                        // console.log(eventInfo[3])
+
                     } else {
                         if (selectedCell !== null) {
                             // selectedCell.classList.remove('selected-date');

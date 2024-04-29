@@ -166,7 +166,7 @@ if (isset($_POST['finish'])) {
                     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
                         
 
-                        $mail->setFrom('tharinduruchiranga252@gmail.com', 'Hardware');
+                        $mail->setFrom('yasirusamarasekara2000@gmail.com', 'Hardware');
                         $mail->addAddress($email);
 
                         $mail->isHTML(true);

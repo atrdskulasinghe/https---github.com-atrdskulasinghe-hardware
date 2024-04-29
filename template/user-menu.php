@@ -82,9 +82,9 @@ if(isset($_GET['product_name'])){
                 <li>
                     <a href="./cart.php"><img src="./assets/images/ui/all items.png">cart</a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="./about.php"><img src="./assets/images/ui/Feedback.png">about us</a>
-                </li>
+                </li> -->
             </ul>
             <div class="menu-logout">
                 <a href="./logout.php"><img src="./assets/images/ui/Exit.png">Logout</a>

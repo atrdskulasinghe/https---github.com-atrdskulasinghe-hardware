@@ -9,7 +9,6 @@ $user_id = $_SESSION['id'];
 
 if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
     if ($_SESSION['account_type'] == "customer") {
-        
     } else if ($_SESSION['account_type'] == "cashier") {
         header('location: ./cashier/index.php');
     } else if ($_SESSION['account_type'] == "technician") {
@@ -76,38 +75,75 @@ if (isset($_POST['book'])) {
         $date_error = 'please select a date';
     }
 
-    $selectLastBookingId = "SELECT `booking_id` FROM `booking` ORDER BY `booking_id` DESC LIMIT 1";
-    $result = $conn->query($selectLastBookingId);
-    $lastBookId = "1";
-    if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $lastBookId = $row['booking_id'] + 1;
-    }
-
-    $imageUrl = $lastBookId . "_image.jpg";
-
-    $sql = "INSERT INTO `booking`(`technician_id`, `customer_id`, `status`, 
-    `booked_date`, `booked_time`, `photo_url`, `house_no`, `state`, `city`, 
-    `payment_status`, `payment_method`, `description`, `latitude`, `longitude`) VALUES 
-    ('$technician_id','$user_id','pending','$year-$month-$date','$time','$imageUrl','$house_no','$state','$city'
-    ,'pending', '$payment_method','$description','$latitude','$longitude')";
-
-    $targetDirectory = "./assets/images/booking/";
-
     if (empty($house_no_error) && empty($state_error) && empty($city_error) && empty($date_error)) {
-        if ($conn->query($sql) === TRUE) {
 
-            if (!empty($_FILES["image"]["name"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-                $newFileName = $lastBookId . "_image.jpg";
-                $targetFile = $targetDirectory . $newFileName;
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+        // if ($payment_method == "card") {
+
+        //     $selectLastBookingId = "SELECT `booking_id` FROM `booking` ORDER BY `booking_id` DESC LIMIT 1";
+        //     $result = $conn->query($selectLastBookingId);
+        //     $lastBookId = "1";
+        //     if ($result && $result->num_rows > 0) {
+        //         $row = $result->fetch_assoc();
+        //         $lastBookId = $row['booking_id'] + 1;
+        //     }
+
+        //     $imageUrl = $lastBookId . "_image.jpg";
+
+        //     $_SESSION['technician_id'] = $technician_id;
+        //     $_SESSION['year'] = $year;
+        //     $_SESSION['month'] = $month;
+        //     $_SESSION['date'] = $date;
+        //     $_SESSION['time'] = $time;
+        //     $_SESSION['imageUrl'] = $imageUrl;
+        //     $_SESSION['house_no'] = $house_no;
+        //     $_SESSION['state'] = $state;
+        //     $_SESSION['city'] = $city;
+        //     $_SESSION['payment_method'] = $payment_method;
+
+        //     $_SESSION['description'] = $description;
+        //     $_SESSION['latitude'] = $latitude;
+        //     $_SESSION['longitude'] = $longitude;
+
+           
+        //     $_SESSION['file_name'] = $_FILES["image"]["name"];
+        //     $_SESSION['file_error'] = $_FILES["image"]["error"];
+        //     $_SESSION['file_tmp_name'] = $_FILES["image"]["tmp_name"];
+
+        //     $_SESSION['booking_id'] = $lastBookId;
+        //     header('location: ./payment.php');
+        // } else {
+            $selectLastBookingId = "SELECT `booking_id` FROM `booking` ORDER BY `booking_id` DESC LIMIT 1";
+            $result = $conn->query($selectLastBookingId);
+            $lastBookId = "1";
+            if ($result && $result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $lastBookId = $row['booking_id'] + 1;
+            }
+
+            $imageUrl = $lastBookId . "_image.jpg";
+
+            $sql = "INSERT INTO `booking`(`technician_id`, `customer_id`, `status`, 
+            `booked_date`, `booked_time`, `photo_url`, `house_no`, `state`, `city`, 
+            `payment_status`, `payment_method`, `description`, `latitude`, `longitude`) VALUES 
+            ('$technician_id','$user_id','pending','$year-$month-$date','$time','$imageUrl','$house_no','$state','$city'
+            ,'pending', '$payment_method','$description','$latitude','$longitude')";
+
+            $targetDirectory = "./assets/images/booking/";
+
+            if ($conn->query($sql) === TRUE) {
+
+                if (!empty($_FILES["image"]["name"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK) {
+                    $newFileName = $lastBookId . "_image.jpg";
+                    $targetFile = $targetDirectory . $newFileName;
+                    if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                        header('location: book-history.php');
+                    }
+                } else {
                     header('location: book-history.php');
                 }
-            } else {
-                header('location: book-history.php');
             }
         }
-    }
+    // }
 }
 
 ?>

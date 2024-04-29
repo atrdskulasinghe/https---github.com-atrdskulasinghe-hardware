@@ -1,0 +1,102 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+}
+
+.card{
+    width: 400px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.card-header{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    font-family: sans-serif;
+    margin-bottom: 20px;
+}
+
+.logo img{
+    width: 150px;
+}
+
+.card-input-1{
+    width: 100%;
+    margin-top: 20px;
+}
+
+.card-input-2{
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+}
+
+.card-input{
+    width: calc((100% / 2) - 10px);
+}
+
+.card-input:last-child{
+    margin-left: 10px;
+}
+
+.card p{
+    font-family: sans-serif;
+    color: #707070;
+}
+
+.card input{
+    width:calc(100% - 20px);
+    height: 30px;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding:0 10px;
+    outline: none;
+    border: 1px solid rgb(179, 179, 179);
+}
+
+.card-input-2-content{
+    display: flex;
+    align-items: center;
+}
+
+.card-input-2-content input{
+    width: calc(50% - 5px);
+}
+
+.card-input-2-content input:last-child{
+    margin-left: 10px;
+}
+
+
+.card-pay{
+    width: 100%;
+    height: 30px;
+    margin-top: 20px;
+}
+
+.card-pay button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    color: white;
+    background-color: blue;
+    border-radius: 5px;
+}
+
+.error{
+    margin-top: 5px;
+    font-size: 12px;
+    color: red !important;
+}

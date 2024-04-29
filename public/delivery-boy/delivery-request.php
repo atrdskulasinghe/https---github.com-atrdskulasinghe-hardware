@@ -10,6 +10,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
         header('location: ../technician/index.php');
     } else if ($_SESSION['account_type'] == "delivery_boy") {
         // header('location: ../delivery-doy/index.php');
+        $user_id = $_SESSION['id'];
     } else if ($_SESSION['account_type'] == "admin") {
         header('location: ../admin/index.php');
     } else if ($_SESSION['account_type'] == "technical_team") {
@@ -23,10 +24,10 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
 include "../../config/database.php";
 include "../../template/user-data.php";
 
-$user_id = 2;
-if (isset($_SESSION['id'])) {
-    $user_id = $_SESSION['id'];
-}
+// $user_id = 2;
+// if (isset($_SESSION['id'])) {
+//     $user_id = $_SESSION['id'];
+// }
 
 
 ?>
@@ -98,11 +99,11 @@ if (isset($_SESSION['id'])) {
                             </a>
                         </div>
                         <!-- menu link 1 -->
-                        <div class="menu-link-button">
+                        <!-- <div class="menu-link-button">
                             <a href="./message.php">
                                 <p><img src="../assets/images/ui/messages.png" alt="">Messages</p>
                             </a>
-                        </div>
+                        </div> -->
 
                         <!-- menu link 1 -->
                         <div class="menu-link-button">
@@ -138,15 +139,11 @@ if (isset($_SESSION['id'])) {
                     $result = $conn->query($selectUserQuery);
 
                     if ($result->num_rows > 0) {
-
-
-
-
                         $row = $result->fetch_assoc();
 
                         $delivery_boy_id = $row['delivery_boy_id'];
 
-
+                        
 
                         $selectUserQuery = "SELECT * FROM `delivery` WHERE `delivery_boy_id` = $delivery_boy_id";
                         $result = $conn->query($selectUserQuery);
@@ -155,6 +152,7 @@ if (isset($_SESSION['id'])) {
 
                             while ($row = $result->fetch_assoc()) {
 
+                                
 
                                 $delivery_id = $row['delivery_id'];
                                 $order_id = $row['order_id'];
@@ -166,11 +164,17 @@ if (isset($_SESSION['id'])) {
                                 $house_no = $row['house_no'];
                                 $state = $row['state'];
                                 $city = $row['city'];
+                                
+                                // echo $delivery_id;
 
                                 $delivery_cost = $row['delivery_cost'];
                                 $description = $row['description'];
                                 $latitude = $row['latitude'];
                                 $longitude = $row['longitude'];
+
+                                // echo $order_id;
+
+                                // 
 
                                 if ($status == "pending") {
 
@@ -186,9 +190,11 @@ if (isset($_SESSION['id'])) {
                                         $order_time = $rowOrder['time'];
                                         $order_status = $rowOrder['order_status'];
 
+                                        // echo $order_status;
+
                                         if ($order_status != "pending") {
 
-
+                                            // echo $delivery_boy_id;
 
                                             $selectUserQuery = "SELECT * FROM `user` WHERE `user_id` = $customer_user_id";
                                             $resultUser = $conn->query($selectUserQuery);
@@ -258,7 +264,6 @@ if (isset($_SESSION['id'])) {
                                                 </div>
                     
                                                 <div class="request-button">
-                                                    <button type="button" class="btn" onclick="contactUser(' . $customer_user_id . ', ' . $delivery_id . ')">Contact</button>
                                                     <button type="button" class="btn" onclick="updateBookingStatus(' . $delivery_id . ', \'accept\')">Accept</button> 
                                                 </div>
                                             </div>
@@ -273,6 +278,7 @@ if (isset($_SESSION['id'])) {
                         }
                     }
                     // }
+                    // <button type="button" class="btn" onclick="contactUser(' . $customer_user_id . ', ' . $delivery_id . ')">Contact</button>
 
                     if ($error == false) {
                         echo "<p>Devlivery request not found</p>";
@@ -291,7 +297,7 @@ if (isset($_SESSION['id'])) {
     <script src="../assets/js/script.js"></script>
     <script>
         function contactUser(userId, deliveryId) {
-            window.location.href = 'message.php?receiver_id=' + userId + '&delivery_id=' + deliveryId;
+            // window.location.href = 'message.php?receiver_id=' + userId + '&delivery_id=' + deliveryId;
         }
 
         function updateBookingStatus(deliveryId, status) {

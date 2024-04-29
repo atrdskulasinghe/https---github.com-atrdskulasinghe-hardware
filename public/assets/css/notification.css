@@ -1,0 +1,56 @@
+.notification-section{
+    width: 100%;
+    padding: 60px 0;
+    /* background-color: red; */
+}
+
+.notification-list{
+    width: calc(100% - 60px);
+    background-color: rgb(216, 232, 255);
+    margin: auto;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all .5s ease;
+    display: block;
+}
+
+.notification-list:hover{
+    transform: scale(1.02);
+}
+
+
+.notification-details{
+    width: 100%;
+    position: relative;
+}
+
+.notification-details h1{
+    font-family: sans-serif;
+    font-size: 14px;
+    color: black;
+    /* font-weight: 400; */
+}
+
+.notification-details p{
+    font-family: sans-serif;
+    color: #707070;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.notification-details .notifi-dot{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
+    height: 100%;
+    top:0;
+}
+
+.notifi-dot i{
+    font-size: 12px;
+    color: red;
+}

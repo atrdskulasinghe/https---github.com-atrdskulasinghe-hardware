@@ -269,18 +269,34 @@ $newQuantity = 1;
                                             <i class="bi bi-star-fill"></i>
                                         </li>
                                     </ul>
-                                    <h4>117 Ratings</h4>
+                                    <?php
+                                    $feedbackCount1 = 0;
+                                    $feedback1 = "SELECT * FROM `item_feedback` WHERE `item_id` = $item_id";
+                                    $resultFeedback1 = $conn->query($feedback1);
+
+                                    if ($resultFeedback1->num_rows > 0) {
+                                        while ($rowFeedback1 = $resultFeedback1->fetch_assoc()) {
+                                            $feedbackCount1 += 1;
+                                        }
+                                    }
+                                    
+                                    ?>
+                                    <h4><?php echo $feedbackCount1; ?> Ratings</h4>
                                 </div>
                                 <div class="product-content-2-brand">
                                     <h4>Brand : </h4>&nbsp;
-                                    <a href=""><?php echo $brand ?></a>
+                                    <a ><?php echo $brand ?></a>
+                                </div>
+                                <div class="product-content-2-brand">
+                                    <h4>Stock : </h4>&nbsp;
+                                    <a><?php echo $stock_quantity ?></a>
                                 </div>
                                 <div class="product-content-2-price">
                                     <h1>LKR. <?php echo $price ?></h1>
                                 </div>
                                 <div class="product-content-2-warranty">
                                     <h4>Warranty : </h4>&nbsp;
-                                    <a href=""><?php echo $warranty ?> year warranty</a>
+                                    <a ><?php echo $warranty ?> year warranty</a>
                                 </div>
                                 <div class="product-content-2-quantity">
                                     <h4>Quantity : </h4>&nbsp;
@@ -577,11 +593,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: <?php echo $percentageStar1 ?>%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar5 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p><?php echo $starsC1 ?></p>
+                                                    <p><?php echo $starsC5 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -603,11 +619,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: <?php echo $percentageStar2 ?>%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar4 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p><?php echo $starsC2 ?></p>
+                                                    <p><?php echo $starsC4 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -646,11 +662,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: <?php echo $percentageStar4 ?>%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar2 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p><?php echo $starsC4 ?></p>
+                                                    <p><?php echo $starsC2 ?></p>
                                                 </div>
                                             </div>
                                             <div class="review-content-2-content">
@@ -663,11 +679,11 @@ $newQuantity = 1;
                                                 </div>
                                                 <div class="review-content-2-content-2">
                                                     <div class="review-bar">
-                                                        <div class="review-line" style="width: <?php echo $percentageStar5 ?>%;"></div>
+                                                        <div class="review-line" style="width: <?php echo $percentageStar1 ?>%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="review-content-2-content-3">
-                                                    <p><?php echo $starsC5 ?></p>
+                                                    <p><?php echo $starsC1 ?></p>
                                                 </div>
                                             </div>
                                         </div>

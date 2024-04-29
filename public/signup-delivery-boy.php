@@ -128,7 +128,7 @@ if (isset($_POST['finish'])) {
         $profileUrl = $lastUserId . '_profile.jpg';
 
         $sql = "INSERT INTO `user`(`first_name`, `last_name`, `email`, `phone_number`, `dob`, `house_no`, `state`, `city`, `account_type`, `profile_url`, `password`,`security_question`,`question_answer`,`status`,`activation_code`,`latitude`,`longitude`) 
-                    VALUES ('$first_name','$last_name','$email','$phone_number','$dob','$house_no','$state','$city','delivery_boy','$profileUrl','$hashedPassword','$security_question','$answer','pending','100','$latitude','$longitude')";
+                    VALUES ('$first_name','$last_name','$email','$phone_number','$dob','$house_no','$state','$city','delivery_boy','$profileUrl','$hashedPassword','$security_question','$answer','pending','$activationCode','$latitude','$longitude')";
 
         $nic_photo_url = $lastUserId . '_nic.jpg';
 
@@ -148,7 +148,7 @@ if (isset($_POST['finish'])) {
                     $targetFile = $targetDirectory . $newFileName;
                     if (move_uploaded_file($_FILES["nic_image"]["tmp_name"], $targetFile)) {
 
-                        $mail->setFrom('tharinduruchiranga252@gmail.com', 'Hardware');
+                        $mail->setFrom('yasirusamarasekara2000@gmail.com', 'Hardware');
                         $mail->addAddress($email);
 
                         $mail->isHTML(true);

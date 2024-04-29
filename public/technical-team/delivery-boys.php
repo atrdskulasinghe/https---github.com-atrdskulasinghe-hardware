@@ -163,7 +163,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                         </div>
                     </div>
                     <div class="menu-logout">
-                        <a href="">
+                    <a href="../logout.php">
                             <p><img src="../assets/images/ui/Exit.png" alt="">Logout</p>
                         </a>
                     </div>
@@ -463,7 +463,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                 $selectCashierQuery = "SELECT * FROM `user` WHERE `account_type` = 'delivery_boy'";
                                 $result = $conn->query($selectCashierQuery);
 
-
+                                
                                 if ($result && $result->num_rows > 0) {
                                     while ($userData = $result->fetch_assoc()) {
                                         $user_id = $userData['user_id'];
@@ -483,19 +483,18 @@ if (isset($_SESSION['id']) && isset($_SESSION['account_type'])) {
                                         $selectDBQuery = "SELECT * FROM `delivery_boy` WHERE `user_id` = '$user_id'";
                                         $result1 = $conn->query($selectDBQuery);
 
-                                        $status = "approved";
+                                        $status = "active";
 
                                         if ($result1 && $result1->num_rows > 0) {
                                             while ($userData1 = $result1->fetch_assoc()) {
 
                                                 $vehical = $userData1['vehicle_type'];
-
                                                 $status = $userData1['status'];
                                             }
                                         }
 
 
-                                        if ($status == "approved") {
+                                        if ($status == "active") {
                                             $error = true;
                                             echo '
 
